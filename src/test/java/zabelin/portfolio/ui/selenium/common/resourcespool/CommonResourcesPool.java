@@ -99,15 +99,15 @@ public abstract class CommonResourcesPool {
                     List<Operations> operations = doBeforeCollection.get(testIdentity);
                     if (operations != null)
                         operations.stream().forEach(res -> {
-                            try {
-                                Operations[] resArr = new Operations[1];
-                                resArr[0] = res;
-                                res.getProcessor().getMethod("process", User.class, Operations[].class)
-                                        .invoke(null, obj, resArr);
-                            } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
-                                Log.error("Unable to process before tasks for blocked object " + obj.getIdentity() + " in the test " + testIdentity);
-                                e.printStackTrace();
-                            }
+//                            try {
+//                                Operations[] resArr = new Operations[1];
+//                                resArr[0] = res;
+//                                res.getProcessor().getMethod("process", User.class, Operations[].class)
+//                                        .invoke(null, obj, resArr);
+//                            } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
+//                                Log.error("Unable to process before tasks for blocked object " + obj.getIdentity() + " in the test " + testIdentity);
+//                                e.printStackTrace();
+//                            }
                         });
                 }
                 Log.info("Before-jobs finished in " + testIdentity);
@@ -133,16 +133,16 @@ public abstract class CommonResourcesPool {
                             if (doAfterCollection.containsKey(testIdentity)) {
                                 List<Operations> operations = doAfterCollection.get(testIdentity);
                                 operations.stream().forEach(res -> {
-                                    try {
-                                        Operations[] resArr = new Operations[1];
-                                        resArr[0] = res;
-                                        res.getProcessor().getMethod("process", User.class, Operations[].class)
-                                                .invoke(null, entry.getKey(), resArr);
-                                    } catch (NoSuchMethodException | IllegalAccessException |
-                                             InvocationTargetException e) {
-                                        Log.error("Unable to process object releasing: " + entry.getKey().getIdentity());
-                                        e.printStackTrace();
-                                    }
+//                                    try {
+//                                        Operations[] resArr = new Operations[1];
+//                                        resArr[0] = res;
+//                                        res.getProcessor().getMethod("process", User.class, Operations[].class)
+//                                                .invoke(null, entry.getKey(), resArr);
+//                                    } catch (NoSuchMethodException | IllegalAccessException |
+//                                             InvocationTargetException e) {
+//                                        Log.error("Unable to process object releasing: " + entry.getKey().getIdentity());
+//                                        e.printStackTrace();
+//                                    }
                                 });
                             }
 
