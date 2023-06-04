@@ -8,7 +8,6 @@ import org.testng.SkipException;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import zabelin.portfolio.core.common.Log;
-import zabelin.portfolio.core.ui.BrowserLocalStorage;
 import zabelin.portfolio.ui.selenium.common.annotations.PreconditionAnnotationParser;
 import zabelin.portfolio.ui.selenium.common.env.EnvConstants;
 import zabelin.portfolio.ui.selenium.common.model.LoginPageData;
@@ -23,7 +22,7 @@ import java.net.URL;
 import java.security.MessageDigest;
 
 
-public class BaseWMSiteState extends UITestsHelper {
+public class BaseSiteState extends UITestsHelper {
 
     private volatile static WMSiteUserPool usersPool = new WMSiteUserPool();
     protected String testIdentity;
@@ -33,50 +32,15 @@ public class BaseWMSiteState extends UITestsHelper {
     @BeforeMethod
     protected void executePreconditions(Method method) throws Exception {
         testIdentity = PreconditionAnnotationParser.getTestIdentity(method);
-//        PreconditionAnnotationParser.parseResourceAnnotation(method, testIdentity, businessPool);
         try {
-//            userData = PreconditionAnnotationParser.parseUser(method);
             String url = PreconditionAnnotationParser.parseUrl(method);
-//            Location location = PreconditionAnnotationParser.parseLocation(method);
-            //String flag = PreconditionAnnotationParser.parseFeatureFlag(method);
-//            String specialUser = "";
-//            if (method.getDeclaringClass().isAnnotationPresent(BaseState.class)) {
-//                specialUser = method.getDeclaringClass().getAnnotation(BaseState.class).user();
-//            }
-//            if (method.isAnnotationPresent(Precondition.class)) {
-//                specialUser = method.getAnnotation(Precondition.class).user();
-//            }
-//            if (specialUser.equals(Preconditions.WMSite.User.NEW_USER))
-//                createNewVerifiedUser(userData);
-//            if (specialUser.equals(Preconditions.WMSite.User.ORDERING))
-//                userData = getUser(Preconditions.WMSite.User.ORDERING).getLoginPageData();
-//            if (flag != null) {
-//                setFeatureFlag(flag, method.getAnnotation(Precondition.class).flagValue());
-//            }
             driver.get(EnvConstants.BASE_PAGE);
-//            CommonHelper.setLocationCookies(driver, location); //workaround to get right positioning at start
-//            driver.manage().addCookie(new Cookie("wm.maxConfirmedAge.v2", "21")); //workaround to bypass global age gate
-            BrowserLocalStorage bls = new BrowserLocalStorage(driver);
-            if (isMobileBrowser())
-                bls.setItemInLocalStorage( //workaround to branch banner closing for mobile view
-                        "BRANCH_WEBSDK_KEYjourneyDismissals",
-                        "{\"614a44e451e9d8000c548e30\":{\"view_id\":\"968964537547361282\",\"dismiss_time\":" + (System.currentTimeMillis() - 1000L) + "}, " +
-                                "\"60ea4c1e5163be000fe0b4bc\":{\"view_id\":\"944287524089737217\",\"dismiss_time\":" + (System.currentTimeMillis() - 1000L) + "}}");
-//            WebElementsHelper.closeCookiesMessage(driver);
-            bls.setItemInLocalStorage("terms-2020-10-01-privacy-2020-10-01", "true"); // close cookie message
-            bls.setItemInLocalStorage("wm.favoritesTooltip", "true"); // close favorite us message in listing details
-            bls.setItemInLocalStorage("wm.multi_menu_tooltip", "3");
-            bls.setItemInLocalStorage("_wm_hide_brands_nearby_tooltip", "true");
-//            bls.setItemInLocalStorage("_wm_hide_listing_potency_sort_tooltip", "true"); // close new sort message
             //workaround for local isolated runs of admin part
             if (EnvConstants.BASE_PAGE != null && EnvConstants.BASE_PAGE.contains("host")) {
                 driver.manage().addCookie(new Cookie("_wm_admin_new_listing_admin_opt-in", "true"));
             }
             if (userData != null) {
-//                UI way
-//                launchURL(driver, EnvConstants.LOGIN_PAGE);
-//                new LogInSignUpPage(driver).logIn(userData);
-//
+
 //                API way
 //                CommonHelper.logInAPI(driver, userData);
             }
@@ -107,7 +71,7 @@ public class BaseWMSiteState extends UITestsHelper {
         driver.get(url);
     }
 
-    public BaseWMSiteState resizeBrowserWindow(int width, int height) throws Exception {
+    public BaseSiteState resizeBrowserWindow(int width, int height) throws Exception {
         driver.manage().window().setSize(new Dimension(width, height));
         driver.manage().window().setPosition(new Point(0, 0));
         return this;

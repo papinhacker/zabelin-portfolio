@@ -23,15 +23,15 @@ public class LoginPageData extends EnvConstants {
         if (setRandom)
             setRandomLoginPageData();
         else {
-            userName = EnvConstants.BASIC_USER_LOGIN;
-            password = EnvConstants.DEFAULT_PASSWORD;
-            email = EnvConstants.BASIC_USER_EMAIL;
+//            userName = EnvConstants.BASIC_USER_LOGIN;
+//            password = EnvConstants.DEFAULT_PASSWORD;
+//            email = EnvConstants.BASIC_USER_EMAIL;
         }
     }
 
     public LoginPageData(String userName) {
         this.userName = userName;
-        this.password = EnvConstants.DEFAULT_PASSWORD;
+//        this.password = EnvConstants.DEFAULT_PASSWORD;
     }
 
     public LoginPageData(String userName, String password) {
@@ -67,7 +67,7 @@ public class LoginPageData extends EnvConstants {
 
     public void setRandomLoginPageData() {
         userName = RandomStringUtils.randomAlphabetic(10);
-        password = EnvConstants.DEFAULT_PASSWORD;
+//        password = EnvConstants.DEFAULT_PASSWORD;
         email = userName + "@" + RandomStringUtils.randomAlphabetic(8) + ".com";
     }
 

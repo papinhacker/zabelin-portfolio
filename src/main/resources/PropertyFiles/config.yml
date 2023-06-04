@@ -1,0 +1,947 @@
+#---------------------------------
+#       common settings
+#---------------------------------
+settings:
+  platform: windows
+  browser: chrome
+
+#---------------------------------
+#              desktop
+#---------------------------------
+
+capabilities:
+  windows:
+    chrome:
+      platformVersion: Windows 10
+      browserVersion: 'latest'
+      screenResolution: '1920x1080'
+      #localDriverVersion: 2.37
+      #chromedriverVersion: '2.37'
+      goog:chromeOptions:
+        args:
+          - --start-maximized
+          - --ignore-certificate-errors
+          - --use-fake-device-for-media-stream
+          - --use-fake-ui-for-media-stream
+          - --lang=en-US
+        prefs:
+          profile.default_content_setting_values.geolocation: 1 # 1 - enabled geolocation, 2 - disabled geolocation
+          profile.default_content_setting_values.media_stream_mic: 1 # 1 - enabled using microphone, 2 - disabled using microphone
+
+    #workaround for Test Runner
+    chrome1920:
+      platformVersion: Windows 10
+      browserVersion: 'latest'
+      screenResolution: '1920x1080'
+      goog:chromeOptions:
+        args:
+          - --window-size=1920,1080
+          - --ignore-certificate-errors
+          - --use-fake-device-for-media-stream
+          - --use-fake-ui-for-media-stream
+        prefs:
+          profile.default_content_setting_values.geolocation: 1 # 1 - enabled geolocation, 2 - disabled geolocation
+          profile.default_content_setting_values.media_stream_mic: 1 # 1 - enabled using microphone, 2 - disabled using microphone
+
+    #workaround for Test Runner
+    chrome1280:
+      platformVersion: Windows 10
+      browserVersion: 'latest'
+      screenResolution: '1280x1024'
+      goog:chromeOptions:
+        args:
+          - --window-size=1280,1024
+          - --ignore-certificate-errors
+          - --use-fake-device-for-media-stream
+          - --use-fake-ui-for-media-stream
+        prefs:
+          profile.default_content_setting_values.geolocation: 1 # 1 - enabled geolocation, 2 - disabled geolocation
+          profile.default_content_setting_values.media_stream_mic: 1 # 1 - enabled using microphone, 2 - disabled using microphone
+
+    #workaround for Test Runner
+    chrome1281:
+      platformVersion: Windows 10
+      browserVersion: 'latest'
+      screenResolution: '1280x800'
+      goog:chromeOptions:
+        args:
+          - --window-size=1280,800
+          - --ignore-certificate-errors
+          - --use-fake-device-for-media-stream
+          - --use-fake-ui-for-media-stream
+        prefs:
+          profile.default_content_setting_values.geolocation: 1 # 1 - enabled geolocation, 2 - disabled geolocation
+          profile.default_content_setting_values.media_stream_mic: 1 # 1 - enabled using microphone, 2 - disabled using microphone
+
+    #workaround for Test Runner
+    chrome1024:
+      platformVersion: Windows 10
+      browserVersion: 'latest'
+      screenResolution: '1024x768'
+      goog:chromeOptions:
+        args:
+          - --window-size=1024,768
+          - --ignore-certificate-errors
+          - --use-fake-device-for-media-stream
+          - --use-fake-ui-for-media-stream
+        prefs:
+          profile.default_content_setting_values.geolocation: 1 # 1 - enabled geolocation, 2 - disabled geolocation
+          profile.default_content_setting_values.media_stream_mic: 1 # 1 - enabled using microphone, 2 - disabled using microphone
+
+    headlesschrome:
+      platformVersion: Windows 10
+      browserVersion: 'latest'
+      screenResolution: '1920x1080'
+      goog:chromeOptions:
+        args:
+          - --start-maximized
+          - --headless
+          - --disable-gpu
+          - --window-size=1920x1080
+          - --ignore-certificate-errors
+          - --use-fake-device-for-media-stream
+          - --use-fake-ui-for-media-stream
+          - --lang=en-US
+        prefs:
+          profile.default_content_setting_values.geolocation: 1 # 1 - enabled geolocation, 2 - disabled geolocation
+          profile.default_content_setting_values.media_stream_mic: 1 # 1 - enabled using microphone, 2 - disabled using microphone
+
+    mobilechrome:
+      platformVersion: Windows 10
+      browserVersion: 'latest'
+      goog:chromeOptions:
+        mobileEmulation:
+          deviceName: Nexus 5
+        args:
+          - --ignore-certificate-errors
+          - --use-fake-device-for-media-stream
+          - --use-fake-ui-for-media-stream
+        prefs:
+          profile.default_content_setting_values.geolocation: 1 # 1 - enabled geolocation, 2 - disabled geolocation
+          profile.default_content_setting_values.media_stream_mic: 1 # 1 - enabled using microphone, 2 - disabled using microphone
+
+    headlessmobilechrome:
+      platformVersion: Windows 10
+      browserVersion: 'latest'
+      goog:chromeOptions:
+        args:
+          - --start-maximized
+          - --headless
+          - --disable-gpu
+          - --window-size=1280x1024
+          - --ignore-certificate-errors
+          - --use-fake-device-for-media-stream
+          - --use-fake-ui-for-media-stream
+        mobileEmulation:
+          deviceName: Nexus 5
+        prefs:
+          profile.default_content_setting_values.geolocation: 1 # 1 - enabled geolocation, 2 - disabled geolocation
+          profile.default_content_setting_values.media_stream_mic: 1 # 1 - enabled using microphone, 2 - disabled using microphone
+
+    content_mobilechrome:
+      platformVersion: Windows 10
+      browserVersion: 'latest'
+      goog:chromeOptions:
+        mobileEmulation:
+          userAgent: Weedmaps-Webview/7.58.0-internal (Google Android SDK built for x86 sdk_gphone_x86; Android 28)
+          deviceMetrics: #iPhone 7
+            width: 375
+            height: 667
+            pixelRatio: 2.0
+        prefs:
+          profile.default_content_setting_values.geolocation: 1 # 1 - enabled geolocation, 2 - disabled geolocation
+          profile.default_content_setting_values.media_stream_mic: 1 # 1 - enabled using microphone, 2 - disabled using microphone
+
+    content_headlessmobilechrome:
+      platformVersion: Windows 10
+      browserVersion: 'latest'
+      goog:chromeOptions:
+        args:
+          - --start-maximized
+          - --headless
+          - --disable-gpu
+          - --window-size=1280x1024
+          - --ignore-certificate-errors
+        mobileEmulation:
+          userAgent: Weedmaps-Webview/7.58.0-internal (Google Android SDK built for x86 sdk_gphone_x86; Android 28)
+          deviceMetrics: #iPhone 7
+            width: 375
+            height: 667
+            pixelRatio: 2.0
+        prefs:
+          profile.default_content_setting_values.geolocation: 1 # 1 - enabled geolocation, 2 - disabled geolocation
+          profile.default_content_setting_values.media_stream_mic: 1 # 1 - enabled using microphone, 2 - disabled using microphone
+
+    custommobilechrome:
+      platformVersion: Windows 10
+      browserVersion: 'latest'
+      goog:chromeOptions:
+        mobileEmulation:
+          userAgent: Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/62.0.3202.94 Mobile Safari/537.36
+          deviceMetrics:
+            width: 412
+            height: 732
+            pixelRatio: 2.625
+        args:
+          - --use-fake-device-for-media-stream
+          - --use-fake-ui-for-media-stream
+        prefs:
+          profile.default_content_setting_values.geolocation: 1 # 1 - enabled geolocation, 2 - disabled geolocation
+          profile.default_content_setting_values.media_stream_mic: 1 # 1 - enabled using microphone, 2 - disabled using microphone
+
+    firefox:
+      platformVersion: Windows 10
+      browserVersion: '71.0'
+      screenResolution: '1600x1200'
+      marionette: true
+      moz:firefoxOptions:
+        args:
+          - -width=1600
+          - -height=1200
+        prefs:
+          geo.enabled: true
+          geo.provider.use_corelocation: true
+          geo.prompt.testing: true
+          geo.prompt.testing.allow: true
+          geo.wifi.uri: 'data:application/json , {"status": "OK", "accuracy": 100.0, "location": {"lat": 33.665173, "lng": -117.756776, "latitude": 33.665173, "longitude": -117.756776, "accuracy": 100.0 }}'
+
+    #workaround for Test Runner
+    firefox1920:
+      platformVersion: Windows 10
+      browserVersion: '71.0'
+      screenResolution: '1920x1080'
+      marionette: true
+      moz:firefoxOptions:
+        args:
+          - -width=1920
+          - -height=1080
+        prefs:
+          geo.enabled: true
+          geo.provider.use_corelocation: true
+          geo.prompt.testing: true
+          geo.prompt.testing.allow: true
+          geo.wifi.uri: 'data:application/json , {"status": "OK", "accuracy": 100.0, "location": {"lat": 33.665173, "lng": -117.756776, "latitude": 33.665173, "longitude": -117.756776, "accuracy": 100.0 }}'
+
+    #workaround for Test Runner
+    firefox1280:
+      platformVersion: Windows 10
+      browserVersion: '71.0'
+      screenResolution: '1280x1024'
+      marionette: true
+      moz:firefoxOptions:
+        args:
+          - -width=1280
+          - -height=1024
+        prefs:
+          geo.enabled: true
+          geo.provider.use_corelocation: true
+          geo.prompt.testing: true
+          geo.prompt.testing.allow: true
+          geo.wifi.uri: 'data:application/json , {"status": "OK", "accuracy": 100.0, "location": {"lat": 33.665173, "lng": -117.756776, "latitude": 33.665173, "longitude": -117.756776, "accuracy": 100.0 }}'
+
+    #workaround for Test Runner
+    firefox1281:
+      platformVersion: Windows 10
+      browserVersion: '71.0'
+      screenResolution: '1280x800'
+      marionette: true
+      moz:firefoxOptions:
+        args:
+          - -width=1280
+          - -height=800
+        prefs:
+          geo.enabled: true
+          geo.provider.use_corelocation: true
+          geo.prompt.testing: true
+          geo.prompt.testing.allow: true
+          geo.wifi.uri: 'data:application/json , {"status": "OK", "accuracy": 100.0, "location": {"lat": 33.665173, "lng": -117.756776, "latitude": 33.665173, "longitude": -117.756776, "accuracy": 100.0 }}'
+
+    #workaround for Test Runner
+    firefox1024:
+      platformVersion: Windows 10
+      browserVersion: '71.0'
+      screenResolution: '1024x768'
+      marionette: true
+      moz:firefoxOptions:
+        args:
+          - -width=1024
+          - -height=768
+        prefs:
+          geo.enabled: true
+          geo.provider.use_corelocation: true
+          geo.prompt.testing: true
+          geo.prompt.testing.allow: true
+          geo.wifi.uri: 'data:application/json , {"status": "OK", "accuracy": 100.0, "location": {"lat": 33.665173, "lng": -117.756776, "latitude": 33.665173, "longitude": -117.756776, "accuracy": 100.0 }}'
+
+    headlessfirefox:
+      platformVersion: Windows 10
+      browserVersion: '71.0'
+      screenResolution: '1600x1200'
+      marionette: true
+      moz:firefoxOptions:
+        args:
+          - -headless
+          - -width=1600
+          - -height=1200
+        prefs:
+          geo.enabled: true
+          geo.provider.use_corelocation: true
+          geo.prompt.testing: true
+          geo.prompt.testing.allow: true
+          geo.wifi.uri: 'data:application/json , {"status": "OK", "accuracy": 100.0, "location": {"lat": 33.665173, "lng": -117.756776, "latitude": 33.665173, "longitude": -117.756776, "accuracy": 100.0 }}'
+
+    ie:
+      platformVersion: Windows 10
+      browserVersion: '11.0'
+      screenResolution: '1600x1200'
+      ignoreProtectedModeSettings: true
+
+    edge:
+      platformVersion: Windows 10
+      screenResolution: '1600x1200'
+      browserVersion: '17'
+
+  mac:
+    chrome:
+      platformVersion: macos 10.13
+      browserVersion: 'latest'
+      screenResolution: '1400x1050'
+      goog:chromeOptions:
+        args:
+          - --window-size=1440,800
+          - --ignore-certificate-errors
+          - --use-fake-device-for-media-stream
+          - --use-fake-ui-for-media-stream
+        prefs:
+          profile.default_content_setting_values.geolocation: 1 # 1 - enabled geolocation, 2 - disabled geolocation
+          profile.default_content_setting_values.media_stream_mic: 1 # 1 - enabled using microphone, 2 - disabled using microphone
+
+    #workaround for Test Runner
+    chrome_1920x1080:
+      platformVersion: macos 10.13
+      browserVersion: 'latest'
+      localDriverVersion: 74.0
+      screenResolution: '1920x1080'
+      goog:chromeOptions:
+        args:
+          - --window-size=1920,1080
+          - --ignore-certificate-errors
+          - --use-fake-device-for-media-stream
+          - --use-fake-ui-for-media-stream
+        prefs:
+          profile.default_content_setting_values.geolocation: 1 # 1 - enabled geolocation, 2 - disabled geolocation
+          profile.default_content_setting_values.media_stream_mic: 1 # 1 - enabled using microphone, 2 - disabled using microphone
+
+    #workaround for Test Runner
+    chrome_1366x768:
+      platformVersion: macos 10.13
+      browserVersion: 'latest'
+      screenResolution: '1366x768'
+      localDriverVersion: 74.0
+      goog:chromeOptions:
+        args:
+          - --window-size=1366,768
+          - --ignore-certificate-errors
+          - --use-fake-device-for-media-stream
+          - --use-fake-ui-for-media-stream
+        prefs:
+          profile.default_content_setting_values.geolocation: 1 # 1 - enabled geolocation, 2 - disabled geolocation
+          profile.default_content_setting_values.media_stream_mic: 1 # 1 - enabled using microphone, 2 - disabled using microphone
+
+    #workaround for Test Runner
+    chrome_1280x1024:
+      platformVersion: macos 10.13
+      browserVersion: 'latest'
+      screenResolution: '1280x1024'
+      localDriverVersion: 74.0
+      goog:chromeOptions:
+        args:
+          - --window-size=1280,1024
+          - --ignore-certificate-errors
+          - --use-fake-device-for-media-stream
+          - --use-fake-ui-for-media-stream
+        prefs:
+          profile.default_content_setting_values.geolocation: 1 # 1 - enabled geolocation, 2 - disabled geolocation
+          profile.default_content_setting_values.media_stream_mic: 1 # 1 - enabled using microphone, 2 - disabled using microphone
+
+    #workaround for Test Runner
+    chrome_1280x800:
+      platformVersion: macos 10.13
+      browserVersion: 'latest'
+      screenResolution: '1280x800'
+      localDriverVersion: 74.0
+      goog:chromeOptions:
+        args:
+          - --window-size=1280,800
+          - --ignore-certificate-errors
+          - --use-fake-device-for-media-stream
+          - --use-fake-ui-for-media-stream
+        prefs:
+          profile.default_content_setting_values.geolocation: 1 # 1 - enabled geolocation, 2 - disabled geolocation
+          profile.default_content_setting_values.media_stream_mic: 1 # 1 - enabled using microphone, 2 - disabled using microphone
+
+    #workaround for Test Runner
+    chrome_1024x768:
+      platformVersion: macos 10.13
+      browserVersion: 'latest'
+      screenResolution: '1024x768'
+      localDriverVersion: 74.0
+      goog:chromeOptions:
+        args:
+          - --window-size=1024,768
+          - --ignore-certificate-errors
+          - --use-fake-device-for-media-stream
+          - --use-fake-ui-for-media-stream
+        prefs:
+          profile.default_content_setting_values.geolocation: 1 # 1 - enabled geolocation, 2 - disabled geolocation
+          profile.default_content_setting_values.media_stream_mic: 1 # 1 - enabled using microphone, 2 - disabled using microphone
+
+    headlesschrome:
+      platformVersion: macos 10.13
+      browserVersion: 'latest'
+      goog:chromeOptions:
+        args:
+          - --enable-features=NetworkService,NetworkServiceInProcess
+          - --start-fullscreen
+          - --headless
+          - --disable-gpu
+          - --window-size=1440,800
+          - --ignore-certificate-errors
+          - --use-fake-device-for-media-stream
+          - --use-fake-ui-for-media-stream
+        prefs:
+          profile.default_content_setting_values.geolocation: 1 # 1 - enabled geolocation, 2 - disabled geolocation
+          profile.default_content_setting_values.media_stream_mic: 1 # 1 - enabled using microphone, 2 - disabled using microphone
+
+    #workaround for Test Runner
+    headlesschrome_1920x1080:
+      platformVersion: macos 10.13
+      browserVersion: 'latest'
+      screenResolution: '1920x1080'
+      localDriverVersion: 74.0
+      goog:chromeOptions:
+        args:
+          - --start-maximized
+          - --headless
+          - --disable-gpu
+          - --window-size=1920,1080
+          - --ignore-certificate-errors
+          - --use-fake-device-for-media-stream
+          - --use-fake-ui-for-media-stream
+        prefs:
+          profile.default_content_setting_values.geolocation: 1 # 1 - enabled geolocation, 2 - disabled geolocation
+          profile.default_content_setting_values.media_stream_mic: 1 # 1 - enabled using microphone, 2 - disabled using microphone
+
+    #workaround for Test Runner
+    headlesschrome_1366x768:
+      platformVersion: macos 10.13
+      browserVersion: 'latest'
+      screenResolution: '1366x768'
+      localDriverVersion: 74.0
+      goog:chromeOptions:
+        args:
+          - --start-maximized
+          - --headless
+          - --disable-gpu
+          - --window-size=1366,768
+          - --ignore-certificate-errors
+          - --use-fake-device-for-media-stream
+          - --use-fake-ui-for-media-stream
+        prefs:
+          profile.default_content_setting_values.geolocation: 1 # 1 - enabled geolocation, 2 - disabled geolocation
+          profile.default_content_setting_values.media_stream_mic: 1 # 1 - enabled using microphone, 2 - disabled using microphone
+
+    #workaround for Test Runner
+    headlesschrome_1280x1024:
+      platformVersion: macos 10.13
+      browserVersion: 'latest'
+      screenResolution: '1280x1024'
+      localDriverVersion: 74.0
+      goog:chromeOptions:
+        args:
+          - --start-maximized
+          - --headless
+          - --disable-gpu
+          - --window-size=1280,1024
+          - --ignore-certificate-errors
+          - --use-fake-device-for-media-stream
+          - --use-fake-ui-for-media-stream
+        prefs:
+          profile.default_content_setting_values.geolocation: 1 # 1 - enabled geolocation, 2 - disabled geolocation
+          profile.default_content_setting_values.media_stream_mic: 1 # 1 - enabled using microphone, 2 - disabled using microphone
+
+    #workaround for Test Runner
+    headlesschrome_1280x800:
+      platformVersion: macos 10.13
+      browserVersion: 'latest'
+      screenResolution: '1280x800'
+      localDriverVersion: 74.0
+      goog:chromeOptions:
+        args:
+          - --start-maximized
+          - --headless
+          - --disable-gpu
+          - --window-size=1280,800
+          - --ignore-certificate-errors
+          - --use-fake-device-for-media-stream
+          - --use-fake-ui-for-media-stream
+        prefs:
+          profile.default_content_setting_values.geolocation: 1 # 1 - enabled geolocation, 2 - disabled geolocation
+          profile.default_content_setting_values.media_stream_mic: 1 # 1 - enabled using microphone, 2 - disabled using microphone
+
+    #workaround for Test Runner
+    headlesschrome_1024x768:
+      platformVersion: macos 10.13
+      browserVersion: 'latest'
+      screenResolution: '1024x768'
+      localDriverVersion: 74.0
+      goog:chromeOptions:
+        args:
+          - --start-maximized
+          - --headless
+          - --disable-gpu
+          - --window-size=1024,768
+          - --ignore-certificate-errors
+          - --use-fake-device-for-media-stream
+          - --use-fake-ui-for-media-stream
+        prefs:
+          profile.default_content_setting_values.geolocation: 1 # 1 - enabled geolocation, 2 - disabled geolocation
+          profile.default_content_setting_values.media_stream_mic: 1 # 1 - enabled using microphone, 2 - disabled using microphone
+
+    mobilechrome:
+      platformVersion: macos 10.13
+      screenResolution: '1600x1200'
+      browserVersion: 'latest'
+#      localDriverVersion: 74.0
+      goog:chromeOptions:
+        args:
+          - --start-maximized
+          - --window-size=1024,768
+          - --ignore-certificate-errors
+          - --use-fake-device-for-media-stream
+          - --use-fake-ui-for-media-stream
+        mobileEmulation:
+          deviceName: iPhone X
+        prefs:
+          profile.default_content_setting_values.geolocation: 1 # 1 - enabled geolocation, 2 - disabled geolocation
+          profile.default_content_setting_values.media_stream_mic: 1 # 1 - enabled using microphone, 2 - disabled using microphone
+
+    headlessmobilechrome:
+      platformVersion: macos 10.13
+      browserVersion: 'latest'
+      localDriverVersion: 74.0
+      goog:chromeOptions:
+        args:
+          - --start-maximized
+          - --headless
+          - --disable-gpu
+          - --window-size=1280x1024
+          - --ignore-certificate-errors
+          - --use-fake-device-for-media-stream
+          - --use-fake-ui-for-media-stream
+        mobileEmulation:
+          deviceName: Nexus 5X
+        prefs:
+          profile.default_content_setting_values.geolocation: 1 # 1 - enabled geolocation, 2 - disabled geolocation
+          profile.default_content_setting_values.media_stream_mic: 1 # 1 - enabled using microphone, 2 - disabled using microphone
+
+    custommobilechrome:
+      platformVersion: macos 10.13
+      browserVersion: 'latest'
+      localDriverVersion: 74.0
+      goog:chromeOptions:
+        mobileEmulation:
+          userAgent: Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/62.0.3202.94 Mobile Safari/537.36
+          deviceMetrics:
+            width: 412
+            height: 732
+            pixelRatio: 2.625
+        prefs:
+          profile.default_content_setting_values.geolocation: 1 # 1 - enabled geolocation, 2 - disabled geolocation
+          profile.default_content_setting_values.media_stream_mic: 1 # 1 - enabled using microphone, 2 - disabled using microphone
+
+    firefox:
+      platformVersion: macos 10.13
+      browserVersion: '71.0'
+      screenResolution: '1600x1200'
+      marionette: true
+      moz:firefoxOptions:
+        args:
+          - -width=1600
+          - -height=1200
+        prefs:
+          geo.enabled: true
+          geo.provider.use_corelocation: true
+          geo.prompt.testing: true
+          geo.prompt.testing.allow: true
+          geo.wifi.uri: 'data:application/json , {"status": "OK", "accuracy": 100.0, "location": {"lat": 33.665173, "lng": -117.756776, "latitude": 33.665173, "longitude": -117.756776, "accuracy": 100.0 }}'
+
+    #workaround for Test Runner
+    firefox_1920x1080:
+      platformVersion: macos 10.13
+      browserVersion: '71.0'
+      screenResolution: '1920x1080'
+      marionette: true
+      moz:firefoxOptions:
+        args:
+          - -width=1920
+          - -height=1080
+        prefs:
+          geo.enabled: true
+          geo.provider.use_corelocation: true
+          geo.prompt.testing: true
+          geo.prompt.testing.allow: true
+          geo.wifi.uri: 'data:application/json , {"status": "OK", "accuracy": 100.0, "location": {"lat": 33.665173, "lng": -117.756776, "latitude": 33.665173, "longitude": -117.756776, "accuracy": 100.0 }}'
+
+    #workaround for Test Runner
+    firefox_1366x768:
+      platformVersion: macos 10.13
+      browserVersion: '71.0'
+      screenResolution: '1366x768'
+      marionette: true
+      moz:firefoxOptions:
+        args:
+          - -width=1366
+          - -height=768
+        prefs:
+          geo.enabled: true
+          geo.provider.use_corelocation: true
+          geo.prompt.testing: true
+          geo.prompt.testing.allow: true
+          geo.wifi.uri: 'data:application/json , {"status": "OK", "accuracy": 100.0, "location": {"lat": 33.665173, "lng": -117.756776, "latitude": 33.665173, "longitude": -117.756776, "accuracy": 100.0 }}'
+
+    #workaround for Test Runner
+    firefox_1280x1024:
+      platformVersion: macos 10.13
+      browserVersion: '71.0'
+      screenResolution: '1280x1024'
+      marionette: true
+      moz:firefoxOptions:
+        args:
+          - -width=1280
+          - -height=1024
+        prefs:
+          geo.enabled: true
+          geo.provider.use_corelocation: true
+          geo.prompt.testing: true
+          geo.prompt.testing.allow: true
+          geo.wifi.uri: 'data:application/json , {"status": "OK", "accuracy": 100.0, "location": {"lat": 33.665173, "lng": -117.756776, "latitude": 33.665173, "longitude": -117.756776, "accuracy": 100.0 }}'
+
+    #workaround for Test Runner
+    firefox_1280x800:
+      platformVersion: macos 10.13
+      browserVersion: '71.0'
+      screenResolution: '1280x800'
+      marionette: true
+      moz:firefoxOptions:
+        args:
+          - -width=1280
+          - -height=800
+        prefs:
+          geo.enabled: true
+          geo.provider.use_corelocation: true
+          geo.prompt.testing: true
+          geo.prompt.testing.allow: true
+          geo.wifi.uri: 'data:application/json , {"status": "OK", "accuracy": 100.0, "location": {"lat": 33.665173, "lng": -117.756776, "latitude": 33.665173, "longitude": -117.756776, "accuracy": 100.0 }}'
+
+    #workaround for Test Runner
+    firefox_1024x768:
+      platformVersion: macos 10.13
+      browserVersion: '71.0'
+      screenResolution: '1024x768'
+      marionette: true
+      moz:firefoxOptions:
+        args:
+          - -width=1024
+          - -height=768
+        prefs:
+          geo.enabled: true
+          geo.provider.use_corelocation: true
+          geo.prompt.testing: true
+          geo.prompt.testing.allow: true
+          geo.wifi.uri: 'data:application/json , {"status": "OK", "accuracy": 100.0, "location": {"lat": 33.665173, "lng": -117.756776, "latitude": 33.665173, "longitude": -117.756776, "accuracy": 100.0 }}'
+
+    headlessfirefox:
+      platformVersion: macos 10.13
+      browserVersion: '71.0'
+      screenResolution: '1600x1200'
+      marionette: true
+      moz:firefoxOptions:
+        args:
+          - -headless
+          - -width=1600
+          - -height=1200
+        prefs:
+          geo.enabled: true
+          geo.provider.use_corelocation: true
+          geo.prompt.testing: true
+          geo.prompt.testing.allow: true
+          geo.wifi.uri: 'data:application/json , {"status": "OK", "accuracy": 100.0, "location": {"lat": 33.665173, "lng": -117.756776, "latitude": 33.665173, "longitude": -117.756776, "accuracy": 100.0 }}'
+
+    #workaround for Test Runner
+    headlessfirefox_1920x1080:
+      platformVersion: macos 10.13
+      browserVersion: '71.0'
+      screenResolution: '1920x1080'
+      marionette: true
+      moz:firefoxOptions:
+        args:
+          - -headless
+          - -width=1920
+          - -height=1080
+        prefs:
+          geo.enabled: true
+          geo.provider.use_corelocation: true
+          geo.prompt.testing: true
+          geo.prompt.testing.allow: true
+          geo.wifi.uri: 'data:application/json , {"status": "OK", "accuracy": 100.0, "location": {"lat": 33.665173, "lng": -117.756776, "latitude": 33.665173, "longitude": -117.756776, "accuracy": 100.0 }}'
+
+    #workaround for Test Runner
+    headlessfirefox_1366x768:
+      platformVersion: macos 10.13
+      browserVersion: '71.0'
+      screenResolution: '1366x768'
+      marionette: true
+      moz:firefoxOptions:
+        args:
+          - -headless
+          - -width=1366
+          - -height=768
+        prefs:
+          geo.enabled: true
+          geo.provider.use_corelocation: true
+          geo.prompt.testing: true
+          geo.prompt.testing.allow: true
+          geo.wifi.uri: 'data:application/json , {"status": "OK", "accuracy": 100.0, "location": {"lat": 33.665173, "lng": -117.756776, "latitude": 33.665173, "longitude": -117.756776, "accuracy": 100.0 }}'
+
+    #workaround for Test Runner
+    headlessfirefox_1280x1024:
+      platformVersion: macos 10.13
+      browserVersion: '71.0'
+      screenResolution: '1280x1024'
+      marionette: true
+      moz:firefoxOptions:
+        args:
+          - -headless
+          - -width=1280
+          - -height=1024
+        prefs:
+          geo.enabled: true
+          geo.provider.use_corelocation: true
+          geo.prompt.testing: true
+          geo.prompt.testing.allow: true
+          geo.wifi.uri: 'data:application/json , {"status": "OK", "accuracy": 100.0, "location": {"lat": 33.665173, "lng": -117.756776, "latitude": 33.665173, "longitude": -117.756776, "accuracy": 100.0 }}'
+
+    #workaround for Test Runner
+    headlessfirefox_1280x800:
+      platformVersion: macos 10.13
+      browserVersion: '71.0'
+      screenResolution: '1280x800'
+      marionette: true
+      moz:firefoxOptions:
+        args:
+          - -headless
+          - -width=1280
+          - -height=800
+        prefs:
+          geo.enabled: true
+          geo.provider.use_corelocation: true
+          geo.prompt.testing: true
+          geo.prompt.testing.allow: true
+          geo.wifi.uri: 'data:application/json , {"status": "OK", "accuracy": 100.0, "location": {"lat": 33.665173, "lng": -117.756776, "latitude": 33.665173, "longitude": -117.756776, "accuracy": 100.0 }}'
+
+    #workaround for Test Runner
+    headlessfirefox_1024x768:
+      platformVersion: macos 10.13
+      browserVersion: '71.0'
+      screenResolution: '1024x768'
+      marionette: true
+      moz:firefoxOptions:
+        args:
+          - -headless
+          - -width=1024
+          - -height=768
+        prefs:
+          geo.enabled: true
+          geo.provider.use_corelocation: true
+          geo.prompt.testing: true
+          geo.prompt.testing.allow: true
+          geo.wifi.uri: 'data:application/json , {"status": "OK", "accuracy": 100.0, "location": {"lat": 33.665173, "lng": -117.756776, "latitude": 33.665173, "longitude": -117.756776, "accuracy": 100.0 }}'
+
+    safari:
+      platformVersion: macos 10.15
+      browserVersion: 'latest'
+      screenResolution: '1600x1200'
+      seleniumVersion: 3.4.0
+      locationContextEnabled: false
+      safari.options:
+        cleanSession: true
+        unexpectedAlertBehaviour: dismiss
+
+  linux:
+    chrome:
+      platformVersion: Linux
+      screenResolution: '1440x900'
+      goog:chromeOptions:
+        args:
+          - --start-maximized
+          - --window-size=1440x900
+          - --ignore-certificate-errors
+          - --use-fake-device-for-media-stream
+          - --use-fake-ui-for-media-stream
+        prefs:
+          profile.default_content_setting_values.geolocation: 2 # 1 - enabled geolocation, 2 - disabled geolocation
+          profile.default_content_setting_values.media_stream_mic: 1 # 1 - enabled using microphone, 2 - disabled using microphone
+
+    headlesschrome:
+      platformVersion: Linux
+#      browserVersion: 'latest'
+      screenResolution: '1440x900'
+      goog:chromeOptions:
+        args:
+          - --start-maximized
+          - --headless
+          - --disable-gpu
+          - --window-size=1440x900
+          - --ignore-certificate-errors
+          - --use-fake-device-for-media-stream
+          - --use-fake-ui-for-media-stream
+        prefs:
+          profile.default_content_setting_values.geolocation: 1 # 1 - enabled geolocation, 2 - disabled geolocation
+          profile.default_content_setting_values.media_stream_mic: 1 # 1 - enabled using microphone, 2 - disabled using microphone
+
+    cichrome:
+      platformVersion: LINUX
+      browserVersion: 'latest'
+      screenResolution: '1440x900'
+      goog:chromeOptions:
+        args:
+          - --start-maximized
+          - --headless
+          - --disable-gpu
+          - --window-size=1440x900
+          - --no-sandbox
+          - --single-process
+          - --ignore-certificate-errors
+          - --use-fake-device-for-media-stream
+          - --use-fake-ui-for-media-stream
+        prefs:
+          profile.default_content_setting_values.geolocation: 1 # 1 - enabled geolocation, 2 - disabled geolocation
+          profile.default_content_setting_values.media_stream_mic: 1 # 1 - enabled using microphone, 2 - disabled using microphone
+
+    selenoidchrome:
+      platformVersion: LINUX
+      screenResolution: '1280x800'
+      enableVNC: true
+      goog:chromeOptions:
+        args:
+          - --start-maximized
+          - --window-size=1280x800
+          - --ignore-certificate-errors
+          - --use-fake-device-for-media-stream
+          - --use-fake-ui-for-media-stream
+        prefs:
+          profile.default_content_setting_values.geolocation: 1 # 1 - enabled geolocation, 2 - disabled geolocation
+          profile.default_content_setting_values.media_stream_mic: 1 # 1 - enabled using microphone, 2 - disabled using microphone
+
+    mobilechrome:
+      platformVersion: Linux
+      browserVersion: '48.0'
+      deviceName: Nexus 5
+      goog:chromeOptions:
+        args:
+          - --ignore-certificate-errors
+          - --use-fake-device-for-media-stream
+          - --use-fake-ui-for-media-stream
+        prefs:
+          profile.default_content_setting_values.geolocation: 1 # 1 - enabled geolocation, 2 - disabled geolocation
+          profile.default_content_setting_values.media_stream_mic: 1 # 1 - enabled using microphone, 2 - disabled using microphone
+
+    headlessmobilechrome:
+      platformVersion: Linux
+      browserVersion: '48.0'
+      deviceName: Nexus 5
+      goog:chromeOptions:
+        args:
+          - --ignore-certificate-errors
+          - --use-fake-device-for-media-stream
+          - --use-fake-ui-for-media-stream
+        prefs:
+          profile.default_content_setting_values.geolocation: 1 # 1 - enabled geolocation, 2 - disabled geolocation
+          profile.default_content_setting_values.media_stream_mic: 1 # 1 - enabled using microphone, 2 - disabled using microphone
+
+    firefox:
+      platformVersion: LINUX
+      screenResolution: '1980x1200'
+      marionette: true
+      moz:firefoxOptions:
+        args:
+          - -width=1980
+          - -height=1200
+        prefs:
+          geo.enabled: true
+          geo.provider.use_corelocation: true
+          geo.prompt.testing: true
+          geo.prompt.testing.allow: true
+          geo.wifi.uri: 'data:application/json , {"status": "OK", "accuracy": 100.0, "location": {"lat": 33.665173, "lng": -117.756776, "latitude": 33.665173, "longitude": -117.756776, "accuracy": 100.0 }}'
+
+    headlessfirefox:
+      platformVersion: LINUX
+      browserVersion: 42.0
+      screenResolution: '1024x768'
+      marionette: true
+      moz:firefoxOptions:
+        args:
+          - -headless
+        prefs:
+          geo.enabled: true
+          geo.provider.use_corelocation: true
+          geo.prompt.testing: true
+          geo.prompt.testing.allow: true
+          geo.wifi.uri: 'data:application/json , {"status": "OK", "accuracy": 100.0, "location": {"lat": 33.665173, "lng": -117.756776, "latitude": 33.665173, "longitude": -117.756776, "accuracy": 100.0 }}'
+
+  #---------------------------------
+  #              mobile
+  #---------------------------------
+
+  android_phone:
+    android_browser:
+      browserName: Chrome
+      deviceName: Android GoogleAPI Emulator
+      platformVersion: '9.0'
+      platformName: Android
+      appiumVersion: '1.9.1'
+      deviceOrientation: portrait
+      unicodeKeyboard: true
+      resetKeyboard: true
+
+  android_tablet:
+    android_browser:
+      browserName: Chrome
+      deviceName: Android GoogleAPI Emulator
+      platformVersion: '7.1'
+      platformName: Android
+      deviceOrientation: portrait
+
+  iphone:
+    ios_browser:
+      platformName: iOS
+      platformVersion: '13.0'
+      browserName: Safari
+      appiumVersion: 1.15.0
+      deviceName: iPhone X Simulator
+      deviceOrientation: portrait
+      automationName: XCUITest
+      unicodeKeyboard: true
+      resetKeyboard: true
+      sendKeyStrategy: setValue
+
+  ipad:
+    ios_browser:
+      platformName: iOs
+      platformVersion: '11.0'
+      browserName: Safari
+      appiumVersion: 1.7.1
+      deviceName: iPad Air 2 Simulator
+      deviceOrientation: portrait
+      automationName: XCUITest

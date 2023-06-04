@@ -20,15 +20,6 @@ public class EnvConstants {
     public static final String PATH = getPath();
     public static final String ENV = getEnvironment();
     public static final Properties properties;
-    public static final String BASIC_USER_LOGIN;
-    public static final String BASIC_USER_PASSWORD;
-    public static final String DB_MYSQL_HOST;
-    public static final String DB_MYSQL_CONN;
-    public static final String DB_ORACLE_HOST;
-    public static final String DB_ORACLE_CONN;
-    public static final String DB_CASSANDRA_HOST;
-    public static final String DB_CASSANDRA_PORT;
-    public static final String VERSION_URL;
 
     public EnvConstants() {
     }
@@ -92,14 +83,5 @@ public class EnvConstants {
 
     static {
         properties = getPropertiesForEnv(ENV);
-        BASIC_USER_LOGIN = getProperty("basic.user.login");
-        BASIC_USER_PASSWORD = getProperty("basic.user.password");
-        DB_MYSQL_HOST = getProperty("db.mysql.host");
-        DB_MYSQL_CONN = getProperty("db.mysql.connection");
-        DB_ORACLE_HOST = getProperty("db.oracle.host");
-        DB_ORACLE_CONN = getProperty("db.oracle.connection");
-        DB_CASSANDRA_HOST = getProperty("db.cassandra.host");
-        DB_CASSANDRA_PORT = getProperty("db.cassandra.port");
-        VERSION_URL = getProperty("version.url");
     }
 }

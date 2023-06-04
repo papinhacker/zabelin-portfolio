@@ -14,7 +14,7 @@ import java.util.function.Supplier;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import static zabelin.portfolio.ui.selenium.common.state.BaseWMSiteState.isMobileBrowser;
+import static zabelin.portfolio.ui.selenium.common.state.BaseSiteState.isMobileBrowser;
 
 public class SiteHelper extends WebElementsHelper {
 
