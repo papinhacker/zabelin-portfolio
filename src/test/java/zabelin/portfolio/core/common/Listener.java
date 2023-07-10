@@ -1,8 +1,3 @@
-//
-// Source code recreated from a .class file by IntelliJ IDEA
-// (powered by FernFlower decompiler)
-//
-
 package zabelin.portfolio.core.common;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -19,16 +14,12 @@ import org.testng.internal.Utils;
 import org.testng.reporters.XMLReporterConfig;
 import org.testng.reporters.XMLStringBuffer;
 import org.testng.xml.XmlSuite;
-import zabelin.portfolio.core.annotations.API;
 import zabelin.portfolio.core.annotations.DisableTestWhen;
-import zabelin.portfolio.core.annotations.Team;
-import zabelin.portfolio.core.annotations.UI;
 import zabelin.portfolio.core.report.XMLSuiteResultWriter;
 import zabelin.portfolio.core.ui.BasePageObject;
 import zabelin.portfolio.core.ui.DriverFactory;
 import zabelin.portfolio.core.util.CommonUtil;
 import zabelin.portfolio.core.util.DateUtil;
-import zabelin.portfolio.core.util.TextUtil;
 import zabelin.portfolio.core.webdriverlogger.WebDriverLogger;
 import zabelin.portfolio.core.webdriverlogger.data.CaseContext;
 import zabelin.portfolio.core.webdriverlogger.data.XPathUsageData;
@@ -169,33 +160,10 @@ public class Listener implements ITestListener, ISuiteListener, IInvokedMethodLi
         try {
             String teamName = null;
             Class<?> testClass = arg1.getTestClass().getRealClass();
-            if (testClass.isAnnotationPresent(Team.class)) {
-                teamName = ((Team) testClass.getAnnotation(Team.class)).name();
-            }
 
             Method mthd = arg0.getTestMethod().getConstructorOrMethod().getMethod();
             Log.info("@@@MetadataBegin");
             Log.info("@@@Package: " + testClass.getPackage().getName());
-            if (mthd.isAnnotationPresent(API.class)) {
-                Log.info("@@@API-ID: " + ((API) mthd.getAnnotation(API.class)).id());
-                Log.info("@@@Tester: " + ((API) mthd.getAnnotation(API.class)).tester());
-            }
-
-            if (mthd.isAnnotationPresent(UI.class)) {
-                Log.info("@@@UI-Tester: " + ((UI) mthd.getAnnotation(UI.class)).tester());
-            }
-
-            if (mthd.isAnnotationPresent(Team.class)) {
-                teamName = ((Team) mthd.getAnnotation(Team.class)).name();
-            }
-
-            if (TextUtil.hasValue(System.getProperty("build"))) {
-                Log.info("@@@Build: " + System.getProperty("build"));
-            }
-
-            if (TextUtil.hasValue(teamName)) {
-                Log.info("@@@Team: " + teamName);
-            }
 
             Log.info("@@@MetadataEnd");
             Log.info("Completed executing following method : " + this.returnMethodName(arg0.getTestMethod()));

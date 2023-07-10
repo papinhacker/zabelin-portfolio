@@ -1,16 +1,3 @@
-/**
- * Copyright (c) 2016-2017 Severotek, LLC.
- * All Rights Reserved.
- * <p>
- * This software is the confidential and proprietary information of
- * Severotek, LLC. ("Confidential Information").
- * <p>
- * You shall not disclose such Confidential Information and shall use it
- * only in accordance with the terms of the license agreement you entered
- * into with Severotek.
- * <p>
- * Copyright Version 1.0
- */
 package zabelin.portfolio.ui.selenium.common.env;
 
 import org.testng.annotations.Test;

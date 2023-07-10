@@ -1,8 +1,3 @@
-//
-// Source code recreated from a .class file by IntelliJ IDEA
-// (powered by FernFlower decompiler)
-//
-
 package zabelin.portfolio.core.common;
 
 import org.apache.commons.lang3.StringUtils;
@@ -107,14 +102,6 @@ public class Log {
             Reporter.log(dateFormat.format(new Date()) + " [assertFail]  " + message, true);
         }
 
-    }
-
-    /**
-     * @deprecated
-     */
-    @Deprecated
-    public static void fatal(String message) {
-        Reporter.log(dateFormat.format(new Date()) + " [fatal]  " + message, true);
     }
 
     public static void info(String message) {

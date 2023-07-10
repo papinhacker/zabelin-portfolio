@@ -1,6 +1,3 @@
-# wm encrypted secrets
-.dec
-
 # Folders
 /target/
 /test-output/
@@ -15,9 +12,5 @@
 # Settings
 runConfiguration.properties
 *.project
-.DS_Store
-TestXML/.DS_Store
-QASeleniumTestNG.iml
-WMSeleniumTestNG.iml
 custom.xml
 sessionCache
