@@ -6,7 +6,7 @@
 1. Тыкнуть на дропдаун.
 2. Кликнуть на эту кнопку.
 3. В параметрах конфигурации выбрать TestNG и прописать внуть параметры. О параметрах инфа чуть ниже 
-[![Куда тыкать](https://github.com/papinhacker/zabelin-portfolio/blob/master/src/main/resources/kuda_tickat.png)]
+![Куда тыкать](https://github.com/papinhacker/zabelin-portfolio/blob/master/src/main/resources/kuda_tickat.png)
 
 # Параметры запуска
 ## Основные для локального закуска
@@ -27,7 +27,8 @@
 
 ### Стандартные мавеневские ключи, корые рекомендкуются к использованию.
 -e // produce execution error messages \
--q // quiet output - only show errors \
+-q // quiet output - only show errors 
 
 ### Немного творчества не помешает.
+![123](https://coub.com/embed/33u60q?muted=false&autostart=false&originalSize=false&startWithHD=true)
 <iframe src="//coub.com/embed/33u60q?muted=false&autostart=false&originalSize=false&startWithHD=false" allowfullscreen frameborder="0" width="640" height="360" allow="autoplay"></iframe>
