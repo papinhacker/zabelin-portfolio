@@ -9,14 +9,11 @@ import java.util.stream.Collectors;
 
 public class EnvConstants extends zabelin.portfolio.core.common.EnvConstants {
 
-    protected static final String mpropkey = System.getProperty("mpropkey");
-
     //URLs
     public static final String BASE_PAGE = getProperty("base.page");
     public static final String HOME_PAGE = BASE_PAGE;
     public static final String BROKEN_IMAGES_PAGE = BASE_PAGE + "broken_images";
-
-
+    protected static final String mpropkey = System.getProperty("mpropkey");
 
     /**
      * Get property value and decrypt it

@@ -33,14 +33,6 @@ public class TextUtil extends StringUtils {
     public static final String MM_DD2;
     public static final String XML_CHAR_AND = "&#38;";
     public static final String REGEX_CAMEL_CASE = "^[A-Z][a-z]+";
-    private static Perl5Util m_alphaNumericMatcher;
-    private static Perl5Util m_numericMatcher;
-    private static Perl5Util m_withoutwhitespaceMatcher;
-    private static Perl5Util m_alphaNumericSpaceMatcher;
-    private static Perl5Util m_usPhoneMatcher;
-    private static Perl5Util m_emailMatcher;
-    private static Perl5Util m_dateMatcher;
-    private static Perl5Util m_barcodeMatcher;
     public static final SimpleDateFormat ISO_DATETIME_FORMAT;
     public static final SimpleDateFormat ISO_DATETIME_FORMAT_WITH_TZ;
     public static final SimpleDateFormat DATETIME_FORMAT_LONG;
@@ -51,6 +43,67 @@ public class TextUtil extends StringUtils {
     public static final SimpleDateFormat TIME_FORMAT_SHORT;
     public static final SimpleDateFormat TIME_FORMAT_24_HOUR;
     public static final String[] wildcardchars;
+    private static final Perl5Util m_alphaNumericMatcher;
+    private static final Perl5Util m_numericMatcher;
+    private static final Perl5Util m_withoutwhitespaceMatcher;
+    private static final Perl5Util m_alphaNumericSpaceMatcher;
+    private static final Perl5Util m_usPhoneMatcher;
+    private static final Perl5Util m_emailMatcher;
+    private static final Perl5Util m_dateMatcher;
+    private static final Perl5Util m_barcodeMatcher;
+
+    static {
+        ISO_DATETIME_FORMAT = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS", Locale.US);
+        ISO_DATETIME_FORMAT_WITH_TZ = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ", Locale.US);
+        DATETIME_FORMAT_LONG = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS", Locale.US);
+        GMT_DATETIME_FORMAT_LONG = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS", Locale.US);
+        DATETIME_FORMAT_SHORT = new SimpleDateFormat("MM/dd/yy h:mm a", Locale.US);
+        DATETIME_FORMAT_SHORT_70 = new SimpleDateFormat("MM/dd/yyyy h:mm a", Locale.US);
+        DATE_FORMAT_SHORT = new SimpleDateFormat("MM/dd/yyyy", Locale.US);
+        TIME_FORMAT_SHORT = new SimpleDateFormat("h:mm a", Locale.US);
+        TIME_FORMAT_24_HOUR = new SimpleDateFormat("HH:mm", Locale.US);
+        wildcardchars = new String[]{"*", "?"};
+        REGEX_ALPHANUMERIC = "/^[A-Za-z0-9]+$/";
+        REGEX_NUMERIC = "/^[0-9]+$/";
+        REGEX_NUMERIC_ONLY = "[^0-9]";
+        REGEX_WITHOUT_WHITESPACE = "/^[^\\s]+$/";
+        REGEX_SPACE_ALPHANUMERIC = "/^[A-Za-z0-9\\s]+$/";
+        REGEX_BARCODE = "/^[A-Za-z0-9\\s\\-\\.\\+\\%\\!\\#\\{\\}\\(\\)\\*\\,\\^\\_\\`\\~\\|\\[\\]\\'\\134\\042]+$/";
+        REGEX_US_PHONE = "/^((\\(\\d{3}\\) ?)|(\\d{3}-))?\\d{3}-\\d{4}$/";
+        REGEX_EMAIL = "/^\\w+([-+.]\\w+)*@\\w+([-.]\\w+)*\\.\\w+([-.]\\w+)*$/";
+        DATE_REGEXP = "m!^(0?[1-9]|1[012])[- /.](0?[1-9]|[12][0-9]|3[01])[- /.](19|20)\\d\\d$!";
+        REGEX_PHONE = "/^[A-Za-z0-9\\(\\)\\+\\.\\-]/";
+        TIMESTAMP_REGEXP = "m!^(0?[1-9]|1[012])[- /.](0?[1-9]|[12][0-9]|3[01])[- /.](19|20)\\d\\d( )(0?[0-9]|1[0-9]|2[0-3])[:](0?[0-9]|[1|2|3|4|5][0-9])[:](0?[0-9]|[1|2|3|4|5][0-9])$!";
+        DATE_REGEXP1 = "m!^(0?[1-9]|1[012])[- /.](0?[1-9]|[12][0-9]|3[01])[- /.]\\d\\d$!";
+        DATE_DOB = "m!^(0?[1-9]|1[012])[- /.](0?[1-9]|[12][0-9]|3[01])[- /.](18|19|20|21)\\d\\d$!";
+        DATE_REGEXP_SLASHDATE = "m!^(0?[1-9]|1[012])/(0?[1-9]|[12][0-9]|3[01])/\\d\\d$!";
+        DATE_CCYY_REGEXP = "m!^(19|20)\\d\\d$!";
+        MM_DD = "m!^(0?[1-9]|1[012])/(0?[1-9]|[12][0-9]|3[01])$!";
+        MM_DD2 = "m!^(0?[1-9]|1[012])-(0?[1-9]|[12][0-9]|3[01])$!";
+        int compileOptions = '耀';
+        PatternCache patternCache = new PatternCacheLRU(new Perl5Compiler());
+        patternCache.getPattern(REGEX_ALPHANUMERIC, compileOptions);
+        patternCache.getPattern(REGEX_NUMERIC, compileOptions);
+        patternCache.getPattern(REGEX_WITHOUT_WHITESPACE, compileOptions);
+        patternCache.getPattern(REGEX_SPACE_ALPHANUMERIC, compileOptions);
+        patternCache.getPattern(REGEX_BARCODE, compileOptions);
+        patternCache.getPattern(REGEX_US_PHONE, compileOptions);
+        patternCache.getPattern(REGEX_EMAIL, compileOptions);
+        patternCache.getPattern(DATE_REGEXP, compileOptions);
+        patternCache.getPattern(TIMESTAMP_REGEXP, compileOptions);
+        patternCache.getPattern(DATE_DOB, compileOptions);
+        patternCache.getPattern(MM_DD, compileOptions);
+        patternCache.getPattern(MM_DD2, compileOptions);
+        m_alphaNumericMatcher = new Perl5Util(patternCache);
+        m_numericMatcher = new Perl5Util(patternCache);
+        m_withoutwhitespaceMatcher = new Perl5Util(patternCache);
+        m_alphaNumericSpaceMatcher = new Perl5Util(patternCache);
+        m_barcodeMatcher = new Perl5Util(patternCache);
+        m_usPhoneMatcher = new Perl5Util(patternCache);
+        m_emailMatcher = new Perl5Util(patternCache);
+        m_dateMatcher = new Perl5Util(patternCache);
+        GMT_DATETIME_FORMAT_LONG.setTimeZone(TimeZone.getTimeZone("GMT"));
+    }
 
     public TextUtil() {
     }
@@ -130,7 +183,7 @@ public class TextUtil extends StringUtils {
             for (int i = 0; (index = input.indexOf(toReplace, fromIndex)) != -1; fromIndex = index + toReplaceLength) {
                 String s;
                 if (i < nReplaceWith) {
-                    s = (String) replaceWith.get(i);
+                    s = replaceWith.get(i);
                     ++i;
                 } else {
                     s = "";
@@ -177,9 +230,7 @@ public class TextUtil extends StringUtils {
                 return true;
             }
 
-            if (value.matches("(.*)[0-9]+(.*)") && value.matches("(.*)[A-Z]+(.*)")) {
-                return true;
-            }
+            return value.matches("(.*)[0-9]+(.*)") && value.matches("(.*)[A-Z]+(.*)");
         }
 
         return false;
@@ -286,7 +337,7 @@ public class TextUtil extends StringUtils {
 
     public static String generateRandomNumeric(int length) {
         int num = 0;
-        StringBuffer value = new StringBuffer("");
+        StringBuffer value = new StringBuffer();
 
         for (int i = 0; i < length; ++i) {
             num = (new Double(Math.random() * 10.0)).intValue();
@@ -332,7 +383,7 @@ public class TextUtil extends StringUtils {
         int textLen = text != null ? text.length() : 0;
         StringBuffer maskedText = new StringBuffer(textLen);
         if (from >= 0 && from < to) {
-            maskedText.append(text.substring(0, from));
+            maskedText.append(text, 0, from);
 
             for (int i = from; i < to; ++i) {
                 maskedText.append(ch);
@@ -468,12 +519,11 @@ public class TextUtil extends StringUtils {
         return m_dateMatcher.match(DATE_CCYY_REGEXP, value);
     }
 
-
     public static boolean toBoolean(String text, boolean defaultValue) {
         boolean value = defaultValue;
         if (text != null && text.length() > 0) {
             try {
-                Boolean b = new Boolean(text);
+                Boolean b = Boolean.valueOf(text);
                 value = b;
             } catch (Throwable var4) {
             }
@@ -534,14 +584,8 @@ public class TextUtil extends StringUtils {
 
     public static boolean isNotNullNotEmpty(String text, boolean trim) {
         if (trim) {
-            if (text != null && text.trim().length() > 0) {
-                return true;
-            }
-        } else if (text != null && text.length() > 0) {
-            return true;
-        }
-
-        return false;
+            return text != null && text.trim().length() > 0;
+        } else return text != null && text.length() > 0;
     }
 
     public static boolean contains(String attribute, String text) {
@@ -613,14 +657,13 @@ public class TextUtil extends StringUtils {
                         buffer.append(elementSeparator);
                     }
 
-                    buffer.append(elementPrefix).append(element.toString()).append(elementSuffix);
+                    buffer.append(elementPrefix).append(element).append(elementSuffix);
                 }
             }
         }
 
         return buffer.toString();
     }
-
 
     public static String ArrayToString(int[] array, String elementSeparator) {
         return ArrayToString(array, elementSeparator, "", "");
@@ -1021,58 +1064,5 @@ public class TextUtil extends StringUtils {
 
     public static boolean isCamelCase(String value) {
         return value.matches("^[A-Z][a-z]+");
-    }
-
-    static {
-        ISO_DATETIME_FORMAT = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS", Locale.US);
-        ISO_DATETIME_FORMAT_WITH_TZ = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ", Locale.US);
-        DATETIME_FORMAT_LONG = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS", Locale.US);
-        GMT_DATETIME_FORMAT_LONG = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS", Locale.US);
-        DATETIME_FORMAT_SHORT = new SimpleDateFormat("MM/dd/yy h:mm a", Locale.US);
-        DATETIME_FORMAT_SHORT_70 = new SimpleDateFormat("MM/dd/yyyy h:mm a", Locale.US);
-        DATE_FORMAT_SHORT = new SimpleDateFormat("MM/dd/yyyy", Locale.US);
-        TIME_FORMAT_SHORT = new SimpleDateFormat("h:mm a", Locale.US);
-        TIME_FORMAT_24_HOUR = new SimpleDateFormat("HH:mm", Locale.US);
-        wildcardchars = new String[]{"*", "?"};
-        REGEX_ALPHANUMERIC = "/^[A-Za-z0-9]+$/";
-        REGEX_NUMERIC = "/^[0-9]+$/";
-        REGEX_NUMERIC_ONLY = "[^0-9]";
-        REGEX_WITHOUT_WHITESPACE = "/^[^\\s]+$/";
-        REGEX_SPACE_ALPHANUMERIC = "/^[A-Za-z0-9\\s]+$/";
-        REGEX_BARCODE = "/^[A-Za-z0-9\\s\\-\\.\\+\\%\\!\\#\\{\\}\\(\\)\\*\\,\\^\\_\\`\\~\\|\\[\\]\\'\\134\\042]+$/";
-        REGEX_US_PHONE = "/^((\\(\\d{3}\\) ?)|(\\d{3}-))?\\d{3}-\\d{4}$/";
-        REGEX_EMAIL = "/^\\w+([-+.]\\w+)*@\\w+([-.]\\w+)*\\.\\w+([-.]\\w+)*$/";
-        DATE_REGEXP = "m!^(0?[1-9]|1[012])[- /.](0?[1-9]|[12][0-9]|3[01])[- /.](19|20)\\d\\d$!";
-        REGEX_PHONE = "/^[A-Za-z0-9\\(\\)\\+\\.\\-]/";
-        TIMESTAMP_REGEXP = "m!^(0?[1-9]|1[012])[- /.](0?[1-9]|[12][0-9]|3[01])[- /.](19|20)\\d\\d( )(0?[0-9]|1[0-9]|2[0-3])[:](0?[0-9]|[1|2|3|4|5][0-9])[:](0?[0-9]|[1|2|3|4|5][0-9])$!";
-        DATE_REGEXP1 = "m!^(0?[1-9]|1[012])[- /.](0?[1-9]|[12][0-9]|3[01])[- /.]\\d\\d$!";
-        DATE_DOB = "m!^(0?[1-9]|1[012])[- /.](0?[1-9]|[12][0-9]|3[01])[- /.](18|19|20|21)\\d\\d$!";
-        DATE_REGEXP_SLASHDATE = "m!^(0?[1-9]|1[012])/(0?[1-9]|[12][0-9]|3[01])/\\d\\d$!";
-        DATE_CCYY_REGEXP = "m!^(19|20)\\d\\d$!";
-        MM_DD = "m!^(0?[1-9]|1[012])/(0?[1-9]|[12][0-9]|3[01])$!";
-        MM_DD2 = "m!^(0?[1-9]|1[012])-(0?[1-9]|[12][0-9]|3[01])$!";
-        int compileOptions = '耀';
-        PatternCache patternCache = new PatternCacheLRU(new Perl5Compiler());
-        patternCache.getPattern(REGEX_ALPHANUMERIC, compileOptions);
-        patternCache.getPattern(REGEX_NUMERIC, compileOptions);
-        patternCache.getPattern(REGEX_WITHOUT_WHITESPACE, compileOptions);
-        patternCache.getPattern(REGEX_SPACE_ALPHANUMERIC, compileOptions);
-        patternCache.getPattern(REGEX_BARCODE, compileOptions);
-        patternCache.getPattern(REGEX_US_PHONE, compileOptions);
-        patternCache.getPattern(REGEX_EMAIL, compileOptions);
-        patternCache.getPattern(DATE_REGEXP, compileOptions);
-        patternCache.getPattern(TIMESTAMP_REGEXP, compileOptions);
-        patternCache.getPattern(DATE_DOB, compileOptions);
-        patternCache.getPattern(MM_DD, compileOptions);
-        patternCache.getPattern(MM_DD2, compileOptions);
-        m_alphaNumericMatcher = new Perl5Util(patternCache);
-        m_numericMatcher = new Perl5Util(patternCache);
-        m_withoutwhitespaceMatcher = new Perl5Util(patternCache);
-        m_alphaNumericSpaceMatcher = new Perl5Util(patternCache);
-        m_barcodeMatcher = new Perl5Util(patternCache);
-        m_usPhoneMatcher = new Perl5Util(patternCache);
-        m_emailMatcher = new Perl5Util(patternCache);
-        m_dateMatcher = new Perl5Util(patternCache);
-        GMT_DATETIME_FORMAT_LONG.setTimeZone(TimeZone.getTimeZone("GMT"));
     }
 }

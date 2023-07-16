@@ -11,7 +11,7 @@ import java.nio.charset.StandardCharsets;
 public class HockeyAppApi {
     private String m_user;
     private String m_password;
-    private String m_url;
+    private final String m_url;
     private String token;
 
     public HockeyAppApi(String m_user, String m_password, String m_url) {
@@ -23,6 +23,55 @@ public class HockeyAppApi {
     public HockeyAppApi(String token, String m_url) {
         this.token = token;
         this.m_url = m_url;
+    }
+
+    private static String getAuthorization(String user, String password) {
+        return getBase64((user + ":" + password).getBytes(StandardCharsets.UTF_8));
+    }
+
+    private static String getBase64(byte[] buffer) {
+        char[] map = new char[]{'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '+', '/'};
+        StringBuffer sb = new StringBuffer();
+
+        for (int i = 0; i < buffer.length; ++i) {
+            byte b0 = buffer[i++];
+            byte b1 = 0;
+            byte b2 = 0;
+            int bytes = 3;
+            if (i < buffer.length) {
+                b1 = buffer[i++];
+                if (i < buffer.length) {
+                    b2 = buffer[i];
+                } else {
+                    bytes = 2;
+                }
+            } else {
+                bytes = 1;
+            }
+
+            int total = b0 << 16 | b1 << 8 | b2;
+            switch (bytes) {
+                case 1:
+                    sb.append(map[total >> 18 & 63]);
+                    sb.append(map[total >> 12 & 63]);
+                    sb.append('=');
+                    sb.append('=');
+                    break;
+                case 2:
+                    sb.append(map[total >> 18 & 63]);
+                    sb.append(map[total >> 12 & 63]);
+                    sb.append(map[total >> 6 & 63]);
+                    sb.append('=');
+                    break;
+                case 3:
+                    sb.append(map[total >> 18 & 63]);
+                    sb.append(map[total >> 12 & 63]);
+                    sb.append(map[total >> 6 & 63]);
+                    sb.append(map[total & 63]);
+            }
+        }
+
+        return sb.toString();
     }
 
     public String getUser() {
@@ -41,23 +90,23 @@ public class HockeyAppApi {
         this.m_password = password;
     }
 
-    public Object sendGet(String uri) throws MalformedURLException, IOException, Exception {
-        return this.sendRequest("GET", uri, (Object) null, (String) null);
+    public Object sendGet(String uri) throws Exception {
+        return this.sendRequest("GET", uri, null, null);
     }
 
-    public Object sendGet(String uri, String fileName) throws MalformedURLException, IOException, Exception {
-        return this.sendRequest("GET", uri, (Object) null, fileName);
+    public Object sendGet(String uri, String fileName) throws Exception {
+        return this.sendRequest("GET", uri, null, fileName);
     }
 
     public Object getAppVersion(String appId) throws Exception {
         return this.sendGet(String.format("apps/%s/app_versions/", appId));
     }
 
-    public Object sendPost(String uri, Object data) throws MalformedURLException, IOException, Exception {
-        return this.sendRequest("POST", uri, data, (String) null);
+    public Object sendPost(String uri, Object data) throws Exception {
+        return this.sendRequest("POST", uri, data, null);
     }
 
-    private Object sendRequest(String method, String uri, Object data, String fileName) throws MalformedURLException, IOException, Exception {
+    private Object sendRequest(String method, String uri, Object data, String fileName) throws Exception {
         URL url = new URL(this.m_url + uri);
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
         conn.addRequestProperty("Content-Type", "application/json");
@@ -117,7 +166,7 @@ public class HockeyAppApi {
         }
     }
 
-    public void saveUrl(String filename, BufferedInputStream in) throws MalformedURLException, IOException {
+    public void saveUrl(String filename, BufferedInputStream in) throws IOException {
         FileOutputStream fout = null;
 
         try {
@@ -139,58 +188,5 @@ public class HockeyAppApi {
 
         }
 
-    }
-
-    private static String getAuthorization(String user, String password) {
-        try {
-            return getBase64((user + ":" + password).getBytes("UTF-8"));
-        } catch (UnsupportedEncodingException var3) {
-            return "";
-        }
-    }
-
-    private static String getBase64(byte[] buffer) {
-        char[] map = new char[]{'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '+', '/'};
-        StringBuffer sb = new StringBuffer();
-
-        for (int i = 0; i < buffer.length; ++i) {
-            byte b0 = buffer[i++];
-            byte b1 = 0;
-            byte b2 = 0;
-            int bytes = 3;
-            if (i < buffer.length) {
-                b1 = buffer[i++];
-                if (i < buffer.length) {
-                    b2 = buffer[i];
-                } else {
-                    bytes = 2;
-                }
-            } else {
-                bytes = 1;
-            }
-
-            int total = b0 << 16 | b1 << 8 | b2;
-            switch (bytes) {
-                case 1:
-                    sb.append(map[total >> 18 & 63]);
-                    sb.append(map[total >> 12 & 63]);
-                    sb.append('=');
-                    sb.append('=');
-                    break;
-                case 2:
-                    sb.append(map[total >> 18 & 63]);
-                    sb.append(map[total >> 12 & 63]);
-                    sb.append(map[total >> 6 & 63]);
-                    sb.append('=');
-                    break;
-                case 3:
-                    sb.append(map[total >> 18 & 63]);
-                    sb.append(map[total >> 12 & 63]);
-                    sb.append(map[total >> 6 & 63]);
-                    sb.append(map[total & 63]);
-            }
-        }
-
-        return sb.toString();
     }
 }

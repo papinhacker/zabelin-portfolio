@@ -5,7 +5,16 @@ import zabelin.portfolio.ui.selenium.common.utils.SiteHelper;
 
 public class Navigation extends SiteHelper {
 
-    private boolean isMobile;
+    private static final String BASE = "//div[@id='content']/ul";
+    private final boolean isMobile;
+
+    /* **************************************
+     *************** Locators ***************
+     ***************************************/
+    private final String menuLinks = BASE + "//a[text()]";
+    private final String specificMenuLinks = menuLinks + "[text()='%s']";
+    // example
+    private String menu;
 
     public Navigation(WebDriver driver) {
         super(driver);
@@ -14,23 +23,12 @@ public class Navigation extends SiteHelper {
     }
 
     /* **************************************
-     *************** Locators ***************
-     ***************************************/
-
-    private static final String BASE = "//div[@id='content']/ul";
-
-    private String menuLinks = BASE + "//a[text()]";
-    private String specificMenuLinks = menuLinks + "[text()='%s']";
-
-    // example
-    private String menu;
-
-    /* **************************************
      *************** Methods ****************
      ***************************************/
 
 
     // example
+
     /**
      * Initialize page locators
      *
@@ -58,7 +56,7 @@ public class Navigation extends SiteHelper {
                     .filter(l -> l.toLowerCase().contains(ml.replaceAll("(?i)(new$|beta)", "").toLowerCase()))
                     .findFirst()
                     .orElseThrow(() -> new AssertionError("Links list doesn't contain '" + ml + "' link"));
-                click(String.format(specificMenuLinks, ll));
+            click(String.format(specificMenuLinks, ll));
             waitForNProgressEnding();
             waitForNProgressEnding();
         } catch (Exception ex) {

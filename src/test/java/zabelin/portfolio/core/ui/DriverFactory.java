@@ -51,14 +51,14 @@ public class DriverFactory extends AssertVerification {
     protected static final String APP_CAPABILITY_KEY = "app";
     protected static final String PLATFORM_VERSION_KEY = "platformVersion";
     protected static final String BROWSER_VERSION_KEY = "browserVersion";
-    public static String LOCAL_DRIVER_VERSION = "latest";
-    public static int IMPLICIT_WAIT_TIME_OUT = 30;
     protected static final Duration HTTP_CLIENT_CONNECTION_TIMEOUT = Duration.ofMinutes(2L);
     protected static final Duration HTTP_CLIENT_READ_TIMEOUT = Duration.ofMinutes(5L);
+    public static String LOCAL_DRIVER_VERSION = "latest";
+    public static int IMPLICIT_WAIT_TIME_OUT = 30;
     public static String BUILD = "";
     public static String PLATFORM = "";
     public static String BROWSER = "";
-    private static ThreadLocal<String> sessionId = new ThreadLocal();
+    private static final ThreadLocal<String> sessionId = new ThreadLocal();
     private static String prevPathToFile = null;
     private static String prevPlatform = null;
     private static String prevBrowser = null;
@@ -186,7 +186,7 @@ public class DriverFactory extends AssertVerification {
 
         String url = String.format("apps/%s/app_versions/%d?format=apk", app, id);
         String fileName = folderPath + version + ".apk";
-        if (Files.notExists(Paths.get(fileName), new LinkOption[0])) {
+        if (Files.notExists(Paths.get(fileName))) {
             Log.info("Downloading: " + version + ".apk from HockeyApp");
             api.sendGet(url, fileName);
             Log.info("Download completed");
@@ -217,7 +217,7 @@ public class DriverFactory extends AssertVerification {
                     }
 
                     if (port > 0) {
-                        driver = new ChromeDriver((ChromeDriverService) ((ChromeDriverService.Builder) (new ChromeDriverService.Builder()).usingPort(port)).build(), capabilities);
+                        driver = new ChromeDriver((new ChromeDriverService.Builder()).usingPort(port).build(), capabilities);
                     } else {
                         driver = new ChromeDriver(capabilities);
                     }
@@ -250,7 +250,7 @@ public class DriverFactory extends AssertVerification {
             ((RemoteWebDriver) driver).setFileDetector(new LocalFileDetector());
         }
 
-        ((WebDriver) driver).manage().timeouts().implicitlyWait((long) IMPLICIT_WAIT_TIME_OUT, TimeUnit.SECONDS);
+        ((WebDriver) driver).manage().timeouts().implicitlyWait(IMPLICIT_WAIT_TIME_OUT, TimeUnit.SECONDS);
 
         try {
             String driverSession = driver.toString();
@@ -261,7 +261,7 @@ public class DriverFactory extends AssertVerification {
                 Listener.allSessions.put(currentSessionId, Listener.getTestCaseContext());
             }
         } catch (Exception var12) {
-            Log.warn("Unable to store session Id for driver - " + driver.toString());
+            Log.warn("Unable to store session Id for driver - " + driver);
             var12.printStackTrace();
         }
 
@@ -346,10 +346,10 @@ public class DriverFactory extends AssertVerification {
     }
 
     protected static Map<String, Object> parseCaps(Map<String, Object> caps) {
-        return (Map) caps.entrySet().stream().collect(Collectors.toMap((e) -> {
-            return (String) e.getKey();
+        return caps.entrySet().stream().collect(Collectors.toMap((e) -> {
+            return e.getKey();
         }, (e) -> {
-            return ((String) e.getKey()).equals("chromeOptions") ? parseChromeOptions(e.getValue()) : e.getValue();
+            return e.getKey().equals("chromeOptions") ? parseChromeOptions(e.getValue()) : e.getValue();
         }));
     }
 
@@ -460,7 +460,7 @@ public class DriverFactory extends AssertVerification {
                 String param = var3[var5];
                 int index = param.lastIndexOf(":");
                 String key = param.substring(0, index);
-                Object value = param.substring(index + 1, param.length());
+                Object value = param.substring(index + 1);
                 updateCapability(caps, key, value);
             }
         }
@@ -502,9 +502,9 @@ public class DriverFactory extends AssertVerification {
                 if (firstCap instanceof ChromeOptions) {
                     ChromeOptions opt = (ChromeOptions) firstCap;
                     Map map = (Map) opt.getExperimentalOption(keys[1]);
-                    setPropVal(map, (String[]) Arrays.copyOfRange(keys, 2, keys.length), parseStringToPrimitive(value));
+                    setPropVal(map, Arrays.copyOfRange(keys, 2, keys.length), parseStringToPrimitive(value));
                 } else if (firstCap instanceof Map) {
-                    setPropVal((Map) firstCap, (String[]) Arrays.copyOfRange(keys, 1, keys.length), parseStringToPrimitive(value));
+                    setPropVal((Map) firstCap, Arrays.copyOfRange(keys, 1, keys.length), parseStringToPrimitive(value));
                 }
             }
 
@@ -555,7 +555,7 @@ public class DriverFactory extends AssertVerification {
 
             try {
                 Yaml yaml = new Yaml();
-                res = (Map) yaml.load(input);
+                res = yaml.load(input);
             } catch (Throwable var13) {
                 var3 = var13;
                 throw var13;

@@ -44,16 +44,16 @@ public class XMLSuiteResultMethodAsTestWriter extends XMLSuiteResultWriter {
         while (var4.hasNext()) {
             Map.Entry<String, List<ITestResult>> result = (Map.Entry) var4.next();
             Properties attributes = new Properties();
-            String className = (String) result.getKey();
+            String className = result.getKey();
             if (this.config.isSplitClassAndPackageNames()) {
                 int dot = className.lastIndexOf(46);
-                attributes.setProperty("name", dot > -1 ? className.substring(dot + 1, className.length()) : className);
+                attributes.setProperty("name", dot > -1 ? className.substring(dot + 1) : className);
                 attributes.setProperty("package", dot > -1 ? className.substring(0, dot) : "[default]");
             } else {
                 attributes.setProperty("name", className);
             }
 
-            List<ITestResult> sortedResults = (List) result.getValue();
+            List<ITestResult> sortedResults = result.getValue();
             Collections.sort(sortedResults);
             Iterator var9 = sortedResults.iterator();
 

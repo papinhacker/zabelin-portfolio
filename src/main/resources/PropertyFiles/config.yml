@@ -143,7 +143,7 @@ capabilities:
       browserVersion: 'latest'
       goog:chromeOptions:
         mobileEmulation:
-          userAgent: Weedmaps-Webview/7.58.0-internal (Google Android SDK built for x86 sdk_gphone_x86; Android 28)
+          userAgent: тут не на что смотеть.
           deviceMetrics: #iPhone 7
             width: 375
             height: 667
@@ -163,7 +163,7 @@ capabilities:
           - --window-size=1280x1024
           - --ignore-certificate-errors
         mobileEmulation:
-          userAgent: Weedmaps-Webview/7.58.0-internal (Google Android SDK built for x86 sdk_gphone_x86; Android 28)
+          userAgent: И тут тоже
           deviceMetrics: #iPhone 7
             width: 375
             height: 667

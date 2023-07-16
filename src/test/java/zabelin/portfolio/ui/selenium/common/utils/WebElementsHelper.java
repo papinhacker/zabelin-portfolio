@@ -26,41 +26,29 @@ import java.util.stream.Collectors;
 
 public abstract class WebElementsHelper extends BasePageObject {
 
+    public static final String COOKIES_MESSAGE = "//div[contains(@class, '_BannerContainer-') and @aria-labelledby='cookie_banner_label']";
+    public static final String COOKIES_MESSAGE_OK_BUTTON = COOKIES_MESSAGE + "//button[@data-testid='cookie-banner-accept']";
+    private final String N_PROGRESS_BAR = "//*[contains(@id, 'nprogress')]/div[@class='bar']";
+
     public WebElementsHelper(WebDriver driver) {
         super(driver);
     }
-
     protected WebElementsHelper(WebDriver driver, String expectedUrl, Boolean isURL) throws IllegalStateException {
         super(driver, expectedUrl, isURL);
     }
-
     protected WebElementsHelper(WebDriver driver, String expectedTitle) throws IllegalStateException {
         super(driver, expectedTitle);
     }
 
-    private final String N_PROGRESS_BAR = "//*[contains(@id, 'nprogress')]/div[@class='bar']";
-    public static final String COOKIES_MESSAGE = "//div[contains(@class, '_BannerContainer-') and @aria-labelledby='cookie_banner_label']";
-    public static final String COOKIES_MESSAGE_OK_BUTTON = COOKIES_MESSAGE + "//button[@data-testid='cookie-banner-accept']";
-
     public static void setImplicitWait(WebDriver driver, int seconds) {
-        driver.manage().timeouts().implicitlyWait((long) seconds, TimeUnit.SECONDS);
-    }
-
-    //workaround for safari
-    protected WebElement findElement(By by) {
-        return findElement(by, timeout);
-    }
-
-    //workaround for safari
-    protected WebElement findElement(By by, int timeout) {
-        return findElement(this.driver, by, timeout);
+        driver.manage().timeouts().implicitlyWait(seconds, TimeUnit.SECONDS);
     }
 
     //workaround for safari
     protected static WebElement findElement(WebDriver driver, By by, int timeout) {
         setImplicitWait(driver, 0);
         WebElement we = null;
-        long endTimer = System.currentTimeMillis() + timeout * 1000;
+        long endTimer = System.currentTimeMillis() + timeout * 1000L;
         while (System.currentTimeMillis() <= endTimer && we == null) {
             try {
                 we = driver.findElement(by);
@@ -73,20 +61,10 @@ public abstract class WebElementsHelper extends BasePageObject {
         return we;
     }
 
-    //workaround for safari
-    protected List<WebElement> findElements(By by) {
-        return findElements(by, timeout);
-    }
-
-    //workaround for safari
-    protected List<WebElement> findElements(By by, int timeout) {
-        return findElements(this.driver, by, timeout);
-    }
-
     protected static List<WebElement> findElements(WebDriver driver, By by, int timeout) {
         setImplicitWait(driver, 0);
         List<WebElement> we = new ArrayList<>();
-        long endTimer = System.currentTimeMillis() + (timeout * 1000);
+        long endTimer = System.currentTimeMillis() + (timeout * 1000L);
         do {
             try {
                 we = driver.findElements(by);
@@ -97,16 +75,6 @@ public abstract class WebElementsHelper extends BasePageObject {
         } while ((System.currentTimeMillis() <= endTimer) && (we.size() == 0));
         setImplicitWait(driver, DriverFactory.IMPLICIT_WAIT_TIME_OUT);
         return we;
-    }
-
-    //workaround for safari
-    protected boolean isElementVisible(By by) {
-        return isElementVisible(by, timeout);
-    }
-
-    //workaround for safari < force using the findElements() method of WebElementsHelper class
-    protected boolean isElementVisible(By by, int timeout) {
-        return isElementVisible(this.driver, by, timeout);
     }
 
     protected static boolean isElementVisible(WebDriver driver, By by, int timeout) {
@@ -125,6 +93,52 @@ public abstract class WebElementsHelper extends BasePageObject {
         } else {
             return false;
         }
+    }
+
+    /**
+     * Close 'We use cookies to improve your experience' bar
+     *
+     * @param driver
+     */
+    public static void closeCookiesMessage(WebDriver driver) {
+        try {
+            if (isElementVisible(driver, By.xpath(COOKIES_MESSAGE), 4)) {
+                new WebElementImpl(driver, findElement(driver, By.xpath(COOKIES_MESSAGE_OK_BUTTON), 3)).clickJS();
+                wait(1);
+            }
+        } catch (Exception ex) {
+            Log.warn("Unable to close 'cookies' message");
+        }
+    }
+
+    //workaround for safari
+    protected WebElement findElement(By by) {
+        return findElement(by, timeout);
+    }
+
+    //workaround for safari
+    protected WebElement findElement(By by, int timeout) {
+        return findElement(this.driver, by, timeout);
+    }
+
+    //workaround for safari
+    protected List<WebElement> findElements(By by) {
+        return findElements(by, timeout);
+    }
+
+    //workaround for safari
+    protected List<WebElement> findElements(By by, int timeout) {
+        return findElements(this.driver, by, timeout);
+    }
+
+    //workaround for safari
+    protected boolean isElementVisible(By by) {
+        return isElementVisible(by, timeout);
+    }
+
+    //workaround for safari < force using the findElements() method of WebElementsHelper class
+    protected boolean isElementVisible(By by, int timeout) {
+        return isElementVisible(this.driver, by, timeout);
     }
 
     /**
@@ -1060,9 +1074,7 @@ public abstract class WebElementsHelper extends BasePageObject {
      * @throws Exception
      */
     public void sendKeys(String xpath, String value, int timeout) throws Exception {
-        boolean imitateTyping = true;
-        if (DriverFactory.isSauceLabHost())
-            imitateTyping = false;
+        boolean imitateTyping = !DriverFactory.isSauceLabHost();
         sendKeysByIndex(xpath, 0, value, true, imitateTyping, timeout);
     }
 
@@ -1099,9 +1111,7 @@ public abstract class WebElementsHelper extends BasePageObject {
      * @throws Exception
      */
     public void sendKeysByIndex(String xpath, int index, String value) throws Exception {
-        boolean imitateTyping = true;
-        if (DriverFactory.isSauceLabHost())
-            imitateTyping = false;
+        boolean imitateTyping = !DriverFactory.isSauceLabHost();
         sendKeysByIndex(xpath, index, value, true, imitateTyping, timeout);
     }
 
@@ -1446,7 +1456,7 @@ public abstract class WebElementsHelper extends BasePageObject {
      */
     public boolean waitForElementStopMoving(String xpath, int timeout) throws Exception {
         int sleepInterval = 250;
-        long endTimer = System.currentTimeMillis() + timeout * 1000;
+        long endTimer = System.currentTimeMillis() + timeout * 1000L;
         Point previousPosition = getRelativeCoordinates(xpath);
         Point currentPosition;
         Thread.sleep(sleepInterval);
@@ -1468,7 +1478,7 @@ public abstract class WebElementsHelper extends BasePageObject {
      * @throws Exception
      */
     public void waitForAllVisibility(String xpath) {
-        WebDriverWait wait = new WebDriverWait(this.driver, (long) timeout);
+        WebDriverWait wait = new WebDriverWait(this.driver, timeout);
         wait.until(ExpectedConditions.visibilityOfAllElements(findElements(By.xpath(xpath))));
     }
 
@@ -1479,7 +1489,7 @@ public abstract class WebElementsHelper extends BasePageObject {
      * @throws Exception
      */
     public void waitForAllInvisibility(String xpath) {
-        WebDriverWait wait = new WebDriverWait(this.driver, (long) timeout);
+        WebDriverWait wait = new WebDriverWait(this.driver, timeout);
         wait.until(ExpectedConditions.invisibilityOfAllElements(findElements(By.xpath(xpath))));
     }
 
@@ -1594,7 +1604,7 @@ public abstract class WebElementsHelper extends BasePageObject {
 
     public Rectangle getRectangleByIndexJS(String xpath, int index, int timeout) throws Exception {
         setImplicitWait(0);
-        long endTimer = System.currentTimeMillis() + timeout * 1000;
+        long endTimer = System.currentTimeMillis() + timeout * 1000L;
         while (System.currentTimeMillis() <= endTimer) {
             try {
                 String js = "return arguments[0].getBoundingClientRect()";
@@ -1657,7 +1667,7 @@ public abstract class WebElementsHelper extends BasePageObject {
      */
     public boolean waitForDocumentReadyStateComplete() {
         try {
-            WebDriverWait wait = new WebDriverWait(this.driver, (long) timeout);
+            WebDriverWait wait = new WebDriverWait(this.driver, timeout);
             return wait.until((ExpectedCondition<Boolean>) driverObject ->
                     Boolean.valueOf(((JavascriptExecutor) driver).
                             executeScript("return document.readyState === 'complete'").toString()));
@@ -1681,22 +1691,6 @@ public abstract class WebElementsHelper extends BasePageObject {
             return false;
         }
         return true;
-    }
-
-    /**
-     * Close 'We use cookies to improve your experience' bar
-     *
-     * @param driver
-     */
-    public static void closeCookiesMessage(WebDriver driver) {
-        try {
-            if (isElementVisible(driver, By.xpath(COOKIES_MESSAGE), 4)) {
-                new WebElementImpl(driver, findElement(driver, By.xpath(COOKIES_MESSAGE_OK_BUTTON), 3)).clickJS();
-                wait(1);
-            }
-        } catch (Exception ex) {
-            Log.warn("Unable to close 'cookies' message");
-        }
     }
 
     /**

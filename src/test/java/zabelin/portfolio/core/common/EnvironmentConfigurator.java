@@ -17,6 +17,8 @@ import zabelin.portfolio.core.webdriverlogger.WebDriverLogger;
 import java.lang.reflect.Method;
 
 public class EnvironmentConfigurator extends AssertVerification {
+    protected static WebDriver staticWebDriver = null;
+    protected static WebDriver staticDriver = null;
     protected ContextBase context;
     protected TestSteps steps;
     protected WebDriver webDriver = null;
@@ -26,11 +28,18 @@ public class EnvironmentConfigurator extends AssertVerification {
     protected boolean evalAfterMethod = true;
     protected boolean evalBeforeMethod = true;
     protected boolean evalBeforeClass = true;
-    protected static WebDriver staticWebDriver = null;
-    protected static WebDriver staticDriver = null;
     protected boolean driverRecreatedBeforeMethod = false;
 
     public EnvironmentConfigurator() {
+    }
+
+    protected static String getSystemProperty(String propertyName, String defaultValue) {
+        return System.getProperty(propertyName) != null && !System.getProperty(propertyName).isEmpty() ? System.getProperty(propertyName) : defaultValue;
+    }
+
+    public static boolean isSingleMode() {
+        String useSingleMode = getSystemProperty("singleMode", "false");
+        return useSingleMode.equals("true");
     }
 
     @BeforeMethod
@@ -76,7 +85,7 @@ public class EnvironmentConfigurator extends AssertVerification {
         if (this.evalBeforeMethod) {
             try {
                 if (DriverFactory.isSauceLabHost() && !isSingleMode()) {
-                    Test test = (Test) method.getAnnotation(Test.class);
+                    Test test = method.getAnnotation(Test.class);
                     if (test == null) {
                         return;
                     }
@@ -145,10 +154,6 @@ public class EnvironmentConfigurator extends AssertVerification {
         return this.webDriver;
     }
 
-    protected static String getSystemProperty(String propertyName, String defaultValue) {
-        return System.getProperty(propertyName) != null && !System.getProperty(propertyName).isEmpty() ? System.getProperty(propertyName) : defaultValue;
-    }
-
     @AfterMethod(
             alwaysRun = true
     )
@@ -164,11 +169,6 @@ public class EnvironmentConfigurator extends AssertVerification {
             }
 
         }
-    }
-
-    public static boolean isSingleMode() {
-        String useSingleMode = getSystemProperty("singleMode", "false");
-        return useSingleMode.equals("true");
     }
 
     public boolean isConnectionOpen() {

@@ -7,7 +7,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class XPathUsageData {
-    private static Gson gson = (new GsonBuilder()).setPrettyPrinting().disableHtmlEscaping().create();
+    private static final Gson gson = (new GsonBuilder()).setPrettyPrinting().disableHtmlEscaping().create();
     public String fullPath = "";
     public String pathType = "";
     public int count = 0;

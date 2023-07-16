@@ -18,9 +18,9 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 public class XMLSuiteResultWriter {
-    protected XMLReporterConfig config;
     protected final int STACKTRACE_SHORT = 1;
     protected final int STACKTRACE_FULL = 2;
+    protected XMLReporterConfig config;
 
     public XMLSuiteResultWriter(XMLReporterConfig config) {
         this.config = config;
@@ -91,17 +91,17 @@ public class XMLSuiteResultWriter {
         while (var4.hasNext()) {
             Map.Entry<String, List<ITestResult>> result = (Map.Entry) var4.next();
             Properties attributes = new Properties();
-            String className = (String) result.getKey();
+            String className = result.getKey();
             if (this.config.isSplitClassAndPackageNames()) {
                 int dot = className.lastIndexOf(46);
-                attributes.setProperty("name", dot > -1 ? className.substring(dot + 1, className.length()) : className);
+                attributes.setProperty("name", dot > -1 ? className.substring(dot + 1) : className);
                 attributes.setProperty("package", dot > -1 ? className.substring(0, dot) : "[default]");
             } else {
                 attributes.setProperty("name", className);
             }
 
             xmlBuffer.push("class", attributes);
-            List<ITestResult> sortedResults = (List) result.getValue();
+            List<ITestResult> sortedResults = result.getValue();
             Collections.sort(sortedResults);
             Iterator var9 = sortedResults.iterator();
 
@@ -123,7 +123,7 @@ public class XMLSuiteResultWriter {
         for (Iterator var3 = testResults.iterator(); var3.hasNext(); list.add(result)) {
             result = (ITestResult) var3.next();
             String className = result.getTestClass().getName();
-            list = (List) map.get(className);
+            list = map.get(className);
             if (list == null) {
                 list = Lists.newArrayList();
                 map.put(className, list);
@@ -218,7 +218,7 @@ public class XMLSuiteResultWriter {
 
         ConstructorOrMethod cm = testResult.getMethod().getConstructorOrMethod();
         if (cm.getMethod() != null) {
-            Test testAnnotation = (Test) cm.getMethod().getAnnotation(Test.class);
+            Test testAnnotation = cm.getMethod().getAnnotation(Test.class);
             if (testAnnotation != null) {
                 String dataProvider = testAnnotation.dataProvider();
                 if (!Strings.isNullOrEmpty(dataProvider)) {
@@ -233,7 +233,7 @@ public class XMLSuiteResultWriter {
     protected String removeClassName(String methodSignature) {
         int firstParanthesisPos = methodSignature.indexOf("(");
         int dotAferClassPos = methodSignature.substring(0, firstParanthesisPos).lastIndexOf(".");
-        return methodSignature.substring(dotAferClassPos + 1, methodSignature.length());
+        return methodSignature.substring(dotAferClassPos + 1);
     }
 
     public void addTestMethodParams(XMLStringBuffer xmlBuffer, ITestResult testResult) {

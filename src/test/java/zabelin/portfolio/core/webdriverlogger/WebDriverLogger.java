@@ -16,28 +16,9 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class WebDriverLogger extends AbstractWebDriverEventListener {
-    private static Map<String, List<FindByEventRecord>> webDriverFindByLog = new ConcurrentHashMap();
+    private static final Map<String, List<FindByEventRecord>> webDriverFindByLog = new ConcurrentHashMap();
 
     public WebDriverLogger() {
-    }
-
-    public void beforeFindBy(By by, WebElement element, WebDriver driver) {
-        if (Listener.getTestCaseContext() != null) {
-            String sessionId = Listener.getTestCaseContext().getSessionId();
-            if (!sessionId.equals("null")) {
-                String locator = by.toString();
-                String url = driver.getCurrentUrl();
-                Object findByEventRecords;
-                if (webDriverFindByLog.containsKey(sessionId)) {
-                    findByEventRecords = (List) webDriverFindByLog.get(sessionId);
-                } else {
-                    findByEventRecords = new ArrayList();
-                    webDriverFindByLog.put(sessionId, (List<FindByEventRecord>) findByEventRecords);
-                }
-
-                ((List) findByEventRecords).add(new FindByEventRecord(locator, url));
-            }
-        }
     }
 
     public static synchronized Map<String, XPathUsageData> generateWebDriverLog() {
@@ -48,7 +29,7 @@ public class WebDriverLogger extends AbstractWebDriverEventListener {
                 findByEventRecords.forEach((findByEventRecord) -> {
                     XPathUsageData xPathUsageData;
                     if (webDriverLog.containsKey(findByEventRecord.locator)) {
-                        xPathUsageData = (XPathUsageData) webDriverLog.get(findByEventRecord.locator);
+                        xPathUsageData = webDriverLog.get(findByEventRecord.locator);
                     } else {
                         xPathUsageData = new XPathUsageData();
                         xPathUsageData.fullPath = findByEventRecord.locator.substring(findByEventRecord.locator.indexOf(" ") + 1);
@@ -69,5 +50,24 @@ public class WebDriverLogger extends AbstractWebDriverEventListener {
         }
 
         return webDriverLog;
+    }
+
+    public void beforeFindBy(By by, WebElement element, WebDriver driver) {
+        if (Listener.getTestCaseContext() != null) {
+            String sessionId = Listener.getTestCaseContext().getSessionId();
+            if (!sessionId.equals("null")) {
+                String locator = by.toString();
+                String url = driver.getCurrentUrl();
+                Object findByEventRecords;
+                if (webDriverFindByLog.containsKey(sessionId)) {
+                    findByEventRecords = webDriverFindByLog.get(sessionId);
+                } else {
+                    findByEventRecords = new ArrayList();
+                    webDriverFindByLog.put(sessionId, (List<FindByEventRecord>) findByEventRecords);
+                }
+
+                ((List) findByEventRecords).add(new FindByEventRecord(locator, url));
+            }
+        }
     }
 }

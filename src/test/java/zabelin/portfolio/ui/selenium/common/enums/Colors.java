@@ -51,9 +51,9 @@ public enum Colors {
     C_177_0_84(177, 0, 84);
 
 
-    private int red;
-    private int green;
-    private int blue;
+    private final int red;
+    private final int green;
+    private final int blue;
 
     Colors(int red, int green, int blue) {
         this.red = red;

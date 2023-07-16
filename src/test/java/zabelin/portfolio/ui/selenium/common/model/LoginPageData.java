@@ -44,6 +44,13 @@ public class LoginPageData extends EnvConstants {
         this.email = email;
     }
 
+    //for testing purposes
+    public static void reload(String env) {
+        Properties props = getPropertiesForEnv(env);
+        properties.clear();
+        properties.putAll(props);
+    }
+
     public String getUserName() {
         return userName;
     }
@@ -80,13 +87,6 @@ public class LoginPageData extends EnvConstants {
 
     public void setEmail(String email) {
         this.email = email;
-    }
-
-    //for testing purposes
-    public static void reload(String env) {
-        Properties props = getPropertiesForEnv(env);
-        properties.clear();
-        properties.putAll(props);
     }
 
     @Override

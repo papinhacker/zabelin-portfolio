@@ -17,6 +17,24 @@ public class MobileAppInfoHolder {
     public MobileAppInfoHolder() {
     }
 
+    public static SauceREST getSouceRest() throws Exception {
+        Map<String, String> sauceLabsCredentials = Listener.getSauceLabsCredentials();
+        String userName = sauceLabsCredentials.get("username");
+        String password = sauceLabsCredentials.get("password");
+        return new SauceREST(userName, password);
+    }
+
+    private static String getFileChecksum(File file) {
+        try {
+            byte[] b = Files.readAllBytes(Paths.get(file.getAbsolutePath()));
+            byte[] hash = MessageDigest.getInstance("MD5").digest(b);
+            return DatatypeConverter.printHexBinary(hash);
+        } catch (Exception var3) {
+            Log.error(var3.getMessage());
+            return "";
+        }
+    }
+
     public String checkAndUpload(File file) throws Exception {
         String hash = getFileChecksum(file);
         String appId = hash + "." + file.getName();
@@ -31,23 +49,5 @@ public class MobileAppInfoHolder {
         }
 
         return appId;
-    }
-
-    public static SauceREST getSouceRest() throws Exception {
-        Map<String, String> sauceLabsCredentials = Listener.getSauceLabsCredentials();
-        String userName = (String) sauceLabsCredentials.get("username");
-        String password = (String) sauceLabsCredentials.get("password");
-        return new SauceREST(userName, password);
-    }
-
-    private static String getFileChecksum(File file) {
-        try {
-            byte[] b = Files.readAllBytes(Paths.get(file.getAbsolutePath()));
-            byte[] hash = MessageDigest.getInstance("MD5").digest(b);
-            return DatatypeConverter.printHexBinary(hash);
-        } catch (Exception var3) {
-            Log.error(var3.getMessage());
-            return "";
-        }
     }
 }

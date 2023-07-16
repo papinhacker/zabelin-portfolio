@@ -1,4 +1,3 @@
-
 package zabelin.portfolio.core.ui;
 
 import org.apache.commons.io.FileUtils;
@@ -22,8 +21,8 @@ import java.util.concurrent.TimeUnit;
 
 public class BasePageObject {
 
-    protected WebDriver driver;
-
+    public static final String TRANSITION_TITLE = "loading";
+    public static final String TRANSITION_URL = "about:blank";
     private static final ExpectedCondition<Boolean> NON_EMPTY_PAGE_TITLE = new ExpectedCondition<Boolean>() {
         public Boolean apply(WebDriver browser) {
             return StringUtils.isNotEmpty(browser.getTitle());
@@ -33,18 +32,10 @@ public class BasePageObject {
             return "Page title to come up";
         }
     };
-
     protected static int short_timeout = 5;
     protected static int timeout = 30;
     protected static int long_timeout = 60;
-    public static final String TRANSITION_TITLE = "loading";
-    public static final String TRANSITION_URL = "about:blank";
-
-    public static void initConstants(int defaultTimeout) {
-        short_timeout = (int) Math.ceil((double) (defaultTimeout / 10));
-        timeout = defaultTimeout;
-        long_timeout = defaultTimeout * 3;
-    }
+    protected WebDriver driver;
 
     public BasePageObject(WebDriver driver) {
         this.driver = null;
@@ -55,7 +46,7 @@ public class BasePageObject {
         this(driver);
         long startTimer = System.currentTimeMillis();
         String actualUrl = null;
-        this.waitFor(NON_EMPTY_PAGE_TITLE, (long) timeout);
+        this.waitFor(NON_EMPTY_PAGE_TITLE, timeout);
 
         for (int i = 0; i < 60; ++i) {
             actualUrl = driver.getCurrentUrl();
@@ -82,10 +73,43 @@ public class BasePageObject {
         }
     }
 
+    public static void initConstants(int defaultTimeout) {
+        short_timeout = (int) Math.ceil(defaultTimeout / 10);
+        timeout = defaultTimeout;
+        long_timeout = defaultTimeout * 3;
+    }
+
+    public static boolean wait(int secs) throws InterruptedException {
+        int time = secs * 1000;
+
+        try {
+            Thread.sleep(time);
+            return true;
+        } catch (InterruptedException var3) {
+            Log.error("Method: wait");
+            Log.error("Error: There was a problem forcing to explicit wait");
+            Log.error("Exception: " + var3.getMessage());
+            throw var3;
+        }
+    }
+
+    public static String takeScreenShot(WebDriver driver, String fileName) {
+        try {
+            Log.info("Screen shot FileName: " + fileName);
+            File scrFile = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
+            File destFile = new File(System.getProperty("output.path") + File.separator + fileName);
+            FileUtils.copyFile(scrFile, destFile);
+            return destFile.getAbsolutePath();
+        } catch (Exception var4) {
+            var4.printStackTrace();
+            return null;
+        }
+    }
+
     protected void waitUntilElementIsVisible(By path, int timeout) {
         try {
             this.setImplicitWait(timeout);
-            WebDriverWait wait = new WebDriverWait(this.driver, (long) timeout);
+            WebDriverWait wait = new WebDriverWait(this.driver, timeout);
             wait.until(ExpectedConditions.visibilityOfElementLocated(path));
         } finally {
             this.setImplicitWait(DriverFactory.IMPLICIT_WAIT_TIME_OUT);
@@ -96,7 +120,7 @@ public class BasePageObject {
     protected void waitUntilElementIsInvisible(By path, int timeout) {
         try {
             this.setImplicitWait(0);
-            WebDriverWait wait = new WebDriverWait(this.driver, (long) timeout);
+            WebDriverWait wait = new WebDriverWait(this.driver, timeout);
             wait.until(ExpectedConditions.invisibilityOfElementLocated(path));
         } finally {
             this.setImplicitWait(DriverFactory.IMPLICIT_WAIT_TIME_OUT);
@@ -108,8 +132,8 @@ public class BasePageObject {
         WebElement webElement;
         try {
             this.setImplicitWait(timeout);
-            WebDriverWait wait = new WebDriverWait(this.driver, (long) timeout);
-            webElement = (WebElement) wait.until(ExpectedConditions.elementToBeClickable(path));
+            WebDriverWait wait = new WebDriverWait(this.driver, timeout);
+            webElement = wait.until(ExpectedConditions.elementToBeClickable(path));
         } finally {
             this.setImplicitWait(DriverFactory.IMPLICIT_WAIT_TIME_OUT);
         }
@@ -121,8 +145,8 @@ public class BasePageObject {
         boolean condition;
         try {
             this.setImplicitWait(timeout);
-            WebDriverWait wait = new WebDriverWait(this.driver, (long) timeout);
-            condition = (Boolean) wait.until(ExpectedConditions.elementToBeSelected(path));
+            WebDriverWait wait = new WebDriverWait(this.driver, timeout);
+            condition = wait.until(ExpectedConditions.elementToBeSelected(path));
         } finally {
             this.setImplicitWait(DriverFactory.IMPLICIT_WAIT_TIME_OUT);
         }
@@ -131,13 +155,13 @@ public class BasePageObject {
     }
 
     public boolean waitUntilTitleContains(String text, int timeout) {
-        WebDriverWait wait = new WebDriverWait(this.driver, (long) timeout);
-        return (Boolean) wait.until(ExpectedConditions.titleContains(text));
+        WebDriverWait wait = new WebDriverWait(this.driver, timeout);
+        return wait.until(ExpectedConditions.titleContains(text));
     }
 
     public boolean waitUntilTitleIs(String text, int timeout) {
-        WebDriverWait wait = new WebDriverWait(this.driver, (long) timeout);
-        return (Boolean) wait.until(ExpectedConditions.titleIs(text));
+        WebDriverWait wait = new WebDriverWait(this.driver, timeout);
+        return wait.until(ExpectedConditions.titleIs(text));
     }
 
     protected void waitFor(ExpectedCondition<Boolean> condition, long timeoutSecs) {
@@ -156,23 +180,9 @@ public class BasePageObject {
         return this.driver.getTitle();
     }
 
-    public static boolean wait(int secs) throws InterruptedException {
-        int time = secs * 1000;
-
-        try {
-            Thread.sleep((long) time);
-            return true;
-        } catch (InterruptedException var3) {
-            Log.error("Method: wait");
-            Log.error("Error: There was a problem forcing to explicit wait");
-            Log.error("Exception: " + var3.getMessage());
-            throw var3;
-        }
-    }
-
     public boolean waitAndTypeOnAlert(String text) throws InterruptedException {
         try {
-            WebDriverWait wait = new WebDriverWait(this.driver, (long) timeout);
+            WebDriverWait wait = new WebDriverWait(this.driver, timeout);
             wait.until(ExpectedConditions.alertIsPresent());
             this.driver.switchTo().alert().sendKeys(text);
             return true;
@@ -184,19 +194,6 @@ public class BasePageObject {
         }
     }
 
-    public static String takeScreenShot(WebDriver driver, String fileName) {
-        try {
-            Log.info("Screen shot FileName: " + fileName);
-            File scrFile = (File) ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
-            File destFile = new File(System.getProperty("output.path") + File.separator + fileName);
-            FileUtils.copyFile(scrFile, destFile);
-            return destFile.getAbsolutePath();
-        } catch (Exception var4) {
-            var4.printStackTrace();
-            return null;
-        }
-    }
-
     public String takeScreenShot(String fileName) {
         return takeScreenShot(this.driver, fileName);
     }
@@ -204,7 +201,7 @@ public class BasePageObject {
     protected boolean jsExecute(String script) throws InterruptedException {
         try {
             JavascriptExecutor js = (JavascriptExecutor) this.driver;
-            js.executeScript(script, new Object[0]);
+            js.executeScript(script);
             return true;
         } catch (Exception var3) {
             Log.error("Method: jsExecute");
@@ -275,7 +272,7 @@ public class BasePageObject {
     }
 
     protected void setImplicitWait(int seconds) {
-        this.driver.manage().timeouts().implicitlyWait((long) seconds, TimeUnit.SECONDS);
+        this.driver.manage().timeouts().implicitlyWait(seconds, TimeUnit.SECONDS);
     }
 
     public boolean switchToDefaultContent() throws InterruptedException {
@@ -340,7 +337,7 @@ public class BasePageObject {
     public boolean switchToWindow(int windowNumber, int timeout) throws InterruptedException {
         try {
             if (timeout > 0) {
-                (new WebDriverWait(this.driver, (long) timeout)).until((driver1) -> {
+                (new WebDriverWait(this.driver, timeout)).until((driver1) -> {
                     return this.driver.getWindowHandles().size() - 1 >= windowNumber;
                 });
             }
@@ -370,7 +367,7 @@ public class BasePageObject {
     public boolean switchToWindow(String handle, int timeout) throws InterruptedException {
         try {
             if (timeout > 0) {
-                (new WebDriverWait(this.driver, (long) timeout)).until((driver1) -> {
+                (new WebDriverWait(this.driver, timeout)).until((driver1) -> {
                     return this.driver.getWindowHandles().contains(handle);
                 });
             }
@@ -422,7 +419,7 @@ public class BasePageObject {
     public String waitAndGetTitle(int sec) throws InterruptedException {
         try {
             Thread.sleep(500L);
-            long timeOutMilliSecond = (long) (sec * 1000);
+            long timeOutMilliSecond = sec * 1000L;
             long startTimer = System.currentTimeMillis();
 
             for (long endTimer = startTimer; endTimer - startTimer < timeOutMilliSecond; endTimer = System.currentTimeMillis()) {
@@ -449,7 +446,7 @@ public class BasePageObject {
         try {
             String actualTitle = this.getCurrentTitle();
             long startTimer = System.currentTimeMillis();
-            long endTimer = startTimer + (long) (seconds * 1000);
+            long endTimer = startTimer + (long) (seconds * 1000L);
 
             while (actualTitle.equals(title) || actualTitle.equals("loading") || actualTitle.isEmpty()) {
                 actualTitle = this.getCurrentTitle();
@@ -484,8 +481,8 @@ public class BasePageObject {
     }
 
     public boolean waitUntilUrlContains(String subString, int timeout) {
-        WebDriverWait wait = new WebDriverWait(this.driver, (long) timeout);
-        return (Boolean) wait.until(ExpectedConditions.urlContains(subString));
+        WebDriverWait wait = new WebDriverWait(this.driver, timeout);
+        return wait.until(ExpectedConditions.urlContains(subString));
     }
 
     public boolean waitUntilUrlIs(String url) {
@@ -493,8 +490,8 @@ public class BasePageObject {
     }
 
     public boolean waitUntilUrlIs(String url, int timeout) {
-        WebDriverWait wait = new WebDriverWait(this.driver, (long) timeout);
-        return (Boolean) wait.until(ExpectedConditions.urlToBe(url));
+        WebDriverWait wait = new WebDriverWait(this.driver, timeout);
+        return wait.until(ExpectedConditions.urlToBe(url));
     }
 
     public String waitAndGetUntilURLIsDifferent(String URL) throws InterruptedException {
@@ -504,7 +501,7 @@ public class BasePageObject {
     public String waitAndGetUntilURLIsDifferent(String URL, int timeout) throws InterruptedException {
         try {
             String actualURL = this.getCurrentUrl();
-            long endTimer = System.currentTimeMillis() + (long) (timeout * 1000);
+            long endTimer = System.currentTimeMillis() + (long) (timeout * 1000L);
 
             while (actualURL.equals(URL) || actualURL.equals("about:blank") || actualURL.isEmpty()) {
                 actualURL = this.getCurrentUrl();
@@ -552,7 +549,7 @@ public class BasePageObject {
     }
 
     public void dismissAlert(int timeout) {
-        WebDriverWait wait = new WebDriverWait(this.driver, (long) timeout);
+        WebDriverWait wait = new WebDriverWait(this.driver, timeout);
         wait.until(ExpectedConditions.alertIsPresent());
         this.driver.switchTo().alert().dismiss();
     }
@@ -571,7 +568,7 @@ public class BasePageObject {
     }
 
     public void acceptAlert(int timeout) {
-        WebDriverWait wait = new WebDriverWait(this.driver, (long) timeout);
+        WebDriverWait wait = new WebDriverWait(this.driver, timeout);
         wait.until(ExpectedConditions.alertIsPresent());
         this.driver.switchTo().alert().accept();
     }
@@ -646,7 +643,7 @@ public class BasePageObject {
         this.setImplicitWait(0);
         List<WebElement> webElementList = this.driver.findElements(by);
         this.setImplicitWait(DriverFactory.IMPLICIT_WAIT_TIME_OUT);
-        return webElementList.size() > 0 && ((WebElement) webElementList.get(0)).isDisplayed();
+        return webElementList.size() > 0 && webElementList.get(0).isDisplayed();
     }
 
     protected boolean isElementVisible(By by, int timeout) throws InterruptedException {
@@ -658,10 +655,10 @@ public class BasePageObject {
         if (webElementList.size() > 0) {
             try {
                 if (timeSpent < (long) timeout) {
-                    (new WebDriverWait(this.driver, (long) timeout - timeSpent)).until(ExpectedConditions.visibilityOf((WebElement) webElementList.get(0)));
+                    (new WebDriverWait(this.driver, (long) timeout - timeSpent)).until(ExpectedConditions.visibilityOf(webElementList.get(0)));
                 }
 
-                return ((WebElement) webElementList.get(0)).isDisplayed();
+                return webElementList.get(0).isDisplayed();
             } catch (Exception var9) {
                 return false;
             }
@@ -695,7 +692,7 @@ public class BasePageObject {
     }
 
     public String getAlertText(int timeout) {
-        WebDriverWait wait = new WebDriverWait(this.driver, (long) timeout);
+        WebDriverWait wait = new WebDriverWait(this.driver, timeout);
         wait.until(ExpectedConditions.alertIsPresent());
         return this.driver.switchTo().alert().getText();
     }
@@ -848,7 +845,7 @@ public class BasePageObject {
     }
 
     protected String waitAndGetWhileCssAttributeValueStabilize(final WebElement webElement, final String cssAttributeName) throws Exception {
-        (new WebDriverWait(this.driver, (long) timeout)).until(new ExpectedCondition<Boolean>() {
+        (new WebDriverWait(this.driver, timeout)).until(new ExpectedCondition<Boolean>() {
             String oldText = webElement.getCssValue(cssAttributeName);
 
             public Boolean apply(WebDriver driver) {
@@ -869,7 +866,7 @@ public class BasePageObject {
     }
 
     protected String waitAndGetWhileWebElementImplTextIsNotEmpty(WebElementImpl webElementImpl) throws Exception {
-        (new WebDriverWait(this.driver, (long) timeout)).until((driver) -> {
+        (new WebDriverWait(this.driver, timeout)).until((driver) -> {
             try {
                 return webElementImpl.getText(timeout).equals("");
             } catch (Exception var3) {
@@ -881,7 +878,7 @@ public class BasePageObject {
 
     protected String waitAndGetUntilTextIsDifferent(WebElementImpl webElement) throws Exception {
         String oldText = webElement.getText(timeout);
-        (new WebDriverWait(this.driver, (long) timeout)).until((driver) -> {
+        (new WebDriverWait(this.driver, timeout)).until((driver) -> {
             try {
                 String actualText = webElement.getText(timeout);
                 return !oldText.equals(actualText) && !"".equals(actualText);

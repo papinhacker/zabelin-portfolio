@@ -12,24 +12,24 @@ import java.util.Iterator;
 import java.util.List;
 
 public class WebTableImpl extends WebElementImpl {
-    private String XPATH_SPAN = ".//span";
-    private String XPATH_I = ".//i";
-    private String XPATH_INPUT = ".//input";
-    private String XPATH_TH = ".//th";
-    private String XPATH_SPECIFIC_TEXT_TH = ".//th[normalize-space(.)=%s]";
-    private String XPATH_SPECIFIC_LINK_TEXT_TD = ".//td//a[normalize-space(.)=%s]";
-    private String XPATH_SPECIFIC_TEXT_TD = ".//td[normalize-space(.)=%s]";
-    private String XPATH_SPECIFIC_TEXT_CONTAINING_TD = ".//td[contains(normalize-space(.), %s)]";
-    private String XPATH_SPECIFIC_INDEX_TD = ".//td[%s]";
-    private String XPATH_SPECIFIC_TEXT_TBODY_TR = ".//tr[not(ancestor::thead) and contains(.,%s)]";
-    private String XPATH_SPECIFIC_TEXT_AND_COLUMN_INDEX_TBODY_TR = ".//tr[not(ancestor::thead) and td[%s and .=%s]]";
-    private String XPATH_SPECIFIC_TEXT_FIRST_TD_ANY_TD_SPAN_IN_THIS_ROW = ".//tr[td[1]/descendant-or-self::*[normalize-space(.)=%s]]//td//span";
-    private String XPATH_SPECIFIC_TEXT_FIRST_TD_SPECIFIC_COLUMN_SPAN = ".//tr[td[1]/descendant-or-self::*[normalize-space(.)=%s]]//td[%s]//span";
-    private String XPATH_SPECIFIC_TEXT_FIRST_TD_ANY_TD_I_IN_THIS_ROW = ".//tr[td[1]/descendant-or-self::*[normalize-space(.)=%s]]//td//i";
-    private String XPATH_SPECIFIC_TEXT_FIRST_TD_SPECIFIC_COLUMN_I = ".//tr[td[1]/descendant-or-self::*[normalize-space(.)=%s]]//td[%s]//i";
-    private String XPATH_FIND_ROW_BY_CELL_TEXT = ".//tr[td[1]/descendant-or-self::*[normalize-space(.)=%s]]";
-    private String CSS_TBODY_SPECIFIC_ROW_TD = "tbody>tr:nth-child(%s)>td";
-    private String XPATH_TBODY_SPECIFIC_ROW_TD_SPECIFIC_TEXT_LINK = ".//tr[%s]/td//a[.=%s]";
+    private final String XPATH_SPAN = ".//span";
+    private final String XPATH_I = ".//i";
+    private final String XPATH_INPUT = ".//input";
+    private final String XPATH_TH = ".//th";
+    private final String XPATH_SPECIFIC_TEXT_TH = ".//th[normalize-space(.)=%s]";
+    private final String XPATH_SPECIFIC_LINK_TEXT_TD = ".//td//a[normalize-space(.)=%s]";
+    private final String XPATH_SPECIFIC_TEXT_TD = ".//td[normalize-space(.)=%s]";
+    private final String XPATH_SPECIFIC_TEXT_CONTAINING_TD = ".//td[contains(normalize-space(.), %s)]";
+    private final String XPATH_SPECIFIC_INDEX_TD = ".//td[%s]";
+    private final String XPATH_SPECIFIC_TEXT_TBODY_TR = ".//tr[not(ancestor::thead) and contains(.,%s)]";
+    private final String XPATH_SPECIFIC_TEXT_AND_COLUMN_INDEX_TBODY_TR = ".//tr[not(ancestor::thead) and td[%s and .=%s]]";
+    private final String XPATH_SPECIFIC_TEXT_FIRST_TD_ANY_TD_SPAN_IN_THIS_ROW = ".//tr[td[1]/descendant-or-self::*[normalize-space(.)=%s]]//td//span";
+    private final String XPATH_SPECIFIC_TEXT_FIRST_TD_SPECIFIC_COLUMN_SPAN = ".//tr[td[1]/descendant-or-self::*[normalize-space(.)=%s]]//td[%s]//span";
+    private final String XPATH_SPECIFIC_TEXT_FIRST_TD_ANY_TD_I_IN_THIS_ROW = ".//tr[td[1]/descendant-or-self::*[normalize-space(.)=%s]]//td//i";
+    private final String XPATH_SPECIFIC_TEXT_FIRST_TD_SPECIFIC_COLUMN_I = ".//tr[td[1]/descendant-or-self::*[normalize-space(.)=%s]]//td[%s]//i";
+    private final String XPATH_FIND_ROW_BY_CELL_TEXT = ".//tr[td[1]/descendant-or-self::*[normalize-space(.)=%s]]";
+    private final String CSS_TBODY_SPECIFIC_ROW_TD = "tbody>tr:nth-child(%s)>td";
+    private final String XPATH_TBODY_SPECIFIC_ROW_TD_SPECIFIC_TEXT_LINK = ".//tr[%s]/td//a[.=%s]";
 
     public WebTableImpl(WebDriver driver, WebElement element) {
         super(driver, element);
@@ -47,7 +47,7 @@ public class WebTableImpl extends WebElementImpl {
     public int getColumnCount() throws Exception {
         try {
             List<WebElement> tableRows = this.WebElement.findElements(By.tagName("tr"));
-            WebElement headerRow = (WebElement) tableRows.get(0);
+            WebElement headerRow = tableRows.get(0);
             List<WebElement> tableCols = headerRow.findElements(By.tagName("th"));
             return tableCols.size();
         } catch (NoSuchElementException var4) {
@@ -59,8 +59,8 @@ public class WebTableImpl extends WebElementImpl {
     public WebElement getCellWebElement(int rowIdx, int colIdx) throws Exception {
         try {
             List<WebElement> tableRows = this.WebElement.findElements(By.tagName("tr"));
-            List<WebElement> tableCols = ((WebElement) tableRows.get(rowIdx)).findElements(By.tagName("td"));
-            return (WebElement) tableCols.get(colIdx);
+            List<WebElement> tableCols = tableRows.get(rowIdx).findElements(By.tagName("td"));
+            return tableCols.get(colIdx);
         } catch (NoSuchElementException var5) {
             Log.error(var5.toString());
             throw var5;
@@ -131,8 +131,8 @@ public class WebTableImpl extends WebElementImpl {
         try {
             List<WebElement> header = this.WebElement.findElements(By.xpath(String.format(this.XPATH_SPECIFIC_TEXT_TH, Quotes.escape(headerText))));
             if (header.size() > 0) {
-                ((WebElement) header.get(0)).click();
-                return (WebElement) header.get(0);
+                header.get(0).click();
+                return header.get(0);
             } else {
                 return null;
             }
@@ -149,8 +149,8 @@ public class WebTableImpl extends WebElementImpl {
             WebElement we = null;
 
             for (int i = 0; i < header.size(); ++i) {
-                if (((WebElement) header.get(i)).getText().equalsIgnoreCase(headerText)) {
-                    we = (WebElement) header.get(i);
+                if (header.get(i).getText().equalsIgnoreCase(headerText)) {
+                    we = header.get(i);
                     we.click();
                     break;
                 }
@@ -180,8 +180,8 @@ public class WebTableImpl extends WebElementImpl {
             List<WebElement> cells = this.WebElement.findElements(By.xpath(String.format(this.XPATH_SPECIFIC_LINK_TEXT_TD, Quotes.escape(cellLinkText))));
             WebElement we = null;
             if (cells.size() > 0) {
-                we = (WebElement) cells.get(0);
-                ((WebElement) cells.get(0)).click();
+                we = cells.get(0);
+                cells.get(0).click();
             }
 
             return we;
@@ -197,8 +197,8 @@ public class WebTableImpl extends WebElementImpl {
             List<WebElement> rowCells = this.WebElement.findElements(By.xpath(String.format(this.XPATH_TBODY_SPECIFIC_ROW_TD_SPECIFIC_TEXT_LINK, rowIndex + 1, Quotes.escape(linkText))));
             WebElement we = null;
             if (rowCells.size() > 0) {
-                we = (WebElement) rowCells.get(0);
-                ((WebElement) rowCells.get(0)).click();
+                we = rowCells.get(0);
+                rowCells.get(0).click();
             }
 
             return we;
@@ -215,8 +215,8 @@ public class WebTableImpl extends WebElementImpl {
             WebElement we = null;
 
             for (int i = 0; i < cells.size(); ++i) {
-                if (((WebElement) cells.get(i)).getText().equalsIgnoreCase(cellLinkText)) {
-                    we = (WebElement) cells.get(i);
+                if (cells.get(i).getText().equalsIgnoreCase(cellLinkText)) {
+                    we = cells.get(i);
                     we.click();
                     break;
                 }
@@ -251,8 +251,8 @@ public class WebTableImpl extends WebElementImpl {
         try {
             List<WebElement> cells = this.WebElement.findElements(By.xpath(String.format(this.XPATH_SPECIFIC_TEXT_TD, Quotes.escape(cellText))));
             if (cells.size() > 0) {
-                ((WebElement) cells.get(0)).click();
-                return (WebElement) cells.get(0);
+                cells.get(0).click();
+                return cells.get(0);
             } else {
                 return null;
             }
@@ -279,8 +279,8 @@ public class WebTableImpl extends WebElementImpl {
             WebElement we = null;
 
             for (int i = 0; i < cells.size(); ++i) {
-                if (((WebElement) cells.get(i)).getText().equalsIgnoreCase(cellText)) {
-                    we = (WebElement) cells.get(i);
+                if (cells.get(i).getText().equalsIgnoreCase(cellText)) {
+                    we = cells.get(i);
                     we.click();
                     break;
                 }
@@ -331,7 +331,7 @@ public class WebTableImpl extends WebElementImpl {
             WebElement cell = this.getCellWebElement(rowIdx, colIdx);
             cell = cell.findElement(By.xpath(this.XPATH_INPUT));
             cell.clear();
-            cell.sendKeys(new CharSequence[]{text});
+            cell.sendKeys(text);
             return cell;
         } catch (Exception var6) {
             Log.error("Method: waitClearAndFillTextBoxInTableByIndex()");
@@ -378,7 +378,7 @@ public class WebTableImpl extends WebElementImpl {
     public WebElement getFirstWebElementCellContainingText(String text) throws Exception {
         try {
             List<WebElement> cells = this.WebElement.findElements(By.xpath(String.format(this.XPATH_SPECIFIC_TEXT_CONTAINING_TD, Quotes.escape(text))));
-            return (WebElement) cells.get(0);
+            return cells.get(0);
         } catch (Exception var3) {
             Log.error("Method: getFirstWebElementCellContainingText()");
             Log.error("Exception: " + var3.getMessage());

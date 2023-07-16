@@ -18,27 +18,6 @@ public final class EncryptSettings {
         init();
     }
 
-    private final static class PasswordSecretKey implements SecretKey {
-
-        private final byte[] key;
-
-        public PasswordSecretKey(byte[] key) {
-            this.key = key;
-        }
-
-        public String getAlgorithm() {
-            return "DES";
-        }
-
-        public String getFormat() {
-            return "RAW";
-        }
-
-        public byte[] getEncoded() {
-            return key;
-        }
-    }
-
     private void init() {
         try {
             ecipher = Cipher.getInstance("DES");
@@ -82,5 +61,26 @@ public final class EncryptSettings {
             e.printStackTrace();
         }
         return null;
+    }
+
+    private final static class PasswordSecretKey implements SecretKey {
+
+        private final byte[] key;
+
+        public PasswordSecretKey(byte[] key) {
+            this.key = key;
+        }
+
+        public String getAlgorithm() {
+            return "DES";
+        }
+
+        public String getFormat() {
+            return "RAW";
+        }
+
+        public byte[] getEncoded() {
+            return key;
+        }
     }
 }

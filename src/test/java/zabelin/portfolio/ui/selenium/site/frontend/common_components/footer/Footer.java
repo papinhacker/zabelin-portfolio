@@ -5,16 +5,16 @@ import zabelin.portfolio.ui.selenium.common.utils.SiteHelper;
 
 public class Footer extends SiteHelper {
 
-    public Footer(WebDriver driver) {
-        super(driver);
-        widgetLoading();
-    }
+    private static final String BASE = "//div[contains(text(), 'Powered by')]";
 
     /* **************************************
      *************** Locators ***************
      ***************************************/
 
-    private static final String BASE = "//div[contains(text(), 'Powered by')]";
+    public Footer(WebDriver driver) {
+        super(driver);
+        widgetLoading();
+    }
 
     /* **************************************
      *************** Methods ****************

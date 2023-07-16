@@ -11,14 +11,6 @@ public class TestInfo {
     private long duration;
     private long ts;
 
-    public long getTs() {
-        return this.ts;
-    }
-
-    public void setTs(long ts) {
-        this.ts = ts;
-    }
-
     public TestInfo() {
     }
 
@@ -29,6 +21,14 @@ public class TestInfo {
         this.status = status;
         this.isConfiguration = isConfiguration;
         this.duration = duration;
+        this.ts = ts;
+    }
+
+    public long getTs() {
+        return this.ts;
+    }
+
+    public void setTs(long ts) {
         this.ts = ts;
     }
 
@@ -96,6 +96,6 @@ public class TestInfo {
     }
 
     public int hashCode() {
-        return Objects.hash(new Object[]{this.className, this.methodName, this.methodDescription, this.status, this.isConfiguration, this.duration, this.ts});
+        return Objects.hash(this.className, this.methodName, this.methodDescription, this.status, this.isConfiguration, this.duration, this.ts);
     }
 }

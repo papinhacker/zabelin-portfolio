@@ -1,11 +1,5 @@
 package zabelin.portfolio.ui.selenium.common.resourcespool;
 
-//import com.weedmaps.api.Exchange.DataItems.utils.HeadersHelper;
-//import com.weedmaps.ui.common.model.LoginPageData;
-//import org.apache.http.message.BasicHeader;
-
-//import static com.weedmaps.api.gql.utils.GqlApiHelper.getJWT;
-
 public class User implements Blockable {
 
     //    private LoginPageData loginPageData;

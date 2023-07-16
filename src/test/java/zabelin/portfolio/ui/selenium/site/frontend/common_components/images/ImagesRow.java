@@ -5,19 +5,19 @@ import zabelin.portfolio.ui.selenium.common.utils.SiteWidgetContainer;
 
 public class ImagesRow extends SiteWidgetContainer {
 
+    private final String images = CONTAINER_BASE + "//img";
+
     public ImagesRow(WebDriver driver, String base) {
         super(driver, base);
-    }
-
-    private ImagesRow(WebDriver driver, String base, int index) {
-        super(driver, base, index);
     }
 
     /* **************************************
      *************** Locators ***************
      ***************************************/
 
-    private String images = CONTAINER_BASE + "//img";
+    private ImagesRow(WebDriver driver, String base, int index) {
+        super(driver, base, index);
+    }
 
     /* **************************************
      *************** Methods ****************

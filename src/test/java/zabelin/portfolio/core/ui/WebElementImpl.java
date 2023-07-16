@@ -17,7 +17,7 @@ public class WebElementImpl {
 
     public WebElementImpl waitForVisibility(int timeout) throws Exception {
         try {
-            (new WebDriverWait(this.driver, (long) timeout)).until(ExpectedConditions.visibilityOf(this.WebElement));
+            (new WebDriverWait(this.driver, timeout)).until(ExpectedConditions.visibilityOf(this.WebElement));
             return this;
         } catch (Exception var3) {
             Log.error("Method: waitForVisibility()");
@@ -29,7 +29,7 @@ public class WebElementImpl {
 
     public WebElementImpl waitForInvisibility(int timeout) throws Exception {
         try {
-            (new WebDriverWait(this.driver, (long) timeout)).until(ExpectedConditions.invisibilityOf(this.WebElement));
+            (new WebDriverWait(this.driver, timeout)).until(ExpectedConditions.invisibilityOf(this.WebElement));
             return this;
         } catch (Exception var3) {
             Log.error("Method: waitForInvisibility()");
@@ -41,7 +41,7 @@ public class WebElementImpl {
 
     public WebElementImpl waitForClickability(int timeout) throws Exception {
         try {
-            (new WebDriverWait(this.driver, (long) timeout)).until(ExpectedConditions.elementToBeClickable(this.WebElement));
+            (new WebDriverWait(this.driver, timeout)).until(ExpectedConditions.elementToBeClickable(this.WebElement));
             return this;
         } catch (Exception var3) {
             Log.error("Method: waitForClickability()");
@@ -69,7 +69,7 @@ public class WebElementImpl {
 
     public WebElementImpl sendKeys(String keys) throws Exception {
         try {
-            this.WebElement.sendKeys(new CharSequence[]{keys});
+            this.WebElement.sendKeys(keys);
             return this;
         } catch (Exception var3) {
             Log.error("Method: sendKeys()");
@@ -141,7 +141,7 @@ public class WebElementImpl {
 
     public boolean isDisplayed(int timeout) throws Exception {
         try {
-            (new WebDriverWait(this.driver, (long) timeout)).until(ExpectedConditions.visibilityOf(this.WebElement));
+            (new WebDriverWait(this.driver, timeout)).until(ExpectedConditions.visibilityOf(this.WebElement));
             return true;
         } catch (TimeoutException var3) {
             return false;
@@ -166,7 +166,7 @@ public class WebElementImpl {
 
     public boolean isEnabled(int timeout) throws Exception {
         try {
-            (new WebDriverWait(this.driver, (long) timeout)).until(ExpectedConditions.elementToBeClickable(this.WebElement));
+            (new WebDriverWait(this.driver, timeout)).until(ExpectedConditions.elementToBeClickable(this.WebElement));
             return true;
         } catch (TimeoutException var3) {
             return false;
@@ -195,7 +195,7 @@ public class WebElementImpl {
 
     public WebElementImpl clickJS() throws Exception {
         try {
-            ((JavascriptExecutor) this.driver).executeScript("var evt = document.createEvent('MouseEvents');evt.initMouseEvent('click',true, true, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);arguments[0].dispatchEvent(evt);", new Object[]{this.WebElement});
+            ((JavascriptExecutor) this.driver).executeScript("var evt = document.createEvent('MouseEvents');evt.initMouseEvent('click',true, true, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);arguments[0].dispatchEvent(evt);", this.WebElement);
             return this;
         } catch (Exception var2) {
             Log.error("Method: clickJS()");
@@ -211,7 +211,7 @@ public class WebElementImpl {
 
     public WebElementImpl doubleClickJS() throws Exception {
         try {
-            ((JavascriptExecutor) this.driver).executeScript("var evt = document.createEvent('MouseEvents');evt.initMouseEvent('dblclick',true, true, window, 0, 0, 0, 0, 0, false, false, false, false, 0,null);arguments[0].dispatchEvent(evt);", new Object[]{this.WebElement});
+            ((JavascriptExecutor) this.driver).executeScript("var evt = document.createEvent('MouseEvents');evt.initMouseEvent('dblclick',true, true, window, 0, 0, 0, 0, 0, false, false, false, false, 0,null);arguments[0].dispatchEvent(evt);", this.WebElement);
             return this;
         } catch (Exception var2) {
             Log.error("Method: doubleClickJS()");
@@ -243,7 +243,7 @@ public class WebElementImpl {
 
     public WebElementImpl rightClickJS() throws Exception {
         try {
-            ((JavascriptExecutor) this.driver).executeScript("var evt = document.createEvent('MouseEvents');evt.initMouseEvent('contextmenu',true, true, window, 1, 300, 300, 300, 300, false, false, false, false, 0,null);arguments[0].dispatchEvent(evt);", new Object[]{this.WebElement});
+            ((JavascriptExecutor) this.driver).executeScript("var evt = document.createEvent('MouseEvents');evt.initMouseEvent('contextmenu',true, true, window, 1, 300, 300, 300, 300, false, false, false, false, 0,null);arguments[0].dispatchEvent(evt);", this.WebElement);
             return this;
         } catch (Exception var2) {
             Log.error("Method: rightClickJS()");
@@ -259,7 +259,7 @@ public class WebElementImpl {
 
     public WebElementImpl clickJQ() throws Exception {
         try {
-            ((JavascriptExecutor) this.driver).executeScript("$(arguments[0]).click();", new Object[]{this.WebElement});
+            ((JavascriptExecutor) this.driver).executeScript("$(arguments[0]).click();", this.WebElement);
             return this;
         } catch (Exception var2) {
             Log.error("Method: clickJQ()");
@@ -275,7 +275,7 @@ public class WebElementImpl {
 
     public WebElementImpl scrollTo(boolean align) throws Exception {
         try {
-            ((JavascriptExecutor) this.driver).executeScript("arguments[0].scrollIntoView(" + align + ");", new Object[]{this.WebElement});
+            ((JavascriptExecutor) this.driver).executeScript("arguments[0].scrollIntoView(" + align + ");", this.WebElement);
             return this;
         } catch (Exception var3) {
             Log.error("Method: scrollTo()");
@@ -287,7 +287,7 @@ public class WebElementImpl {
 
     public void waitForElementIsNotPresent(int timeout) throws Exception {
         try {
-            WebDriverWait wait = new WebDriverWait(this.driver, (long) timeout);
+            WebDriverWait wait = new WebDriverWait(this.driver, timeout);
             if (!(Boolean) wait.until(ExpectedConditions.stalenessOf(this.WebElement))) {
                 throw new Exception("Unable to find the WebElement while waiting for " + timeout + " to remove from DOM.");
             }

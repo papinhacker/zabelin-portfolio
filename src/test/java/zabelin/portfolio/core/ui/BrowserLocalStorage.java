@@ -5,7 +5,7 @@ import org.openqa.selenium.WebDriver;
 import zabelin.portfolio.core.common.Log;
 
 public class BrowserLocalStorage {
-    private JavascriptExecutor js;
+    private final JavascriptExecutor js;
     private WebDriver driver;
 
     public BrowserLocalStorage(WebDriver driver) {
@@ -13,11 +13,11 @@ public class BrowserLocalStorage {
     }
 
     public void removeItemFromLocalStorage(String item) {
-        this.js.executeScript(String.format("window.localStorage.removeItem('%s');", item), new Object[0]);
+        this.js.executeScript(String.format("window.localStorage.removeItem('%s');", item));
     }
 
     public boolean isItemPresentInLocalStorage(String item) {
-        return this.js.executeScript(String.format("return window.localStorage.getItem('%s');", item), new Object[0]) != null;
+        return this.js.executeScript(String.format("return window.localStorage.getItem('%s');", item)) != null;
     }
 
     public String getItemFromLocalStorage(String key) {
@@ -34,10 +34,10 @@ public class BrowserLocalStorage {
 
     public void setItemInLocalStorage(String item, String value) {
         Log.info(String.format("Add to local store : key -[%s]; value -[%s].", item, value));
-        this.js.executeScript(String.format("window.localStorage.setItem('%s','%s');", item, value), new Object[0]);
+        this.js.executeScript(String.format("window.localStorage.setItem('%s','%s');", item, value));
     }
 
     public void clearLocalStorage() {
-        this.js.executeScript(String.format("window.localStorage.clear();"), new Object[0]);
+        this.js.executeScript("window.localStorage.clear();");
     }
 }

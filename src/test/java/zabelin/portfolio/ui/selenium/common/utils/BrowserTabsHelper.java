@@ -36,7 +36,7 @@ public class BrowserTabsHelper {
      */
     public static void waitForWindowsCount(WebDriver driver, int windowsCount, int timeout) throws InterruptedException {
         try {
-            new WebDriverWait(driver, (long) timeout).until((driver1) -> driver.getWindowHandles().size() >= windowsCount);
+            new WebDriverWait(driver, timeout).until((driver1) -> driver.getWindowHandles().size() >= windowsCount);
         } catch (Exception e) {
             throw new InterruptedException("Unable to wait for windows count to be " + windowsCount);
         }

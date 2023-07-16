@@ -9,20 +9,20 @@ import java.util.Date;
 import java.util.TimeZone;
 
 public class DateUtil {
+    public static final SimpleDateFormat MM_DD_YYYY = new SimpleDateFormat("MM/dd/yyyy");
+    public static final SimpleDateFormat MM_DD_YY = new SimpleDateFormat("MM/dd/yy");
+    public static final SimpleDateFormat MMM_DD_YYYY = new SimpleDateFormat("MMM dd,yyyy");
+    public static final SimpleDateFormat DAY_YYYY_MM_DD_HH_MM_SS_Z = new SimpleDateFormat("E_yyyy.MM.dd_HH.mm.ss_z");
     private static final SimpleDateFormat YYYY_MM_DD_HH_SS_MM_SSS = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss.SSS");
     private static final SimpleDateFormat YYYY_MM_DD_HH_MM_SS = new SimpleDateFormat("yyyy_MM_dd_hh_mm_ss");
     private static final SimpleDateFormat YYYY_MM_DD_HH_MM_SS_SSS = new SimpleDateFormat("yyyy_MM_dd_hh_mm_ss_SSS");
-    public static final SimpleDateFormat MM_DD_YYYY = new SimpleDateFormat("MM/dd/yyyy");
     private static final SimpleDateFormat YYYY_MM_DD = new SimpleDateFormat("yyyy/MM/dd");
-    public static final SimpleDateFormat MM_DD_YY = new SimpleDateFormat("MM/dd/yy");
     private static final SimpleDateFormat MM_DD_YYYY_KKMM = new SimpleDateFormat("MM/dd/yyyy kk:mm");
     private static final SimpleDateFormat YYYY_MM_DD_KKMMSS = new SimpleDateFormat("yyyy-MM-dd kk:mm:ss");
     private static final SimpleDateFormat MM_DD_YYYY_HHMMSS_A = new SimpleDateFormat("MM/dd/yyyy hh:mm:ss a");
     private static final SimpleDateFormat YYYY_MM_DD_HH_MM_SS_S = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.S");
     private static final SimpleDateFormat H_MM_AM_PM = new SimpleDateFormat("h:mm a");
     private static final SimpleDateFormat ISO_8601_DATE_TIME = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
-    public static final SimpleDateFormat MMM_DD_YYYY = new SimpleDateFormat("MMM dd,yyyy");
-    public static final SimpleDateFormat DAY_YYYY_MM_DD_HH_MM_SS_Z = new SimpleDateFormat("E_yyyy.MM.dd_HH.mm.ss_z");
 
     protected DateUtil() {
     }
@@ -110,12 +110,12 @@ public class DateUtil {
     }
 
     public static Date addDays(Date d, int days) {
-        d.setTime(d.getTime() + (long) (days * 1000 * 60 * 60 * 24));
+        d.setTime(d.getTime() + (long) ((long) days * 1000 * 60 * 60 * 24));
         return d;
     }
 
     public static Date subtractDays(Date d, int days) {
-        d.setTime(d.getTime() - (long) (days * 1000 * 60 * 60 * 24));
+        d.setTime(d.getTime() - (long) ((long) days * 1000 * 60 * 60 * 24));
         return d;
     }
 
@@ -152,10 +152,7 @@ public class DateUtil {
     }
 
     public static boolean compareTwoDates(Date date1, Date date2) {
-        boolean isOlder = false;
-        if (date1.before(date2)) {
-            isOlder = true;
-        }
+        boolean isOlder = date1.before(date2);
 
         return isOlder;
     }

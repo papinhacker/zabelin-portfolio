@@ -18,16 +18,15 @@ import static zabelin.portfolio.ui.selenium.common.state.BaseSiteState.isMobileB
 
 public class SiteHelper extends WebElementsHelper {
 
+    public static final String NAVIGATION_TABS_LIST = "//div[@data-testid='tab-nav-holder']//div[contains(@class, '_Tab-')]";
+    private static final String N_PROGRESS_BAR = "//*[contains(@id, 'nprogress')]/div[@class='bar']";
+    public final String HEAD_DESCRIPTION = "//head/meta[@name='description']";
+    public final String SSR_HAR = "//a[@download='next-ssr-network-calls.har']";
+    private final String FLASH_MESSAGE = "//div[contains(@class, '_FlashMessage-') or contains(@class, 'alert fade in')]";
+    private final String FLASH_MESSAGE_CLOSE = FLASH_MESSAGE + "//button[contains(@class, '_CloseButton-') or @class='close']";
     public SiteHelper(WebDriver driver) {
         super(driver);
     }
-
-    private static final String N_PROGRESS_BAR = "//*[contains(@id, 'nprogress')]/div[@class='bar']";
-    public static final String NAVIGATION_TABS_LIST = "//div[@data-testid='tab-nav-holder']//div[contains(@class, '_Tab-')]";
-    public final String HEAD_DESCRIPTION = "//head/meta[@name='description']";
-    private final String FLASH_MESSAGE = "//div[contains(@class, '_FlashMessage-') or contains(@class, 'alert fade in')]";
-    private final String FLASH_MESSAGE_CLOSE = FLASH_MESSAGE + "//button[contains(@class, '_CloseButton-') or @class='close']";
-    public final String SSR_HAR = "//a[@download='next-ssr-network-calls.har']";
 
     protected boolean isMobileView(int windowWidthBorder) {
         try {
@@ -244,7 +243,7 @@ public class SiteHelper extends WebElementsHelper {
      */
     public boolean reloadPageAndWait(Supplier<Boolean> function, int timeout) {
         long timeBeforeWait = System.currentTimeMillis();
-        while ((timeBeforeWait + (1000 * timeout)) >= System.currentTimeMillis()) {
+        while ((timeBeforeWait + (1000L * timeout)) >= System.currentTimeMillis()) {
             if (function.get()) {
                 return true;
             }

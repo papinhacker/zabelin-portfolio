@@ -6,14 +6,13 @@ import zabelin.portfolio.ui.selenium.site.frontend.common_components.images.Imag
 
 public class BrokenImagesPage extends SiteHelper {
 
+    private final String imagesRow = "//div[@class='example' and ./h3[text()='Broken Images']]";
+    public ImagesRow images = new ImagesRow(driver, imagesRow);
+
     public BrokenImagesPage(WebDriver driver) {
         super(driver);
         pageLoading();
     }
-
-    private String imagesRow = "//div[@class='example' and ./h3[text()='Broken Images']]";
-
-    public ImagesRow images = new ImagesRow(driver, imagesRow);
 
     /* **************************************
      *************** Methods ****************

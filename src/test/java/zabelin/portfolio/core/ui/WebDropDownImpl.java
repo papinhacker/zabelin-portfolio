@@ -21,11 +21,11 @@ public class WebDropDownImpl extends WebElementImpl {
 
     public WebDropDownImpl waitAndClickDropDownElementByIndex(int index, int seconds) throws Exception {
         try {
-            WebDriverWait wait = new WebDriverWait(this.driver, (long) seconds);
+            WebDriverWait wait = new WebDriverWait(this.driver, seconds);
             wait.until(ExpectedConditions.visibilityOf(this.WebElement));
             wait.until(ExpectedConditions.elementToBeClickable(this.WebElement));
             List<WebElement> options = this.WebElement.findElements(By.tagName("option"));
-            ((WebElement) options.get(index)).click();
+            options.get(index).click();
             return this;
         } catch (Exception var5) {
             String name = var5.getMessage().split("\n")[0];
@@ -34,7 +34,7 @@ public class WebDropDownImpl extends WebElementImpl {
                 Log.error("Error: There was a problem clicking on the element with index " + index + "from the drop down " + name + ".It may not be available");
             }
 
-            Log.error("Exception:" + var5.getMessage().toString());
+            Log.error("Exception:" + var5.getMessage());
             throw var5;
         }
     }
@@ -53,7 +53,7 @@ public class WebDropDownImpl extends WebElementImpl {
             return optionsText;
         } catch (Exception var5) {
             Log.error("Method: getOptionsTextFromDropDown");
-            Log.error("Exception:" + var5.getMessage().toString());
+            Log.error("Exception:" + var5.getMessage());
             throw var5;
         }
     }
@@ -61,7 +61,7 @@ public class WebDropDownImpl extends WebElementImpl {
     public WebDropDownImpl clickDropDownElementByIndex(int index) throws Exception {
         try {
             List<WebElement> options = this.WebElement.findElements(By.tagName("option"));
-            ((WebElement) options.get(index)).click();
+            options.get(index).click();
             return this;
         } catch (Exception var4) {
             String name = var4.getMessage().split("\n")[0];
@@ -70,14 +70,14 @@ public class WebDropDownImpl extends WebElementImpl {
                 Log.error("Error: There was a problem clicking on the element with index " + index + "from the drop down " + name + ".It may not be available");
             }
 
-            Log.error("Exception:" + var4.getMessage().toString());
+            Log.error("Exception:" + var4.getMessage());
             throw var4;
         }
     }
 
     public WebDropDownImpl waitAndClickDropDownElementByText(String text, int seconds) throws Exception {
         try {
-            WebDriverWait wait = new WebDriverWait(this.driver, (long) seconds);
+            WebDriverWait wait = new WebDriverWait(this.driver, seconds);
             wait.until(ExpectedConditions.elementToBeClickable(this.WebElement));
             Select dropDown = new Select(this.WebElement);
             dropDown.selectByVisibleText(text);
@@ -89,7 +89,7 @@ public class WebDropDownImpl extends WebElementImpl {
             }
 
             Log.error("Method: waitAndClickDropDownElementByText");
-            Log.error("Exception:" + var5.getMessage().toString());
+            Log.error("Exception:" + var5.getMessage());
             throw var5;
         }
     }
@@ -114,7 +114,7 @@ public class WebDropDownImpl extends WebElementImpl {
                 Log.error("There was a problem clicking on the element " + text + "from the drop down " + name + ".It may not be available");
             }
 
-            Log.error("Exception:" + var5.getMessage().toString());
+            Log.error("Exception:" + var5.getMessage());
             throw var5;
         }
     }
@@ -137,7 +137,7 @@ public class WebDropDownImpl extends WebElementImpl {
 
     public WebDropDownImpl waitAndClickDropDownElementByValue(String option, int seconds) throws Exception {
         try {
-            WebDriverWait wait = new WebDriverWait(this.driver, (long) seconds);
+            WebDriverWait wait = new WebDriverWait(this.driver, seconds);
             wait.until(ExpectedConditions.elementToBeClickable(this.WebElement));
             List<WebElement> options = this.WebElement.findElements(By.tagName("option"));
             Iterator var5 = options.iterator();
@@ -158,7 +158,7 @@ public class WebDropDownImpl extends WebElementImpl {
                 Log.error("There was a problem clicking on the element " + option + "from the drop down " + name + ".It may not be available");
             }
 
-            Log.error("Exception:" + var7.getMessage().toString());
+            Log.error("Exception:" + var7.getMessage());
             throw var7;
         }
     }
@@ -184,14 +184,14 @@ public class WebDropDownImpl extends WebElementImpl {
                 Log.error("There was a problem clicking on the element " + option + "from the drop down " + name + ".It may not be available");
             }
 
-            Log.error("Exception:" + var5.getMessage().toString());
+            Log.error("Exception:" + var5.getMessage());
             throw var5;
         }
     }
 
     public int waitAndCountkDropDownElements(int seconds) throws Exception {
         try {
-            WebDriverWait wait = new WebDriverWait(this.driver, (long) seconds);
+            WebDriverWait wait = new WebDriverWait(this.driver, seconds);
             wait.until(ExpectedConditions.elementToBeClickable(this.WebElement));
             List<WebElement> options = this.WebElement.findElements(By.tagName("option"));
             return options.size();
@@ -202,14 +202,14 @@ public class WebDropDownImpl extends WebElementImpl {
                 Log.error("There was a problem finding the element from the drop down " + name + ".It may not be available");
             }
 
-            Log.error("Exception:" + var4.getMessage().toString());
+            Log.error("Exception:" + var4.getMessage());
             throw var4;
         }
     }
 
     public List<WebElement> waitAndGetElementFromDropdown(int seconds) throws Exception {
         try {
-            WebDriverWait wait = new WebDriverWait(this.driver, (long) seconds);
+            WebDriverWait wait = new WebDriverWait(this.driver, seconds);
             wait.until(ExpectedConditions.elementToBeClickable(this.WebElement));
             List<WebElement> options = this.WebElement.findElements(By.tagName("option"));
             return options;
@@ -220,7 +220,7 @@ public class WebDropDownImpl extends WebElementImpl {
                 Log.error("There was a problem finding the element from the drop down " + name + ".It may not be available");
             }
 
-            Log.error("Exception:" + var4.getMessage().toString());
+            Log.error("Exception:" + var4.getMessage());
             throw var4;
         }
     }
@@ -229,7 +229,7 @@ public class WebDropDownImpl extends WebElementImpl {
         int numAux = 0;
 
         try {
-            WebDriverWait wait = new WebDriverWait(this.driver, (long) seconds);
+            WebDriverWait wait = new WebDriverWait(this.driver, seconds);
             wait.until(ExpectedConditions.elementToBeClickable(this.WebElement));
             Select select = new Select(this.WebElement);
             String selectedOption = select.getFirstSelectedOption().getText();
@@ -239,10 +239,10 @@ public class WebDropDownImpl extends WebElementImpl {
             optionsArray = ArrayUtils.removeElement(optionsArray, selectedOption);
             numAux = optionsArray.length;
             Random random = new Random();
-            int randomNum = random.nextInt(numAux - 0) + 0;
+            int randomNum = random.nextInt(numAux);
 
             for (int attemps = 0; (optionsArray[randomNum].toString().contains("Select") || optionsArray[randomNum].toString().equals("")) && attemps < 100; ++attemps) {
-                randomNum = random.nextInt(numAux - 0) + 0;
+                randomNum = random.nextInt(numAux);
             }
 
             Iterator var12 = dropDownValues.iterator();
@@ -263,7 +263,7 @@ public class WebDropDownImpl extends WebElementImpl {
                 Log.error("There was a problem finding the random element from the drop down " + name);
             }
 
-            Log.error("Exception:" + var14.getMessage().toString());
+            Log.error("Exception:" + var14.getMessage());
             throw var14;
         }
     }
@@ -272,7 +272,7 @@ public class WebDropDownImpl extends WebElementImpl {
         int numAux = 0;
 
         try {
-            WebDriverWait wait = new WebDriverWait(this.driver, (long) seconds);
+            WebDriverWait wait = new WebDriverWait(this.driver, seconds);
             wait.until(ExpectedConditions.elementToBeClickable(this.WebElement));
             List<WebElement> dropDownValues = this.WebElement.findElements(By.cssSelector("option:not([style]):not([data-placeholder])"));
             int tableSize = dropDownValues.size();
@@ -282,7 +282,7 @@ public class WebDropDownImpl extends WebElementImpl {
             Random random = new Random();
 
             int randomNum;
-            for (randomNum = random.nextInt(numAux - 0) + 0; optionsArray[randomNum].contains("Select") || optionsArray[randomNum].equals(""); randomNum = random.nextInt(numAux - 0) + 0) {
+            for (randomNum = random.nextInt(numAux); optionsArray[randomNum].contains("Select") || optionsArray[randomNum].equals(""); randomNum = random.nextInt(numAux)) {
             }
 
             Iterator var9 = dropDownValues.iterator();
@@ -303,7 +303,7 @@ public class WebDropDownImpl extends WebElementImpl {
                 Log.error("There was a problem finding the random element from the drop down " + name);
             }
 
-            Log.error("Exception:" + var11.getMessage().toString());
+            Log.error("Exception:" + var11.getMessage());
             throw var11;
         }
     }
@@ -311,7 +311,7 @@ public class WebDropDownImpl extends WebElementImpl {
     private String[] generateValuesList(List<WebElement> dropDownValues, int tableSize, String[] optionsArray) {
         for (int i = 0; i <= tableSize - 1; ++i) {
             try {
-                optionsArray[i] = ((WebElement) dropDownValues.get(i)).getText();
+                optionsArray[i] = dropDownValues.get(i).getText();
             } catch (Exception var6) {
             }
         }

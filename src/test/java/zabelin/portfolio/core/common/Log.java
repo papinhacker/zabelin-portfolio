@@ -8,7 +8,6 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class Log {
-    private static Logger Log = Logger.getLogger(Log.class);
     private static final int LOGLEVEL_ERROR = 1;
     private static final int LOGLEVEL_STEP = 10;
     private static final int LOGLEVEL_ACTION = 20;
@@ -17,11 +16,31 @@ public class Log {
     private static final int LOGLEVEL_DEBUG = 30;
     private static final int LOGLEVEL_TRACE = 100;
     private static final int LOGLEVEL_ASSERT_FAIL = 11;
+    public static SimpleDateFormat dateFormat;
+    private static final Logger Log = Logger.getLogger(Log.class);
     private static int logLevel = 30;
     private static boolean printActionInterval = false;
     private static boolean hideInfoMessages = false;
     private static long previousTs = 0L;
-    public static SimpleDateFormat dateFormat;
+
+    static {
+        String level = System.getProperty("loglevel");
+        if (!StringUtils.isEmpty(level)) {
+            logLevel = Integer.parseInt(level);
+        }
+
+        String interval = System.getProperty("printInterval");
+        if (!StringUtils.isEmpty(interval)) {
+            printActionInterval = Boolean.parseBoolean(interval);
+        }
+
+        String hideInfo = System.getProperty("hideInfoMessages");
+        if (!StringUtils.isEmpty(hideInfo)) {
+            hideInfoMessages = Boolean.parseBoolean(hideInfo);
+        }
+
+        dateFormat = new SimpleDateFormat("(z) HH.mm.ss:SSS");
+    }
 
     public Log() {
     }
@@ -133,24 +152,5 @@ public class Log {
             previousTs = curInt;
         }
 
-    }
-
-    static {
-        String level = System.getProperty("loglevel");
-        if (!StringUtils.isEmpty(level)) {
-            logLevel = Integer.parseInt(level);
-        }
-
-        String interval = System.getProperty("printInterval");
-        if (!StringUtils.isEmpty(interval)) {
-            printActionInterval = Boolean.parseBoolean(interval);
-        }
-
-        String hideInfo = System.getProperty("hideInfoMessages");
-        if (!StringUtils.isEmpty(hideInfo)) {
-            hideInfoMessages = Boolean.parseBoolean(hideInfo);
-        }
-
-        dateFormat = new SimpleDateFormat("(z) HH.mm.ss:SSS");
     }
 }

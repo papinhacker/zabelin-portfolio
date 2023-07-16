@@ -11,7 +11,7 @@ import zabelin.portfolio.core.common.Log;
 import zabelin.portfolio.ui.selenium.common.annotations.PreconditionAnnotationParser;
 import zabelin.portfolio.ui.selenium.common.env.EnvConstants;
 import zabelin.portfolio.ui.selenium.common.model.LoginPageData;
-import zabelin.portfolio.ui.selenium.common.resourcespool.WMSiteUserPool;
+import zabelin.portfolio.ui.selenium.common.resourcespool.SiteUserPool;
 import zabelin.portfolio.ui.selenium.common.utils.UITestsHelper;
 
 import java.io.BufferedInputStream;
@@ -24,57 +24,14 @@ import java.security.MessageDigest;
 
 public class BaseSiteState extends UITestsHelper {
 
-    private volatile static WMSiteUserPool usersPool = new WMSiteUserPool();
+    private static final SiteUserPool usersPool = new SiteUserPool();
     protected String testIdentity;
     protected LoginPageData userData;
     private int step = 0;
 
-    @BeforeMethod
-    protected void executePreconditions(Method method) throws Exception {
-        testIdentity = PreconditionAnnotationParser.getTestIdentity(method);
-        try {
-            String url = PreconditionAnnotationParser.parseUrl(method);
-            driver.get(EnvConstants.BASE_PAGE);
-            //workaround for local isolated runs of admin part
-            if (EnvConstants.BASE_PAGE != null && EnvConstants.BASE_PAGE.contains("host")) {
-                driver.manage().addCookie(new Cookie("_wm_admin_new_listing_admin_opt-in", "true"));
-            }
-            if (userData != null) {
-
-//                API way
-//                CommonHelper.logInAPI(driver, userData);
-            }
-            if (url != null) {
-                launchURL(driver, url);
-            } else {
-                driver.navigate().refresh();
-            }
-        } catch (Exception ex) {
-            Log.error("Before method was failed: " + ex.getMessage());
-            throw new SkipException(ex.getMessage());
-        }
-    }
-
-    @AfterMethod(alwaysRun = true)
-    protected void releaseOccupiedResources() {
-        try {
-            Log.debug(usersPool.release(testIdentity)
-                    ? String.format("All users have been released by \"%s\"", testIdentity)
-                    : String.format("No users have been released by \"%s\"", testIdentity));
-        } catch (Exception e) {
-            Log.error("Unable to release blockable objects");
-        }
-    }
-
     protected static void launchURL(WebDriver driver, String url) {
         Log.action("Opening url: " + url);
         driver.get(url);
-    }
-
-    public BaseSiteState resizeBrowserWindow(int width, int height) throws Exception {
-        driver.manage().window().setSize(new Dimension(width, height));
-        driver.manage().window().setPosition(new Point(0, 0));
-        return this;
     }
 
     public static byte[] getByteArrayFile(String inputURL) throws Exception {
@@ -111,6 +68,49 @@ public class BaseSiteState extends UITestsHelper {
 
     public static String getMD5FromLink(String inputURL) throws Exception {
         return md5Hash(getByteArrayFile(inputURL));
+    }
+
+    @BeforeMethod
+    protected void executePreconditions(Method method) throws Exception {
+        testIdentity = PreconditionAnnotationParser.getTestIdentity(method);
+        try {
+            String url = PreconditionAnnotationParser.parseUrl(method);
+            driver.get(EnvConstants.BASE_PAGE);
+            //workaround for something
+            if (EnvConstants.BASE_PAGE != null && EnvConstants.BASE_PAGE.contains("host")) {
+                driver.manage().addCookie(new Cookie("some_precondition_cookie", "true"));
+            }
+            if (userData != null) {
+
+//                API way
+//                CommonHelper.logInAPI(driver, userData);
+            }
+            if (url != null) {
+                launchURL(driver, url);
+            } else {
+                driver.navigate().refresh();
+            }
+        } catch (Exception ex) {
+            Log.error("Before method was failed: " + ex.getMessage());
+            throw new SkipException(ex.getMessage());
+        }
+    }
+
+    @AfterMethod(alwaysRun = true)
+    protected void releaseOccupiedResources() {
+        try {
+            Log.debug(usersPool.release(testIdentity)
+                    ? String.format("All users have been released by \"%s\"", testIdentity)
+                    : String.format("No users have been released by \"%s\"", testIdentity));
+        } catch (Exception e) {
+            Log.error("Unable to release blockable objects");
+        }
+    }
+
+    public BaseSiteState resizeBrowserWindow(int width, int height) throws Exception {
+        driver.manage().window().setSize(new Dimension(width, height));
+        driver.manage().window().setPosition(new Point(0, 0));
+        return this;
     }
 
     protected String getTestId() {

@@ -28,7 +28,7 @@ public class WebTinyMCEImpl extends WebElementImpl {
 
     public WebTinyMCEImpl clearAndFill(String text) throws Exception {
         try {
-            ((JavascriptExecutor) this.driver).executeScript(String.format("tinyMCE.activeEditor.setContent('%s')", text), new Object[0]);
+            ((JavascriptExecutor) this.driver).executeScript(String.format("tinyMCE.activeEditor.setContent('%s')", text));
             return this;
         } catch (Exception var3) {
             Log.error("Method: clearAndFill()");

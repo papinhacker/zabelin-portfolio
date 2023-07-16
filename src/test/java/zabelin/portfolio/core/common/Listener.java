@@ -42,6 +42,13 @@ public class Listener implements ITestListener, ISuiteListener, IInvokedMethodLi
     public static final String TEST_CASE_ID_PATTERN = "C\\d+";
     public static final String RESULTS_FILE_NAME = "testng-results.xml";
     public static final String DEFAULT_REPORT_OUTPUT_DIR = "test-output";
+    public static final ThreadLocal<CaseContext> context = new ThreadLocal();
+    public static final Map<String, CaseContext> allSessions = new ConcurrentHashMap();
+    protected static final XMLReporterConfig reportConfig = new XMLReporterConfig();
+    static final String SHARED_MESSAGES_DEFAULT_DIR = "true";
+    static final String CLIENT_WAITING = "client_waiting";
+    static final String MESSAGES_FILE = "messages";
+    static final String EXECUTION_FINISHED = "execf";
     protected static ResultGenerationMode resultGenerationMode;
     protected static boolean processFail;
     protected static boolean disableScreenshots;
@@ -49,23 +56,153 @@ public class Listener implements ITestListener, ISuiteListener, IInvokedMethodLi
     protected static String browser;
     protected static Map<String, String> sauceLabsCredentials;
     protected static SauceREST sauceRestClient;
-    protected static final XMLReporterConfig reportConfig = new XMLReporterConfig();
     protected static ObjectMapper mapper = new ObjectMapper();
+    static String sharedMessagesPath = "";
+
+    static {
+        try {
+            switch (System.getProperty("resultGenerationMode", "all")) {
+                case "test":
+                    resultGenerationMode = Listener.ResultGenerationMode.AFTER_TEST;
+                    break;
+                case "class":
+                    resultGenerationMode = Listener.ResultGenerationMode.AFTER_CLASS;
+                    break;
+                case "suite":
+                    resultGenerationMode = Listener.ResultGenerationMode.AFTER_SUITE;
+                    break;
+                default:
+                    resultGenerationMode = Listener.ResultGenerationMode.AFTER_ALL;
+            }
+
+            processFail = Boolean.parseBoolean(System.getProperty("processFail", "true"));
+            disableScreenshots = Boolean.parseBoolean(System.getProperty("disableScreenshots", "false"));
+            String threadCount = System.getProperty("threadCount");
+            threadsCount = StringUtils.isNotEmpty(threadCount) && threadCount.matches("\\d+") ? Integer.parseInt(threadCount) : 1;
+            String mbrowser = System.getProperty("mbrowser");
+            browser = StringUtils.isNotEmpty(mbrowser) ? mbrowser.toLowerCase() : "chrome";
+            sauceLabsCredentials = getSauceLabsCredentials();
+            if (!sauceLabsCredentials.isEmpty()) {
+                sauceRestClient = new SauceREST(sauceLabsCredentials.get("username"), sauceLabsCredentials.get("password"));
+            }
+
+            reportConfig.setGenerateTestResultAttributes(!disableScreenshots);
+            reportConfig.setOutputDirectory("test-output");
+            File reportDir = new File("test-output");
+            if (!reportDir.exists()) {
+                reportDir.mkdirs();
+            }
+
+            mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+            sharedMessagesPath = System.getProperty("sharedMessageDirPath", "true");
+            System.setProperty("suite.name", "TestResults");
+            System.setProperty("current.date", DateUtil.formatCurrectDayYYYYMMDDHHMMSSTimeZone());
+            System.setProperty("output.path", String.format("data-output/__Run_%s_%s", System.getProperty("suite.name"), System.getProperty("current.date")));
+            File testDataOutputDir = new File(System.getProperty("output.path"));
+            if (!testDataOutputDir.exists()) {
+                testDataOutputDir.mkdirs();
+            }
+
+            try {
+                System.setProperty("file.encoding", "UTF-8");
+                Field charset = Charset.class.getDeclaredField("defaultCharset");
+                charset.setAccessible(true);
+                charset.set(null, null);
+            } catch (IllegalAccessException | NoSuchFieldException var6) {
+                var6.printStackTrace();
+            }
+        } catch (Exception var7) {
+            Log.error("Unable to initialize Listener");
+            var7.printStackTrace();
+        }
+
+    }
+
     protected ArrayList<ISuite> suites = new ArrayList();
     protected XMLStringBuffer rootBuffer;
     protected int testPassed = 0;
     protected int testFailed = 0;
     protected int testSkipped = 0;
-    public static final ThreadLocal<CaseContext> context = new ThreadLocal();
-    public static final Map<String, CaseContext> allSessions = new ConcurrentHashMap();
-    static final String SHARED_MESSAGES_DEFAULT_DIR = "true";
-    static final String CLIENT_WAITING = "client_waiting";
-    static final String MESSAGES_FILE = "messages";
-    static final String EXECUTION_FINISHED = "execf";
-    static String sharedMessagesPath = "";
     protected ArrayList<TestInfo> testInfos = new ArrayList();
 
     public Listener() {
+    }
+
+    public static void addDurationAttributes(XMLReporterConfig config, Properties attributes, Date minStartDate, Date maxEndDate) {
+        SimpleDateFormat format = new SimpleDateFormat(config.getTimestampFormat());
+        TimeZone utc = TimeZone.getTimeZone("UTC");
+        format.setTimeZone(utc);
+        String startTime = format.format(minStartDate);
+        String endTime = format.format(maxEndDate);
+        long duration = maxEndDate.getTime() - minStartDate.getTime();
+        attributes.setProperty("started-at", startTime);
+        attributes.setProperty("finished-at", endTime);
+        attributes.setProperty("duration-ms", Long.toString(duration));
+    }
+
+    public static CaseContext getTestCaseContext() {
+        return context.get();
+    }
+
+    public static Map<String, String> getSauceLabsCredentials() throws Exception {
+        Map<String, String> credentials = new HashMap();
+        if (!DriverFactory.isLocalHost()) {
+            String host = System.getProperty("mhost");
+            if (!host.matches(".+:.+@.+:\\d+")) {
+                Log.debug("Host property mhost'='" + host + "' doesn't match the following format - 'user:key@host:port'\nNo SauceLabs credentials was grabbed");
+                return credentials;
+            }
+
+            String[] hostSplit = host.split("(:)");
+            credentials.put("username", hostSplit[0].replace("%40", "@"));
+            credentials.put("port", hostSplit[2]);
+            hostSplit = hostSplit[1].split("(:)|(@)");
+            credentials.put("password", hostSplit[0]);
+            credentials.put("host", hostSplit[1]);
+        }
+
+        return credentials;
+    }
+
+    static boolean isMessageShareMode() {
+        return !sharedMessagesPath.isEmpty();
+    }
+
+    static boolean needToDumpMessages() {
+        return isFileExists("client_waiting") || !isFileExists("messages");
+    }
+
+    static boolean isFileExists(String path) {
+        return (new File(sharedMessagesPath + "/" + path)).exists();
+    }
+
+    static ArrayList<TestInfo> readMessages() {
+        ArrayList<TestInfo> res = new ArrayList();
+
+        try {
+            String r = FileUtils.readFileToString(new File(sharedMessagesPath + "/" + "messages"), StandardCharsets.UTF_8);
+            return mapper.readValue(r, TestInfoList.class).getInfo();
+        } catch (IOException var2) {
+            var2.printStackTrace();
+            return res;
+        }
+    }
+
+    static void deleteAllLogFiles() {
+        deleteFile("messages");
+        deleteFile("execf");
+        deleteFile("client_waiting");
+    }
+
+    static void deleteFile(String path) {
+        if (isFileExists(path)) {
+            try {
+                FileUtils.forceDelete(new File(sharedMessagesPath + "/" + path));
+            } catch (IOException var2) {
+                var2.printStackTrace();
+            }
+        }
+
     }
 
     public void onStart(ISuite arg0) {
@@ -185,7 +322,7 @@ public class Listener implements ITestListener, ISuiteListener, IInvokedMethodLi
 
     public void transform(ITestAnnotation annotation, Class testClass, Constructor testConstructor, Method testMethod) {
         annotation.setRetryAnalyzer(RetryAnalyzer.class);
-        if (testMethod.isAnnotationPresent(DisableTestWhen.class) && Arrays.asList(((DisableTestWhen) testMethod.getAnnotation(DisableTestWhen.class)).browsers()).contains(browser)) {
+        if (testMethod.isAnnotationPresent(DisableTestWhen.class) && Arrays.asList(testMethod.getAnnotation(DisableTestWhen.class).browsers()).contains(browser)) {
             annotation.setEnabled(false);
         }
 
@@ -226,11 +363,11 @@ public class Listener implements ITestListener, ISuiteListener, IInvokedMethodLi
         }
 
         this.rootBuffer.pop();
-        Utils.writeUtf8File(outputDirectory, "testng-results.xml", this.rootBuffer, (String) null);
+        Utils.writeUtf8File(outputDirectory, "testng-results.xml", this.rootBuffer, null);
     }
 
     protected void generateReport() {
-        this.generateReport((List) null, this.suites, reportConfig.getOutputDirectory());
+        this.generateReport(null, this.suites, reportConfig.getOutputDirectory());
     }
 
     protected synchronized void generateWebDriverLogReport() {
@@ -312,7 +449,7 @@ public class Listener implements ITestListener, ISuiteListener, IInvokedMethodLi
 
         while (var5.hasNext()) {
             Map.Entry<String, ISuiteResult> result = (Map.Entry) var5.next();
-            suiteResultWriter.writeSuiteResult(xmlBuffer, (ISuiteResult) result.getValue());
+            suiteResultWriter.writeSuiteResult(xmlBuffer, result.getValue());
         }
 
         xmlBuffer.pop();
@@ -330,9 +467,9 @@ public class Listener implements ITestListener, ISuiteListener, IInvokedMethodLi
         while (var4.hasNext()) {
             Map.Entry<String, Collection<ITestNGMethod>> entry = (Map.Entry) var4.next();
             Properties groupAttrs = new Properties();
-            groupAttrs.setProperty("name", (String) entry.getKey());
+            groupAttrs.setProperty("name", entry.getKey());
             xmlBuffer.push("group", groupAttrs);
-            Set<ITestNGMethod> groupMethods = this.getUniqueMethodSet((Collection) entry.getValue());
+            Set<ITestNGMethod> groupMethods = this.getUniqueMethodSet(entry.getValue());
             Iterator var8 = groupMethods.iterator();
 
             while (var8.hasNext()) {
@@ -369,7 +506,7 @@ public class Listener implements ITestListener, ISuiteListener, IInvokedMethodLi
                     }
 
                     Map.Entry<String, ISuiteResult> result = (Map.Entry) var7.next();
-                    ITestContext testContext = ((ISuiteResult) result.getValue()).getTestContext();
+                    ITestContext testContext = result.getValue().getTestContext();
                     startDate = testContext.getStartDate();
                     endDate = testContext.getEndDate();
                     if (minStartDate.after(startDate)) {
@@ -387,18 +524,6 @@ public class Listener implements ITestListener, ISuiteListener, IInvokedMethodLi
 
         addDurationAttributes(reportConfig, props, minStartDate, maxEndDate);
         return props;
-    }
-
-    public static void addDurationAttributes(XMLReporterConfig config, Properties attributes, Date minStartDate, Date maxEndDate) {
-        SimpleDateFormat format = new SimpleDateFormat(config.getTimestampFormat());
-        TimeZone utc = TimeZone.getTimeZone("UTC");
-        format.setTimeZone(utc);
-        String startTime = format.format(minStartDate);
-        String endTime = format.format(maxEndDate);
-        long duration = maxEndDate.getTime() - minStartDate.getTime();
-        attributes.setProperty("started-at", startTime);
-        attributes.setProperty("finished-at", endTime);
-        attributes.setProperty("duration-ms", Long.toString(duration));
     }
 
     protected Set<ITestNGMethod> getUniqueMethodSet(Collection<ITestNGMethod> methods) {
@@ -419,30 +544,6 @@ public class Listener implements ITestListener, ISuiteListener, IInvokedMethodLi
 
     protected String returnMethodName(ITestNGMethod method) {
         return method.getRealClass().getSimpleName() + "." + method.getMethodName();
-    }
-
-    public static CaseContext getTestCaseContext() {
-        return (CaseContext) context.get();
-    }
-
-    public static Map<String, String> getSauceLabsCredentials() throws Exception {
-        Map<String, String> credentials = new HashMap();
-        if (!DriverFactory.isLocalHost()) {
-            String host = System.getProperty("mhost");
-            if (!host.matches(".+:.+@.+:\\d+")) {
-                Log.debug("Host property mhost'='" + host + "' doesn't match the following format - 'user:key@host:port'\nNo SauceLabs credentials was grabbed");
-                return credentials;
-            }
-
-            String[] hostSplit = host.split("(:)");
-            credentials.put("username", hostSplit[0].replace("%40", "@"));
-            credentials.put("port", hostSplit[2]);
-            hostSplit = hostSplit[1].split("(:)|(@)");
-            credentials.put("password", hostSplit[0]);
-            credentials.put("host", hostSplit[1]);
-        }
-
-        return credentials;
     }
 
     protected void updateSauceLabsResult(ITestResult arg0, String result) {
@@ -546,47 +647,6 @@ public class Listener implements ITestListener, ISuiteListener, IInvokedMethodLi
 
     }
 
-    static boolean isMessageShareMode() {
-        return !sharedMessagesPath.isEmpty();
-    }
-
-    static boolean needToDumpMessages() {
-        return isFileExists("client_waiting") || !isFileExists("messages");
-    }
-
-    static boolean isFileExists(String path) {
-        return (new File(sharedMessagesPath + "/" + path)).exists();
-    }
-
-    static ArrayList<TestInfo> readMessages() {
-        ArrayList<TestInfo> res = new ArrayList();
-
-        try {
-            String r = FileUtils.readFileToString(new File(sharedMessagesPath + "/" + "messages"), StandardCharsets.UTF_8);
-            return ((TestInfoList) mapper.readValue(r, TestInfoList.class)).getInfo();
-        } catch (IOException var2) {
-            var2.printStackTrace();
-            return res;
-        }
-    }
-
-    static void deleteAllLogFiles() {
-        deleteFile("messages");
-        deleteFile("execf");
-        deleteFile("client_waiting");
-    }
-
-    static void deleteFile(String path) {
-        if (isFileExists(path)) {
-            try {
-                FileUtils.forceDelete(new File(sharedMessagesPath + "/" + path));
-            } catch (IOException var2) {
-                var2.printStackTrace();
-            }
-        }
-
-    }
-
     protected void dumpMessages() {
         File out = new File(sharedMessagesPath + "/" + "messages");
         synchronized (this.testInfos) {
@@ -614,72 +674,13 @@ public class Listener implements ITestListener, ISuiteListener, IInvokedMethodLi
 
     }
 
-    static {
-        try {
-            switch (System.getProperty("resultGenerationMode", "all")) {
-                case "test":
-                    resultGenerationMode = Listener.ResultGenerationMode.AFTER_TEST;
-                    break;
-                case "class":
-                    resultGenerationMode = Listener.ResultGenerationMode.AFTER_CLASS;
-                    break;
-                case "suite":
-                    resultGenerationMode = Listener.ResultGenerationMode.AFTER_SUITE;
-                    break;
-                default:
-                    resultGenerationMode = Listener.ResultGenerationMode.AFTER_ALL;
-            }
-
-            processFail = Boolean.parseBoolean(System.getProperty("processFail", "true"));
-            disableScreenshots = Boolean.parseBoolean(System.getProperty("disableScreenshots", "false"));
-            String threadCount = System.getProperty("threadCount");
-            threadsCount = StringUtils.isNotEmpty(threadCount) && threadCount.matches("\\d+") ? Integer.parseInt(threadCount) : 1;
-            String mbrowser = System.getProperty("mbrowser");
-            browser = StringUtils.isNotEmpty(mbrowser) ? mbrowser.toLowerCase() : "chrome";
-            sauceLabsCredentials = getSauceLabsCredentials();
-            if (!sauceLabsCredentials.isEmpty()) {
-                sauceRestClient = new SauceREST((String) sauceLabsCredentials.get("username"), (String) sauceLabsCredentials.get("password"));
-            }
-
-            reportConfig.setGenerateTestResultAttributes(!disableScreenshots);
-            reportConfig.setOutputDirectory("test-output");
-            File reportDir = new File("test-output");
-            if (!reportDir.exists()) {
-                reportDir.mkdirs();
-            }
-
-            mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-            sharedMessagesPath = System.getProperty("sharedMessageDirPath", "true");
-            System.setProperty("suite.name", "TestResults");
-            System.setProperty("current.date", DateUtil.formatCurrectDayYYYYMMDDHHMMSSTimeZone());
-            System.setProperty("output.path", String.format("data-output/__Run_%s_%s", System.getProperty("suite.name"), System.getProperty("current.date")));
-            File testDataOutputDir = new File(System.getProperty("output.path"));
-            if (!testDataOutputDir.exists()) {
-                testDataOutputDir.mkdirs();
-            }
-
-            try {
-                System.setProperty("file.encoding", "UTF-8");
-                Field charset = Charset.class.getDeclaredField("defaultCharset");
-                charset.setAccessible(true);
-                charset.set((Object) null, (Object) null);
-            } catch (IllegalAccessException | NoSuchFieldException var6) {
-                var6.printStackTrace();
-            }
-        } catch (Exception var7) {
-            Log.error("Unable to initialize Listener");
-            var7.printStackTrace();
-        }
-
-    }
-
-    static enum ResultGenerationMode {
+    enum ResultGenerationMode {
         AFTER_TEST,
         AFTER_CLASS,
         AFTER_SUITE,
         AFTER_ALL;
 
-        private ResultGenerationMode() {
+        ResultGenerationMode() {
         }
     }
 }

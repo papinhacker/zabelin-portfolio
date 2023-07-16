@@ -6,7 +6,7 @@ import org.apache.commons.chain.impl.ChainBase;
 
 public class TestSteps {
     private ChainBase steps;
-    private Context context;
+    private final Context context;
 
     public TestSteps(Context context) {
         this.context = context;

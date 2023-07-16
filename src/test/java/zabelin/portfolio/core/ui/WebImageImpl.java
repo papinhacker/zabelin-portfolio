@@ -29,7 +29,7 @@ public class WebImageImpl extends WebElementImpl {
 
     public boolean isImageLoaded() throws Exception {
         try {
-            Object result = ((JavascriptExecutor) this.driver).executeScript("return arguments[0].complete && typeof arguments[0].naturalWidth != \"undefined\" && arguments[0].naturalWidth > 0", new Object[]{this.WebElement});
+            Object result = ((JavascriptExecutor) this.driver).executeScript("return arguments[0].complete && typeof arguments[0].naturalWidth != \"undefined\" && arguments[0].naturalWidth > 0", this.WebElement);
             boolean loaded = false;
             if (result instanceof Boolean) {
                 loaded = (Boolean) result;
@@ -46,7 +46,7 @@ public class WebImageImpl extends WebElementImpl {
 
     public boolean isImageLoaded(int timeout) throws Exception {
         try {
-            WebDriverWait wait = new WebDriverWait(this.driver, (long) timeout);
+            WebDriverWait wait = new WebDriverWait(this.driver, timeout);
             wait.until((driverObject) -> {
                 try {
                     return this.isImageLoaded();

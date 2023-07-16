@@ -47,7 +47,7 @@ public class WebEditImpl extends WebElementImpl {
 
     public WebEditImpl fill(String text) throws Exception {
         try {
-            this.WebElement.sendKeys(new CharSequence[]{text});
+            this.WebElement.sendKeys(text);
             return this;
         } catch (Exception var3) {
             Log.error("Method: fill()");
@@ -104,7 +104,7 @@ public class WebEditImpl extends WebElementImpl {
 
     public WebEditImpl setValueJS(String value) throws Exception {
         try {
-            ((JavascriptExecutor) this.driver).executeScript("arguments[0].value = " + Quotes.escape(value), new Object[]{this.WebElement});
+            ((JavascriptExecutor) this.driver).executeScript("arguments[0].value = " + Quotes.escape(value), this.WebElement);
             return this;
         } catch (Exception var3) {
             Log.error("Method: setValueJS()");
@@ -123,7 +123,7 @@ public class WebEditImpl extends WebElementImpl {
         this.waitForVisibility(timeout);
 
         try {
-            long endTimer = System.currentTimeMillis() + (long) (timeout * 1000);
+            long endTimer = System.currentTimeMillis() + (long) (timeout * 1000L);
 
             String value;
             for (value = this.getText(); value.isEmpty(); value = this.getText()) {
@@ -154,7 +154,7 @@ public class WebEditImpl extends WebElementImpl {
 
     public WebEditImpl sendChangeEventJS() throws Exception {
         try {
-            ((JavascriptExecutor) this.driver).executeScript("$(arguments[0]).change();", new Object[]{this.WebElement});
+            ((JavascriptExecutor) this.driver).executeScript("$(arguments[0]).change();", this.WebElement);
             return this;
         } catch (Exception var2) {
             Log.error("Method: setValueJS()");

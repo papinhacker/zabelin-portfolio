@@ -11,10 +11,14 @@ import java.util.Properties;
 public class EnvConstants {
 
 
-    protected static final String PRODUCTION_ENV = "prod";
     public static final String PATH = getPath();
     public static final String ENV = getEnvironment();
     public static final Properties properties;
+    protected static final String PRODUCTION_ENV = "prod";
+
+    static {
+        properties = getPropertiesForEnv(ENV);
+    }
 
     public EnvConstants() {
     }
@@ -55,7 +59,7 @@ public class EnvConstants {
                 Enumeration<String> enums = (Enumeration<String>) customPros.propertyNames();
 
                 while (enums.hasMoreElements()) {
-                    val = (String) enums.nextElement();
+                    val = enums.nextElement();
                     String value = customPros.getProperty(val);
                     properties.setProperty(val, value);
                 }
@@ -64,7 +68,7 @@ public class EnvConstants {
             Enumeration<String> enums = (Enumeration<String>) properties.propertyNames();
 
             while (enums.hasMoreElements()) {
-                String key = (String) enums.nextElement();
+                String key = enums.nextElement();
                 val = System.getProperty("P_" + key, "_UNDEF_");
                 if (!val.equals("_UNDEF_")) {
                     properties.setProperty(key, val);
@@ -74,9 +78,5 @@ public class EnvConstants {
         }
 
         return properties;
-    }
-
-    static {
-        properties = getPropertiesForEnv(ENV);
     }
 }
