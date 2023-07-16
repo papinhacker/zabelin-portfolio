@@ -12,7 +12,7 @@
 ## Основные для локального закуска
 -ea
 -Dmbrowser=chrome // браузер. для хедлесс запуска 'headlesschrome'. \
--Dmenv=staging // на каком енвайроменте гоним, сэр? \
+-Dmenv=staging \
 -DthreadCount=26 \
 -Dmplatform=windows \
 -Dmpropkey= // ключ дешифровки всей сенситив даты из пропертей. \
@@ -29,6 +29,5 @@
 -e // produce execution error messages \
 -q // quiet output - only show errors 
 
-### Немного творчества не помешает.
-![123](https://coub.com/embed/33u60q?muted=false&autostart=false&originalSize=false&startWithHD=true)
-<iframe src="//coub.com/embed/33u60q?muted=false&autostart=false&originalSize=false&startWithHD=false" allowfullscreen frameborder="0" width="640" height="360" allow="autoplay"></iframe>
+##### Немного творчества не помешает.
+[Потом напишу сюда что-нибудь умное или смешное](https://coub.com/view/33u60q)
