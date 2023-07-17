@@ -13,6 +13,7 @@ public class EnvConstants extends zabelin.portfolio.core.common.EnvConstants {
     public static final String BASE_PAGE = getProperty("base.page");
     public static final String HOME_PAGE = BASE_PAGE;
     public static final String BROKEN_IMAGES_PAGE = BASE_PAGE + "broken_images";
+    public static final String ADD_REMOVE_ELEMENTS_PAGE = BASE_PAGE + "add_remove_elements/";
     protected static final String mpropkey = System.getProperty("mpropkey");
 
     /**

@@ -379,4 +379,18 @@ public class WebElementImpl {
     public Rectangle getRect(int timeout) throws Exception {
         return this.waitForVisibility(timeout).getRect();
     }
+
+    public boolean checkImageIsNotBroken() {
+        try {
+            return (Boolean) ((JavascriptExecutor) this.driver)
+                    .executeScript("return arguments[0].complete "
+                            + "&& typeof arguments[0].naturalWidth != \"undefined\" "
+                            + "&& arguments[0].naturalWidth > 0", this.WebElement);
+        } catch (Exception var2) {
+            Log.error("Method: checkImageIsNotBroken()");
+            Log.error("Error: There was a problem with checking if an image is not working using JavaScript");
+            Log.error("Exception: " + var2.getMessage());
+            throw var2;
+        }
+    }
 }

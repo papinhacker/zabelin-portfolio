@@ -1,7 +1,6 @@
 package zabelin.portfolio.ui.selenium.common.annotations;
 
 import org.testng.annotations.Test;
-import zabelin.portfolio.ui.selenium.common.resourcespool.CommonResourcesPool;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
@@ -18,26 +17,5 @@ public class ResourceAnnotationParser {
         }
 
         return null;
-    }
-
-    public static void parseResourceAnnotation(Method method, String testIdentity, CommonResourcesPool pool) {
-//        Annotation[] annotations = method.getAnnotations();
-//        if (annotations.length != 0) {
-//            AfterResourceRelease afterResourceRelease = Arrays.stream(annotations).filter(a -> a instanceof AfterResourceRelease).map(a -> (AfterResourceRelease)a).findFirst().orElse(null);
-//            if (afterResourceRelease != null) {
-//                Operations[] operations = afterResourceRelease.operations();
-//                if (operations.length != 0)
-//                    for (int i = 0; i < operations.length; i++)
-//                        pool.pushAfterResources(testIdentity, operations);
-//            }
-//
-//            BeforeResourceTake beforeResourceTake = Arrays.stream(annotations).filter(a -> a instanceof BeforeResourceTake).map(a -> (BeforeResourceTake)a).findFirst().orElse(null);
-//            if (beforeResourceTake != null) {
-//                Operations[] operations = beforeResourceTake.operations();
-//                if (operations.length != 0)
-//                    for (int i = 0; i < operations.length; i++)
-//                        pool.pushBeforeResources(testIdentity, operations);
-//            }
-//        }
     }
 }

@@ -2013,4 +2013,11 @@ public abstract class WebElementsHelper extends BasePageObject {
         injectAutoCloseAlertsScript(false);
     }
 
+    public boolean checkImageIsNotBrokenByIndex(String xpath, int index) throws Exception {
+        return getWebElementImpl(xpath, index, timeout).checkImageIsNotBroken();
+    }
+
+    public boolean checkImageIsNotBroken(String xpath) throws Exception {
+        return getWebElementImpl(xpath, 0, timeout).checkImageIsNotBroken();
+    }
 }

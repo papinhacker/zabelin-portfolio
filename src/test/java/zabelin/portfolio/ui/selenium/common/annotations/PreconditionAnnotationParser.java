@@ -31,6 +31,8 @@ public class PreconditionAnnotationParser extends ResourceAnnotationParser {
                 return EnvConstants.HOME_PAGE;
             case Preconditions.Site.Page.BROKEN_IMAGES_PAGE:
                 return EnvConstants.BROKEN_IMAGES_PAGE;
+            case Preconditions.Site.Page.ADD_REMOVE_ELEMENTS_PAGE:
+                return EnvConstants.ADD_REMOVE_ELEMENTS_PAGE;
             default:
                 return page;
         }

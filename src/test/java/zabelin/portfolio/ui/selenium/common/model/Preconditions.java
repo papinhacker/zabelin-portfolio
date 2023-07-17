@@ -12,6 +12,8 @@ public class Preconditions {
             // front pages
             public static final String HOME = "home page";
             public static final String BROKEN_IMAGES_PAGE = "broken images page";
+
+            public static final String ADD_REMOVE_ELEMENTS_PAGE = "add remove elements page";
         }
     }
 }
