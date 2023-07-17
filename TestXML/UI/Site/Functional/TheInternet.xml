@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd" >
+<suite name="The Internet">
+    <listeners>
+        <listener class-name="zabelin.portfolio.core.common.Listener"/>
+    </listeners>
+
+    <suite-files>
+        <suite-file path="TheInternet/SpecialDemoPages.xml"/>
+    </suite-files>
+</suite>
