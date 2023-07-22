@@ -16,14 +16,14 @@
 -DthreadCount=26 \
 -Dmplatform=windows \
 -Dmpropkey= // ключ дешифровки всей сенситив даты из пропертей. \
--DmpropsFile=C:/Users/Cronos/IdeaProjects/qa-automation/src/main/resources/PropertyFiles/config.yml \
+-DmpropsFile=C:/Users/Cronos/IdeaProjects/project/src/main/resources/PropertyFiles/config.yml
 ## Дополнительные
 -DxmlPath= // пусть к эксэмээлке, в которой прописана сьюта тестов, которые собираемся гнать. \
 -Dmhost= // удалённый хост: сауслаб или селенойд, или ещё чё-нить. \
 -DretryOnFailCount= // сколько раз перезапускаем упавшие тесты? \
 -Dmtimeout= // переназначить стандартый таймаут для всяких вейтов. \
 -Dloglevel= // можно изменить уровень логирования. \
--Dtestng.dtd.http=true // this helps to ignore using 'http' instead of 'https' in custom.xml suite header when specifying testng dtd link. \
+-Dtestng.dtd.http=true // this helps to ignore using 'http' instead of 'https' in custom.xml suite header when specifying testng dtd link.
 
 ### Стандартные мавеневские ключи, корые рекомендкуются к использованию.
 -e // produce execution error messages \
