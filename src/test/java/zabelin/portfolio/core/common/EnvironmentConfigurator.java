@@ -119,7 +119,7 @@ public class EnvironmentConfigurator extends AssertVerification {
         platform = getSystemProperty("mplatform", platform);
         host = getSystemProperty("mhost", host);
         environment = getSystemProperty("menv", environment);
-        propsFile = getSystemProperty("mpropsFile", propsFile);
+        propsFile = "C:/Users/Cronos/IdeaProjects/untitled/src/main/resources/PropertyFiles/config.yml"; //getSystemProperty("mpropsFile", propsFile);
         customCaps = getSystemProperty("mcustomCaps", customCaps);
         build = getSystemProperty("mbuild", build);
         timeout = getSystemProperty("mtimeout", timeout);
