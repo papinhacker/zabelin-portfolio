@@ -14,97 +14,6 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
-    <build>
-        <pluginManagement>
-            <plugins>
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-compiler-plugin</artifactId>
-                    <version>3.8.1</version>
-                    <configuration>
-                        <encoding>UTF-8</encoding>
-                        <source>11</source>
-                        <target>11</target>
-                    </configuration>
-                </plugin>
-<!--                <plugin>-->
-<!--                    <groupId>org.apache.maven.plugins</groupId>-->
-<!--                    <artifactId>maven-surefire-plugin</artifactId>-->
-<!--                    <version>2.22.2</version>-->
-<!--                    <configuration>-->
-<!--                        <suiteXmlFiles>-->
-<!--                            <suiteXmlFile>${}</suiteXmlFile>-->
-<!--                        </suiteXmlFiles>-->
-<!--                        <useSystemClassLoader>false</useSystemClassLoader>-->
-<!--                        <properties>-->
-<!--                            <property>-->
-<!--                                <name>reporter</name>-->
-<!--                                <value>-->
-<!--                                    org.testng.reporters.XMLReporter:generateTestResultAttributes=true,generateGroupsAttribute=true-->
-<!--                                </value>-->
-<!--                            </property>-->
-<!--                        </properties>-->
-<!--                        <systemProperties>-->
-<!--                            <property>-->
-<!--                                <name>TestNGXML</name>-->
-<!--                                <value>${}</value>-->
-<!--                            </property>-->
-<!--                        </systemProperties>-->
-<!--                    </configuration>-->
-<!--                </plugin>-->
-
-            </plugins>
-        </pluginManagement>
-        <plugins>
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>exec-maven-plugin</artifactId>
-                <version>1.6.0</version>
-                <configuration>
-                    <executable>java</executable>
-                    <arguments>
-                        <argument>-classpath</argument>
-                        <classpath/>
-                        <argument>zabelin.portfolio.tools.BuildCaseIdCommand</argument>
-                        <argument>target/test-classes/</argument>
-                        <argument>cases.out</argument>
-                    </arguments>
-                </configuration>
-            </plugin>
-
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.8.1</version>
-                <executions>
-
-                    <execution>
-                        <id>default-compile</id>
-                        <phase>none</phase>
-                    </execution>
-
-                    <execution>
-                        <id>default-testCompile</id>
-                        <phase>none</phase>
-                    </execution>
-                    <execution>
-                        <id>java-compile</id>
-                        <phase>compile</phase>
-                        <goals>
-                            <goal>compile</goal>
-                        </goals>
-                    </execution>
-                    <execution>
-                        <id>java-test-compile</id>
-                        <phase>test-compile</phase>
-                        <goals>
-                            <goal>testCompile</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-        </plugins>
-    </build>
 
     <dependencies>
 
@@ -199,6 +108,19 @@
             <artifactId>jaxb-api</artifactId>
             <version>2.3.1</version>
         </dependency>
+
+<!--        <dependency>-->
+<!--            <groupId>org.apache.maven.plugins</groupId>-->
+<!--            <artifactId>maven-surefire-plugin</artifactId>-->
+<!--            <version>3.1.2</version>-->
+<!--        </dependency>-->
+
+<!--        <dependency>-->
+<!--            <groupId>org.apache.maven.plugins</groupId>-->
+<!--            <artifactId>maven-compiler-plugin</artifactId>-->
+<!--            <version>3.11.0</version>-->
+<!--        </dependency>-->
+
 
         <dependency>
             <groupId>com.codeborne</groupId>
