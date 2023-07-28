@@ -1,19 +1,22 @@
 package zabelin.portfolio.ui.selenium.common.env;
 
 import org.testng.annotations.Test;
+import zabelin.portfolio.core.common.BaseEnvironmentConstants;
 import zabelin.portfolio.core.common.Log;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class EnvConstants extends zabelin.portfolio.core.common.EnvConstants {
+public class EnvConstants extends BaseEnvironmentConstants {
 
     //URLs
     public static final String BASE_PAGE = getProperty("base.page");
     public static final String HOME_PAGE = BASE_PAGE;
     public static final String BROKEN_IMAGES_PAGE = BASE_PAGE + "broken_images";
     public static final String ADD_REMOVE_ELEMENTS_PAGE = BASE_PAGE + "add_remove_elements/";
+
+    public static final String BASE_PAGE_API = "http://85.192.34.140:8080/api";
     protected static final String mpropkey = System.getProperty("mpropkey");
 
     /**

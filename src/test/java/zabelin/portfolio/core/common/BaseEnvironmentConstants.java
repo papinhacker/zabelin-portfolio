@@ -8,7 +8,7 @@ import java.io.IOException;
 import java.util.Enumeration;
 import java.util.Properties;
 
-public class EnvConstants {
+public class BaseEnvironmentConstants {
 
 
     public static final String PATH = getPath();
@@ -20,7 +20,7 @@ public class EnvConstants {
         properties = getPropertiesForEnv(ENV);
     }
 
-    public EnvConstants() {
+    public BaseEnvironmentConstants() {
     }
 
     protected static String getEnvironment() {
