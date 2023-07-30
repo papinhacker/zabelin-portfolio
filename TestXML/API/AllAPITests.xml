@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd" >
+<suite name="All API tests">
+    <listeners>
+        <listener class-name="zabelin.portfolio.core.common.Listener"/>
+    </listeners>
+
+    <test name="C1337 the worst api test">
+        <classes>
+            <class name="zabelin.portfolio.api.jdi.test.PositiveRegisterTests">
+                <methods>
+                    <include name="positiveRegisterTest"/>
+                </methods>
+            </class>
+        </classes>
+    </test>
+</suite>

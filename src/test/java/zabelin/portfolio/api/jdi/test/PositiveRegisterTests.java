@@ -11,7 +11,7 @@ import java.util.concurrent.ThreadLocalRandom;
 
 import static com.epam.http.requests.ServiceInit.init;
 
-public class PositiveRegisterTest {
+public class PositiveRegisterTests {
 
     private UserService userService;
     private User randomUser;
