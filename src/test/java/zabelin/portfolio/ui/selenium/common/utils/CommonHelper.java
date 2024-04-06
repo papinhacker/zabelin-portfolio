@@ -42,7 +42,7 @@ public class CommonHelper {
             }
             return cookies;
         } catch (Exception ex) {
-            throw new Exception("Unable to provide log in process via API or set web driver cookies. Reason is: " + ex.getMessage());
+            throw new RuntimeException("Unable to provide log in process via API or set web driver cookies. Reason is: " + ex.getMessage());
         }
     }
 

@@ -38,7 +38,7 @@ public class ImageCard extends SiteWidgetContainer {
         try {
             return checkImageIsNotBroken(CONTAINER_BASE);
         } catch (Exception ex) {
-            throw new Exception("Can't check image is broken. Reason is: " + ex.getMessage());
+            throw new RuntimeException("Can't check image is broken. Reason is: " + ex.getMessage());
         }
     }
 }

@@ -130,7 +130,7 @@ public class HockeyAppApi {
         if (status != 200) {
             istream = conn.getErrorStream();
             if (istream == null) {
-                throw new Exception("TestRail API return HTTP " + status + " (No additional error message received)");
+                throw new RuntimeException("TestRail API return HTTP " + status + " (No additional error message received)");
             }
         } else {
             istream = conn.getInputStream();
@@ -160,7 +160,7 @@ public class HockeyAppApi {
                 error = result.getString("error");
             }
 
-            throw new Exception(String.format("TestRail API returned HTTP %s (%s)", status, error));
+            throw new RuntimeException(String.format("TestRail API returned HTTP %s (%s)", status, error));
         } else {
             return result;
         }

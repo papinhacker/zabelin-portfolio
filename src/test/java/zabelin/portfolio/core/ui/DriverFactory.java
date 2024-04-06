@@ -108,7 +108,7 @@ public class DriverFactory extends AssertVerification {
         if (!host.equals("localhost")) {
             platform = getPropertyValue(platform, settings, "platform", "");
             if (platform.isEmpty()) {
-                throw new Exception("Platform name should be specified");
+                throw new RuntimeException("Platform name should be specified");
             }
         } else {
             platform = getPlatformName();

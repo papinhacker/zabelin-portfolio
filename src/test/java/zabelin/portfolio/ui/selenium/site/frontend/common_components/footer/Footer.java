@@ -24,14 +24,14 @@ public class Footer extends SiteHelper {
         try {
             scrollTo(BASE, true);
         } catch (Exception ex) {
-            throw new Exception("Can't scroll to footer section");
+            throw new RuntimeException("Can't scroll to footer section");
         }
     }
 
     private void widgetLoading() {
         try {
             if (!isVisible(BASE, short_timeout))
-                throw new Exception();
+                throw new RuntimeException();
         } catch (Exception ex) {
             throw new AssertionError("Footer was not loaded");
         }

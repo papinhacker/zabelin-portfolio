@@ -125,7 +125,7 @@ public class EnvironmentConfigurator extends AssertVerification {
         timeout = getSystemProperty("mtimeout", timeout);
         System.setProperty("menv", environment);
         if (propsFile.isEmpty()) {
-            throw new Exception("Property file should be specified");
+            throw new RuntimeException("Property file should be specified");
         } else {
             this.driverPort = PortProber.findFreePort();
             this.webDriver = DriverFactory.createDriver(propsFile, platform, browser, host, timeout, build, customCaps, this.driverPort);

@@ -20,7 +20,7 @@ public class BrokenImagesPage extends SiteHelper {
     public void pageLoading() {
         try {
             if (!isVisible(images.CONTAINER_BASE, short_timeout))
-                throw new Exception();
+                throw new RuntimeException();
         } catch (Exception ex) {
             throw new AssertionError("Broken Images Page was not loaded");
         }
@@ -49,7 +49,7 @@ public class BrokenImagesPage extends SiteHelper {
             }
             return true;
         } catch (Exception ex) {
-            throw new Exception("Can't check are images are broken. Reason is: " + ex.getMessage());
+            throw new RuntimeException("Can't check are images are broken. Reason is: " + ex.getMessage());
         }
     }
 }

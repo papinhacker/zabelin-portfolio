@@ -60,7 +60,7 @@ public class Navigation extends SiteHelper {
             waitForNProgressEnding();
             waitForNProgressEnding();
         } catch (Exception ex) {
-            throw new Exception("Can't click '" + menuLink + "' navigation link. Reason is: " + ex.getMessage());
+            throw new RuntimeException("Can't click '" + menuLink + "' navigation link. Reason is: " + ex.getMessage());
         }
     }
 }

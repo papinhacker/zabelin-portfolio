@@ -88,7 +88,7 @@ public class EnvConstants extends BaseEnvironmentConstants {
         String stringToEncrypt = "PUT HERE A STRING TO ENCRYPT. Don't forget to remove your value from here.";
 
         if (mpropkey == null || mpropkey.isEmpty())
-            throw new Exception("Specify decryption key using '-Dmpropkey'");
+            throw new RuntimeException("Specify decryption key using '-Dmpropkey'");
         Log.debug("String to encrypt: " + stringToEncrypt);
         String encryptedString = new EncryptSettings(mpropkey.getBytes()).encryptString(stringToEncrypt);
         Log.debug("Encrypted string: " + encryptedString);
