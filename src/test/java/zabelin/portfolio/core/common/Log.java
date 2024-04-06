@@ -1,5 +1,6 @@
 package zabelin.portfolio.core.common;
 
+import io.qameta.allure.Allure;
 import org.apache.commons.lang3.StringUtils;
 import org.testng.Reporter;
 import org.testng.log4testng.Logger;
@@ -63,6 +64,7 @@ public class Log {
         if (logLevel >= 10) {
             printInterval();
             Reporter.log(dateFormat.format(new Date()) + " [step]  " + message, true);
+            Allure.step("[step]  " + message);
         }
 
     }
@@ -79,6 +81,7 @@ public class Log {
         if (logLevel >= 25) {
             printInterval();
             Reporter.log(dateFormat.format(new Date()) + " [warn]  " + message, true);
+            Allure.step("[warn]  " + message);
         }
 
     }
@@ -87,6 +90,7 @@ public class Log {
         if (logLevel >= 1) {
             printInterval();
             Reporter.log(dateFormat.format(new Date()) + " [error]  " + message, true);
+            Allure.step("[error]  " + message);
         }
 
     }
@@ -95,6 +99,7 @@ public class Log {
         if (logLevel >= 30) {
             printInterval();
             Reporter.log(dateFormat.format(new Date()) + "\t\t [debug]  " + message, true);
+            Allure.step("[debug]  " + message);
         }
 
     }
@@ -127,7 +132,7 @@ public class Log {
         if (!hideInfoMessages) {
             Reporter.log(dateFormat.format(new Date()) + " [info]  " + message, true);
         }
-
+        Allure.step("[info]  " + message);
     }
 
     public static void always(String message, boolean addDate) {

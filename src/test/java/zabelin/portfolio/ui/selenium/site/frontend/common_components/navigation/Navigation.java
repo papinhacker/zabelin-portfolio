@@ -46,9 +46,8 @@ public class Navigation extends SiteHelper {
      * Click on menu link
      *
      * @param menuLink
-     * @throws Exception
      */
-    public void clickMenuLink(String menuLink) throws Exception {
+    public void clickMenuLink(String menuLink) {
         try {
             String ml = menuLink;
             String ll = getAllText(menuLinks, 3).stream()

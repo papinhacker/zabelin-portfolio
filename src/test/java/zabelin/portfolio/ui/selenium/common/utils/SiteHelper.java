@@ -344,7 +344,7 @@ public class SiteHelper extends WebElementsHelper {
             }
         }
         if (selectedOptions == null) {
-            throw new RuntimeException()Exception("Can't get selected option for element: " + xpath);
+            throw new RuntimeException("Can't get selected option for element: " + xpath);
         }
         return selectedOptions;
     }

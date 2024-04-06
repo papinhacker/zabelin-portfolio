@@ -38,11 +38,7 @@ public class ExtentReportListener implements ITestListener {
     public void onTestStart(ITestResult result) {
         System.out.println(("*** Running test method " + result.getMethod().getMethodName() + "..."));
         ExtentTestManager.startTest(result.getMethod().getDescription());
-        String caseId = result.getMethod().getDescription().substring(0,result.getMethod().getDescription().indexOf(" ")).replace("C","");
 
-        ExtentTestManager.getTest().log(Status.INFO,"Test case description:<br>"+
-                "<a target='_blank' href='https://weedmaps.testrail.com/index.php?/cases/view/"+caseId+"'>"+
-                "https://weedmaps.testrail.com/index.php?/cases/view/"+caseId+"</a>");
     }
 
     public void onTestSuccess(ITestResult result) {
