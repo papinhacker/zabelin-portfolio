@@ -365,7 +365,7 @@ public class TextUtil extends StringUtils {
 
     public static void showTrace(String msg) {
         try {
-            throw new Exception(msg);
+            throw new RuntimeException(msg);
         } catch (Exception var2) {
             var2.printStackTrace();
         }

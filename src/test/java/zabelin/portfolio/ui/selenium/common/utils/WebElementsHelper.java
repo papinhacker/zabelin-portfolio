@@ -226,7 +226,7 @@ public abstract class WebElementsHelper extends BasePageObject {
         try {
             return new WebElementImpl(driver, findElements(By.xpath(xpath), timeout).get(index));
         } catch (Exception e) {
-            throw new Exception("Unable to find element with index " + index
+            throw new RuntimeException("Unable to find element with index " + index
                     + " using xpath [" + xpath
                     + "] in " + timeout + " seconds.");
         }
@@ -245,7 +245,7 @@ public abstract class WebElementsHelper extends BasePageObject {
         try {
             return new WebElementImpl(driver, getFirstElementWithText(findElements(By.xpath(xpath), timeout), text));
         } catch (Exception e) {
-            throw new Exception("Unable to find element with text [" + text
+            throw new RuntimeException("Unable to find element with text [" + text
                     + "] using xpath [" + xpath
                     + "] in " + timeout + " seconds.");
         }
@@ -264,7 +264,7 @@ public abstract class WebElementsHelper extends BasePageObject {
         try {
             return new WebEditImpl(driver, findElements(By.xpath(xpath), timeout).get(index));
         } catch (Exception e) {
-            throw new Exception("Unable to find element with index " + index
+            throw new RuntimeException("Unable to find element with index " + index
                     + " using xpath [" + xpath
                     + "] in " + timeout + " seconds.");
         }
@@ -583,7 +583,7 @@ public abstract class WebElementsHelper extends BasePageObject {
             }
             webElement.click(timeout);
         } catch (Exception ex) {
-            throw new Exception("Unable to click element with text [" + text
+            throw new RuntimeException("Unable to click element with text [" + text
                     + "] using xpath [" + xpath
                     + "] in " + timeout + " seconds.");
         }
@@ -616,7 +616,7 @@ public abstract class WebElementsHelper extends BasePageObject {
             }
             webElement.clickJS(timeout);
         } catch (Exception ex) {
-            throw new Exception("Unable to click element with text by JS [" + text
+            throw new RuntimeException("Unable to click element with text by JS [" + text
                     + "] using xpath [" + xpath
                     + "] in " + timeout + " seconds.");
         }
@@ -835,7 +835,7 @@ public abstract class WebElementsHelper extends BasePageObject {
             }
             return webElement.getAttribute(attribute, timeout);
         } catch (Exception ex) {
-            throw new Exception("Unable to get attribute [" + attribute
+            throw new RuntimeException("Unable to get attribute [" + attribute
                     + "] using xpath [" + xpath
                     + "] in " + timeout + " seconds.");
         }
@@ -1270,7 +1270,7 @@ public abstract class WebElementsHelper extends BasePageObject {
             }
         } catch (
                 Exception ex) {
-            throw new Exception("Can't clear input. Reason is: " + ex.getMessage());
+            throw new RuntimeException("Can't clear input. Reason is: " + ex.getMessage());
         }
 
     }
@@ -1619,7 +1619,7 @@ public abstract class WebElementsHelper extends BasePageObject {
                 Thread.sleep(100);
             }
         }
-        throw new Exception("Unable to getRectangleJs from [" + xpath + "] in " + timeout + " seconds");
+        throw new RuntimeException("Unable to getRectangleJs from [" + xpath + "] in " + timeout + " seconds");
     }
 
     /**
@@ -1877,7 +1877,7 @@ public abstract class WebElementsHelper extends BasePageObject {
                 Thread.sleep(300);
             }
         } catch (Exception ex) {
-            throw new Exception("Can't select checkbox used: \nxpath -> [" + xpath + "]\nindex -> " + index);
+            throw new RuntimeException("Can't select checkbox used: \nxpath -> [" + xpath + "]\nindex -> " + index);
         }
     }
 

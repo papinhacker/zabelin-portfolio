@@ -242,7 +242,7 @@ public class DriverFactory extends AssertVerification {
                     driver = new SafariDriver(capabilities);
                     break;
                 default:
-                    throw new Exception("Unsupported browser: " + browser);
+                    throw new RuntimeException("Unsupported browser: " + browser);
             }
         }
 

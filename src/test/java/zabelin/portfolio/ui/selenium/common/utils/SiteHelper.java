@@ -154,9 +154,9 @@ public class SiteHelper extends WebElementsHelper {
                     return;
                 }
             }
-            throw new Exception("There is no tab: " + tab);
+            throw new RuntimeException("There is no tab: " + tab);
         } catch (Exception ex) {
-            throw new Exception("Can't select '" + tab + "' tab. Reason is: " + ex.getMessage());
+            throw new RuntimeException("Can't select '" + tab + "' tab. Reason is: " + ex.getMessage());
         }
     }
 
@@ -188,7 +188,7 @@ public class SiteHelper extends WebElementsHelper {
             }
             return false;
         } catch (Exception ex) {
-            throw new Exception("Can't check '" + tab + "' tab is active. Reason is: " + ex.getMessage());
+            throw new RuntimeException("Can't check '" + tab + "' tab is active. Reason is: " + ex.getMessage());
         }
     }
 
@@ -203,7 +203,7 @@ public class SiteHelper extends WebElementsHelper {
         try {
             return isNavigationTabActive(NAVIGATION_TABS_LIST, tab);
         } catch (Exception ex) {
-            throw new Exception("Can't check '" + tab + "' tab is active. Reason is: " + ex.getMessage());
+            throw new RuntimeException("Can't check '" + tab + "' tab is active. Reason is: " + ex.getMessage());
         }
     }
 
@@ -344,7 +344,7 @@ public class SiteHelper extends WebElementsHelper {
             }
         }
         if (selectedOptions == null) {
-            throw new Exception("Can't get selected option for element: " + xpath);
+            throw new RuntimeException()Exception("Can't get selected option for element: " + xpath);
         }
         return selectedOptions;
     }
@@ -369,10 +369,10 @@ public class SiteHelper extends WebElementsHelper {
                         return href;
                     }
                 }
-                throw new Exception("Element has no 'href' attribute");
+                throw new RuntimeException("Element has no 'href' attribute");
             }
         } catch (Exception ex) {
-            throw new Exception("No ability to get href attribute from element");
+            throw new RuntimeException("No ability to get href attribute from element");
         }
     }
 
@@ -407,7 +407,7 @@ public class SiteHelper extends WebElementsHelper {
         try {
             return getText(FLASH_MESSAGE, short_timeout);
         } catch (Exception ex) {
-            throw new Exception("Can't get flash message text. Reason is: " + ex.getMessage());
+            throw new RuntimeException("Can't get flash message text. Reason is: " + ex.getMessage());
         }
     }
 
@@ -426,7 +426,7 @@ public class SiteHelper extends WebElementsHelper {
                 click(FLASH_MESSAGE_CLOSE, short_timeout);
             waitForInvisibility(FLASH_MESSAGE);
         } catch (Exception ex) {
-            throw new Exception("Can't close flash message text. Reason is: " + ex.getMessage());
+            throw new RuntimeException("Can't close flash message text. Reason is: " + ex.getMessage());
         }
     }
 }

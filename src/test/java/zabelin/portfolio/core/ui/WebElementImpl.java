@@ -289,7 +289,7 @@ public class WebElementImpl {
         try {
             WebDriverWait wait = new WebDriverWait(this.driver, timeout);
             if (!(Boolean) wait.until(ExpectedConditions.stalenessOf(this.WebElement))) {
-                throw new Exception("Unable to find the WebElement while waiting for " + timeout + " to remove from DOM.");
+                throw new RuntimeException("Unable to find the WebElement while waiting for " + timeout + " to remove from DOM.");
             }
         } catch (Exception var3) {
             Log.error("There was a problem waiting for element.");

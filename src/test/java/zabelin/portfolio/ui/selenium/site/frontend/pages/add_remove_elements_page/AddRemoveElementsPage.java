@@ -74,7 +74,7 @@ public class AddRemoveElementsPage extends SiteHelper {
             scrollTo(deleteButton, 0);
             clickByIndex(deleteButton, 0, short_timeout);
         } catch (Exception ex) {
-            throw new Exception("Can't click on the 'Delete' button. Reason is: " + ex.getMessage());
+            throw new RuntimeException("Can't click on the 'Delete' button. Reason is: " + ex.getMessage());
         }
     }
 }
